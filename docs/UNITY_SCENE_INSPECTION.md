@@ -28,6 +28,20 @@ simple articulated primitive rig with generated looping Animator clips. This is
 an animation-capable simulation character, not a retargeted imported humanoid
 Avatar.
 
+## Resulting simulation scene
+
+- `Humanoid` is the root and contains the `CharacterController`, `Animator`,
+  `RosAnimationController`, and `RobotPosePublisher`.
+- `Humanoid/Visuals` contains the generated body and limb pivots; the root faces
+  Unity local +Z.
+- `ROSConnection` connects to `127.0.0.1:10000` and contains
+  `ClickGoalPublisher` for `/goal_pose` and `/goal_cancel`.
+- `Main Camera` uses `ThirdPersonFollowCamera` and targets the `Humanoid` root.
+- `Ground` and `Obstacle` provide collision surfaces. The humanoid's
+  `CharacterController` stops at the obstacle.
+- The Animator Controller uses generated Idle, Walk, and Run clips. There are
+  no dedicated backward or turning clips.
+
 ## Coordinate frame
 
 The simulation root faces Unity local +Z. Unity world axes are X right, Y up,

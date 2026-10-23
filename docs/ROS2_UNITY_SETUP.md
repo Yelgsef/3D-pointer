@@ -58,12 +58,26 @@ Start keyboard teleoperation in a terminal with a usable TTY:
 The standard `u i o / j k l / m , .` keys publish velocity commands. A terminal
 without an interactive TTY cannot provide keyboard input to this node.
 
+For click-to-goal navigation, start the navigation node instead of keyboard
+teleoperation:
+
+```bash
+./scripts/start_navigation.sh
+```
+
+Click the ground in the Unity Game view to publish `/goal_pose`; press Escape
+to cancel. The proportional controller turns in place for large heading
+errors, drives toward the goal, slows near the target, and stops within its
+position tolerance. This is basic goal seeking, not obstacle avoidance.
+
 ## Topics and parameters
 
 | Topic | Type | Direction | Purpose |
 | --- | --- | --- | --- |
 | `/cmd_vel` | `geometry_msgs/msg/Twist` | ROS to Unity | Linear X velocity and angular Z yaw rate |
 | `/robot/pose` | `geometry_msgs/msg/Pose` | Unity to ROS | Live world position and orientation |
+| `/goal_pose` | `geometry_msgs/msg/PoseStamped` | Unity to ROS | Clicked destination in the `map` frame |
+| `/goal_cancel` | `std_msgs/msg/Bool` | Unity to ROS | Cancel the active goal (`true`) |
 
 The Unity movement component exposes maximum linear speed (3.0 m/s), maximum
 yaw rate (1.57 rad/s), acceleration/deceleration (4.0), command timeout (0.7
@@ -74,6 +88,9 @@ s), and gravity in the Inspector. Pose publishing defaults to 10 Hz.
 ```bash
 ./scripts/check_ros_topics.sh
 ./scripts/test_cmd_vel.sh 0.8 0.0 1.5
+source /opt/ros/jazzy/setup.bash
+source HumanoidSimulation/ros2_ws/install/setup.bash
+python3 -m pytest HumanoidSimulation/ros2_ws/src/humanoid_navigation/test
 ```
 
 The motion helper publishes a zero Twist when the requested duration ends. To
@@ -95,5 +112,5 @@ the `/cmd_vel` subscription count and check that the command has not expired.
 The scene rig is generated from primitives because the original template had
 no humanoid Avatar or animation assets. There is no dedicated reverse-walk or
 turning clip; backwards movement uses the available walk cycle while the root
-moves backwards. Waypoint navigation is a separate milestone and is not part
-of this core setup.
+moves backwards. Waypoint navigation is a basic proportional goal seeker and
+does not provide obstacle avoidance.

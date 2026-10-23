@@ -25,6 +25,7 @@ if [[ ! -f "$ENDPOINT_DIR/package.xml" ]]; then
     git clone --depth 1 --branch main-ros2 https://github.com/Unity-Technologies/ROS-TCP-Endpoint.git "$ENDPOINT_DIR"
 fi
 
-rosdep install --from-paths "$WS_DIR/src" --ignore-src -r -y
+# ament_python is a ROS build type, not a rosdep system package key here.
+rosdep install --from-paths "$WS_DIR/src" --ignore-src -r -y --skip-keys ament_python
 cd "$WS_DIR"
-colcon build --packages-up-to ros_tcp_endpoint --symlink-install
+colcon build --symlink-install

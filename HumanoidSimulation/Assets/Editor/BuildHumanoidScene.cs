@@ -205,6 +205,7 @@ public static class BuildHumanoidScene
         connection.RosPort = 10000;
         connection.ConnectOnStart = true;
         connection.ShowHud = true;
+        connectionObject.AddComponent<ClickGoalPublisher>();
     }
 
     private static AnimationClip CreateClip(string clipName, float duration, float legAngle, float armAngle)
