@@ -7,6 +7,8 @@ HumanoidSimulation/[Bb]uilds/
 HumanoidSimulation/[Ll]ogs/
 HumanoidSimulation/[Mm]emoryCaptures/
 HumanoidSimulation/[Uu]serSettings/
+HumanoidSimulation/Assets/Temp/
+HumanoidSimulation/Assets/Temp.meta
 HumanoidSimulation/mono_crash.*
 *.csproj
 *.sln
