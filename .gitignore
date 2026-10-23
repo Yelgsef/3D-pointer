@@ -1,0 +1,36 @@
+# Unity-generated files
+HumanoidSimulation/[Ll]ibrary/
+HumanoidSimulation/[Tt]emp/
+HumanoidSimulation/[Oo]bj/
+HumanoidSimulation/[Bb]uild/
+HumanoidSimulation/[Bb]uilds/
+HumanoidSimulation/[Ll]ogs/
+HumanoidSimulation/[Mm]emoryCaptures/
+HumanoidSimulation/[Uu]serSettings/
+HumanoidSimulation/mono_crash.*
+*.csproj
+*.sln
+*.slnx
+*.unityproj
+*.pidb
+*.booproj
+*.svclog
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.tmp
+*.user
+*.userprefs
+*.suo
+.vs/
+
+# ROS 2 workspace outputs and local endpoint checkout
+HumanoidSimulation/ros2_ws/build/
+HumanoidSimulation/ros2_ws/install/
+HumanoidSimulation/ros2_ws/log/
+HumanoidSimulation/ros2_ws/src/ros_tcp_endpoint/
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
