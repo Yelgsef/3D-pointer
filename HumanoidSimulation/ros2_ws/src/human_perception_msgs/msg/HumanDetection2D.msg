@@ -1,0 +1,7 @@
+std_msgs/Header header
+uint32 image_width
+uint32 image_height
+bool detected
+float32 confidence
+sensor_msgs/RegionOfInterest bounding_box
+float32 inference_latency_ms

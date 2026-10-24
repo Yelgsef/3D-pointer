@@ -1,0 +1,7 @@
+# Runtime packages supplied by Ubuntu/ROS (OpenCV, NumPy, and rclpy) are not
+# duplicated here; scripts/setup_perception_venv.sh uses system site packages.
+absl-py==2.5.0
+attrs==25.4.0
+flatbuffers==25.12.19
+protobuf==4.25.9
+sounddevice==0.5.6

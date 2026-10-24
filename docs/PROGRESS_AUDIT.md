@@ -69,3 +69,15 @@ Status: **PASS** for the ROS RGB image and CameraInfo pipeline.
 Evidence: `docs/evidence/ros-camera-sample.png`, `ros-camera-f2-out-of-view.png`, `ros-camera-f4-turned-to-human.png`, and `ros-camera-f5-occluded.png`; see `docs/ROS_CAMERA_PIPELINE.md` for reproduction details and frame conventions.
 
 Limitations: ROS system/UTC time is used; simulated ROS time is unsupported. CameraInfo assumes square pixels and no distortion. The publisher has no backpressure beyond avoiding overlapping GPU readbacks, and short sample rates vary by editor scheduling. No depth stream is implemented.
+
+## Phase 3 result
+
+Status: **PASS** for the single-human RGB detection and 2D pose baseline on the existing stylized Unity target.
+
+- Added `human_perception_msgs` interfaces and the Python `human_perception` package. The node reads only `/camera/image_raw`, runs MediaPipe Pose Solutions 0.10.21 (BlazePose detection plus full pose landmarks), and publishes a per-frame detection/ROI, 33 named keypoints and visibility scores, and a separate debug image. No Unity transform, target ID, or ground-truth skeleton is read by this node.
+- Model assets are bundled with the pinned MediaPipe wheel. The package is Apache-2.0. Input is 640 x 360 RGB; TFLite XNNPACK runs on CPU. MediaPipe's detector and tracking thresholds are 0.40; the node's 0.50 detection gate uses mean visibility over shoulders, elbows, wrists, hips, knees, and ankles.
+- Added a project `.venv` setup that retains system ROS Jazzy `rclpy`, Ubuntu OpenCV 4.6, and NumPy 1.26 while installing pinned MediaPipe dependencies locally. `colcon build --symlink-install --packages-up-to human_perception` completed successfully.
+- Live paired-image evaluation: F1 detected 20/20 frames (mean important-keypoint visibility 0.957, mean inference latency 28.06 ms); F4 detected 20/20 (0.928, 28.93 ms); F6 detected 20/20; F8 pointing detected 20/20. F2, F3, and F5 each had 0/20 detections and zero false positives. Camera delivery during these runs was 4.7-5.1 Hz.
+- Evidence JSON is in `docs/evidence/perception-f1.json` through `perception-f6.json` plus `perception-f8-pointing.json`. `perception-debug-f1.png` and `perception-debug-f4.png` show detections/keypoints on a separate debug image; the raw camera topic remains unmodified.
+
+Limitations: the custom `human_perception_msgs` interfaces are used because `vision_msgs` is absent from this ROS installation. Pose z is MediaPipe-relative, not metric depth. The visibility-based detection score is not a calibrated detector probability. Results only cover this stylized single-person simulation; no real-world robustness is claimed. Pointing-object inference is not implemented.
