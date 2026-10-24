@@ -35,27 +35,49 @@ This builds the endpoint, navigation package, custom perception messages, and
 perception package. Workspace outputs and the local endpoint checkout are
 ignored by Git.
 
-## Start Unity and ROS
+## Start the project
 
-Start the endpoint in one terminal:
+Run setup once after cloning, then start the endpoint, perception node, and
+Unity Editor together:
 
 ```bash
-./scripts/start_ros_endpoint.sh
+./scripts/setup_ros_workspace.sh
+./scripts/setup_perception_venv.sh
+./scripts/start_all.sh
 ```
 
-Open `HumanoidSimulation/` in Unity Hub, open
-`Assets/Scenes/HumanoidSimulation.unity`, and enter Play Mode. `ROSConnection`
-connects to port 10000.
+If Unity is installed outside `~/Unity/Hub/Editor/`, set `UNITY_EDITOR` to its
+executable path before running `start_all.sh`. The script opens the
+`HumanoidSimulation/` project when it can find Unity, but Unity still requires
+you to open `Assets/Scenes/HumanoidSimulation.unity` if needed and enter Play
+Mode. `ROSConnection` then connects to port 10000. Startup logs are saved under
+`HumanoidSimulation/Logs/start_all/`.
+
+Stop the endpoint, perception node, and Unity Editor started by the script
+with:
+
+```bash
+./scripts/start_all.sh --stop
+```
+
+The command leaves processes started separately untouched. Alternatively, run
+the endpoint and perception node individually with `start_ros_endpoint.sh` and
+`start_human_perception.sh`.
+
+Toggle human perception without stopping Unity or the camera endpoint:
+
+```bash
+./scripts/start_all.sh --stop-perception
+./scripts/start_all.sh --start-perception
+```
+
+To start Unity and the endpoint with perception disabled, use
+`./scripts/start_all.sh --no-perception`.
 
 ## Human perception
 
-Prepare the project-local ROS-compatible environment and run the model node in
-another terminal:
-
-```bash
-./scripts/setup_perception_venv.sh
-./scripts/start_human_perception.sh
-```
+The project-local ROS-compatible environment is prepared by
+`setup_perception_venv.sh`; `start_all.sh` starts the model node after setup.
 
 The venv uses system ROS Jazzy `rclpy`, OpenCV, and NumPy, while MediaPipe
 0.10.21 and its dependencies are installed locally with pinned versions. The
