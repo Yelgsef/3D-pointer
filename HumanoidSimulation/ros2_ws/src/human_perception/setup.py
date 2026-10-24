@@ -20,6 +20,7 @@ setup(
         "console_scripts": [
             "human_pose_detector = human_perception.pose_detector:main",
             "human_pose_3d = human_perception.human_pose_3d_node:main",
+            "pointing_estimator = human_perception.pointing_estimator:main",
             "evaluate_perception = human_perception.evaluate:main",
         ],
     },

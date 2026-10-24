@@ -7,6 +7,7 @@ STATE_DIR="$ROOT_DIR/HumanoidSimulation/Logs/start_all"
 ENDPOINT_PID_FILE="$STATE_DIR/endpoint.pid"
 PERCEPTION_PID_FILE="$STATE_DIR/perception.pid"
 POSE_3D_PID_FILE="$STATE_DIR/pose_3d.pid"
+POINTING_PID_FILE="$STATE_DIR/pointing.pid"
 TF_RELAY_PID_FILE="$STATE_DIR/tf_static_relay.pid"
 UNITY_PID_FILE="$STATE_DIR/unity.pid"
 NO_PERCEPTION=false
@@ -63,6 +64,18 @@ start_pose_3d_node() {
     fi
 }
 
+start_pointing_node() {
+    mkdir -p "$STATE_DIR"
+    if pgrep -af '[h]uman_perception.pointing_estimator' >/dev/null; then
+        echo "Pointing estimator is already running; leaving it untouched."
+    else
+        rm -f "$POINTING_PID_FILE"
+        setsid "$ROOT_DIR/scripts/start_pointing_estimator.sh" </dev/null >"$STATE_DIR/pointing.log" 2>&1 &
+        echo "$!" >"$POINTING_PID_FILE"
+        echo "Started pointing estimator (PID $(<"$POINTING_PID_FILE"))."
+    fi
+}
+
 start_tf_static_relay() {
     mkdir -p "$STATE_DIR"
     if pgrep -af '[s]tatic_tf_relay' >/dev/null; then
@@ -76,6 +89,7 @@ start_tf_static_relay() {
 }
 
 if [[ "${1:-}" == "--stop" ]]; then
+    stop_owned_process "$POINTING_PID_FILE" "pointing estimator" "human_perception.pointing_estimator"
     stop_owned_process "$POSE_3D_PID_FILE" "3D human pose" "human_perception.human_pose_3d_node"
     stop_owned_process "$PERCEPTION_PID_FILE" "human perception" "human_perception.pose_detector"
     stop_owned_process "$TF_RELAY_PID_FILE" "static TF relay" "static_tf_relay"
@@ -83,6 +97,7 @@ if [[ "${1:-}" == "--stop" ]]; then
     stop_owned_process "$UNITY_PID_FILE" "Unity Editor" "-projectPath $ROOT_DIR/HumanoidSimulation"
     exit 0
 elif [[ "${1:-}" == "--stop-perception" ]]; then
+    stop_owned_process "$POINTING_PID_FILE" "pointing estimator" "human_perception.pointing_estimator"
     stop_owned_process "$POSE_3D_PID_FILE" "3D human pose" "human_perception.human_pose_3d_node"
     stop_owned_process "$PERCEPTION_PID_FILE" "human perception" "human_perception.pose_detector"
     exit 0
@@ -98,6 +113,7 @@ elif [[ "${1:-}" == "--start-perception" ]]; then
     set -u
     start_perception_node
     start_pose_3d_node
+    start_pointing_node
     exit 0
 elif [[ "${1:-}" == "--no-perception" ]]; then
     NO_PERCEPTION=true
@@ -158,6 +174,7 @@ start_tf_static_relay
 if [[ "$NO_PERCEPTION" != true ]]; then
     start_perception_node
     start_pose_3d_node
+    start_pointing_node
 else
     echo "Human perception is disabled for this startup."
 fi

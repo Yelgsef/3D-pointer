@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 
 from human_perception.rgbd_reconstruction import back_project, sample_depth
+from human_perception.pointing_geometry import angle_degrees, rank_candidates, transform_point
 
 
 def test_center_pixel_reconstructs_on_optical_axis():
@@ -33,3 +34,21 @@ def test_depth_sampler_rejects_pixels_outside_image():
 def test_back_projection_rejects_nonpositive_optical_depth():
     with pytest.raises(ValueError):
         back_project(1.0, 1.0, 0.0, 1.0, 1.0, 0.0, 0.0)
+
+
+def test_candidate_ranking_prefers_angularly_aligned_object():
+    candidates = {"A": (3.0, 0.0, 0.0), "B": (0.0, 3.0, 0.0)}
+    assert rank_candidates((0.0, 0.0, 0.0), (1.0, 0.0, 0.0), candidates) == [
+        ("A", 0.0), ("B", 90.0)
+    ]
+
+
+def test_quaternion_transform_rotates_and_translates_point():
+    half_sqrt = 2 ** -0.5
+    result = transform_point((1.0, 0.0, 0.0), (2.0, 3.0, 4.0),
+                             (0.0, 0.0, half_sqrt, half_sqrt))
+    assert result == pytest.approx((2.0, 4.0, 4.0))
+
+
+def test_opposite_ray_is_180_degrees():
+    assert angle_degrees((1.0, 0.0, 0.0), (-1.0, 0.0, 0.0)) == pytest.approx(180.0)

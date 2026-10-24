@@ -147,6 +147,31 @@ Limitation: the current wrist/shoulder errors are not yet measured across
 distances or partial occlusions, and eye/head reference correspondence remains
 approximate. Controlled repeated comparison is part of later evaluation.
 
+### Instruction 4 Phase 5 — Pointing direction and candidate ranking
+
+Status: **PARTIAL**. The geometric estimator and visualization run, but current
+left/right pointing trials do not identify the intended targets.
+
+- Added deterministic eye-to-wrist Method A and elbow-to-wrist Method B,
+  candidate ranking from a prior map registry, TF conversion to `map`,
+  confidence-based abstention, and a `PointingEstimate` output.
+- Added `/human_perception/pointing_markers` with separate estimated arm
+  segments, pointing ray, and labeled candidate positions; raw RGB is not
+  modified. The estimator subscribes only to `/human_perception/pose_3d` and
+  `/tf`.
+- F8 actual A trial ranked B first at 72.4 degrees (A 80.0); F9 actual B trial
+  ranked A first at 72.7 degrees (B 80.2). Both methods selected the same
+  wrong top candidate and both results abstained due to excessive angular
+  error/ambiguity. No target was fabricated.
+- Runtime also exposed TF executor starvation and a marker point constructor
+  error; the callback was made nonblocking and the marker publisher corrected.
+  TF freshness is bounded to 250 ms on the latest-transform fallback.
+- Tests cover angular ranking, opposite rays, and quaternion transformation.
+
+See `docs/POINTING_EVALUATION.md`. The method is implemented, but target
+recognition is not demonstrated; Phase 6 must measure this failure across
+distinct scene configurations and report it honestly.
+
 This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
 ## Current verified state

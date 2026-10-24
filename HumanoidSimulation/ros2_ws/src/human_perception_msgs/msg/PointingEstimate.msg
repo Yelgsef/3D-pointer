@@ -1,0 +1,13 @@
+std_msgs/Header header
+bool has_ray
+string predicted_arm
+geometry_msgs/Point ray_origin
+geometry_msgs/Vector3 direction
+string[] candidate_ids
+float32[] angular_errors_deg
+float32[] scores
+bool ambiguous
+bool abstained
+string selected_target_id
+string method_a_target_id
+string method_b_target_id

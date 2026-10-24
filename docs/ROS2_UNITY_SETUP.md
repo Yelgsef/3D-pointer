@@ -22,6 +22,9 @@ An isolated simulation-only publisher provides evaluation labels under
 documented in [GROUND_TRUTH_INTERFACE.md](GROUND_TRUTH_INTERFACE.md).
 `human_pose_3d` consumes the RGB-predicted 2D pose with aligned depth and
 CameraInfo; see [3D_POSE_ESTIMATION.md](3D_POSE_ESTIMATION.md).
+`pointing_estimator` ranks the configured candidate registry from predicted
+3D joints and publishes separate debug markers; see
+[POINTING_EVALUATION.md](POINTING_EVALUATION.md).
 
 Unity uses +Z forward, +X right, and +Y up. ROS pose conversion uses FLU
 (X forward, Y left, Z up). The camera optical frame uses X right, Y down, and
@@ -134,6 +137,8 @@ perform obstacle avoidance.
 | `/human_perception/detection` | `human_perception_msgs/msg/HumanDetection2D` | ROS internal | Detection flag and bounding box |
 | `/human_perception/pose` | `human_perception_msgs/msg/HumanPose2D` | ROS internal | 33 RGB-predicted 2D keypoints |
 | `/human_perception/pose_3d` | `human_perception_msgs/msg/HumanPose3D` | ROS internal | Metric optical-frame keypoints with per-point validity |
+| `/human_perception/pointing_estimate` | `human_perception_msgs/msg/PointingEstimate` | ROS internal | Ranked candidates, angular scores, and abstention |
+| `/human_perception/pointing_markers` | `visualization_msgs/msg/MarkerArray` | ROS internal | Separate skeleton, ray, and candidate debug visualization |
 | `/human_perception/debug/image` | `sensor_msgs/msg/Image` | ROS internal | Separate visualization overlay |
 
 The scene also exposes F1-F7 scenario controls and F8/F9 pointing-pose controls.
