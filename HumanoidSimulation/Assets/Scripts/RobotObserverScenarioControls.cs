@@ -7,6 +7,9 @@ public sealed class RobotObserverScenarioControls : MonoBehaviour
     [SerializeField] private Transform humanTarget;
     [SerializeField] private Transform obstacle;
     [SerializeField] private Animator humanAnimator;
+    [SerializeField] private HumanTargetGestureController humanGestures;
+    [SerializeField] private Transform targetObjectA;
+    [SerializeField] private Transform targetObjectB;
 
     private Vector3 robotStart;
     private Quaternion robotStartRotation;
@@ -30,18 +33,21 @@ public sealed class RobotObserverScenarioControls : MonoBehaviour
         var keyboard = Keyboard.current;
         if (keyboard == null) return;
 
-        if (keyboard.f1Key.wasPressedThisFrame) SetHuman(new Vector3(0f, 0f, -4f), Quaternion.Euler(0f, 180f, 0f));
-        if (keyboard.f2Key.wasPressedThisFrame) SetHuman(new Vector3(-6f, 0f, -4f), Quaternion.Euler(0f, 90f, 0f));
-        if (keyboard.f3Key.wasPressedThisFrame) SetHuman(new Vector3(0f, 0f, -13f), Quaternion.identity);
+        if (keyboard.f1Key.wasPressedThisFrame) SetHuman(new Vector3(0f, 0f, -4f), Quaternion.identity);
+        if (keyboard.f2Key.wasPressedThisFrame) SetHuman(new Vector3(-6f, 0f, -4f), Quaternion.Euler(0f, 270f, 0f));
+        if (keyboard.f3Key.wasPressedThisFrame) SetHuman(new Vector3(0f, 0f, -13f), Quaternion.Euler(0f, 180f, 0f));
         if (keyboard.f4Key.wasPressedThisFrame) turningToHuman = true;
         if (keyboard.f5Key.wasPressedThisFrame) PlaceOccluder();
         if (keyboard.f6Key.wasPressedThisFrame) ResetScenario();
         if (keyboard.f7Key.wasPressedThisFrame && humanAnimator != null)
         {
-            humanAnimator.SetFloat("Speed", 0f);
-            humanAnimator.SetFloat("MoveDirection", 0f);
-            humanAnimator.SetFloat("Turn", 0f);
+            humanAnimator.Play("Idle", 0, 0f);
+            if (humanGestures != null) humanGestures.SetGesture(HumanTargetGesture.Idle);
         }
+        if (keyboard.f8Key.wasPressedThisFrame && humanGestures != null)
+            humanGestures.SetGesture(HumanTargetGesture.PointLeft, targetObjectA);
+        if (keyboard.f9Key.wasPressedThisFrame && humanGestures != null)
+            humanGestures.SetGesture(HumanTargetGesture.PointRight, targetObjectB);
 
         if (turningToHuman && humanTarget != null)
         {

@@ -37,8 +37,21 @@ This audit was made against the current Unity Editor, active scene, ROS 2 endpoi
 
 ## Phase plan
 
-1. Replace the primitive human visual with an original, locally generated skinned humanoid rig and functional left/right pointing poses. No licensed third-party model was found, so authoring must avoid unlicensed downloads.
+1. **PASS**: Replace the primitive human visual with an original, locally generated skinned humanoid rig and functional left/right pointing poses. No third-party character asset was downloaded.
 2. Publish the existing RobotEyeRT as `sensor_msgs/Image` and matching `CameraInfo`, then verify pixel order, metadata, frame IDs, and runtime rate over the existing endpoint.
 3. Add a reproducible human detector and pose estimator using compatible, documented model weights; keep predictions separate from Unity ground truth.
 4. Document the RGB-D and ground-truth extension points without presenting them as implemented.
 5. Reconcile older docs and run the required Unity, ROS, perception, navigation, camera, and scenario regression checks.
+
+## Phase 1 result
+
+Status: **PASS** for the rigged target and controllable arm poses.
+
+- `HumanTarget` retains its root, `CharacterController`, and `Animator`; its visual is now an original Blender-generated FBX with one `SkinnedMeshRenderer`, 4,818 vertices, 22 bones, and a valid Humanoid Avatar with 16 mapped bones.
+- `HumanTargetGestureController` restores the imported bind pose after Animator evaluation, then procedurally solves one two-segment arm toward its configured target. This avoids Unity's empty Humanoid Idle clip replacing the model's authored rest pose. Left/right arm bends include an elbow plane and are clamped to the arm's reachable length.
+- `TargetObjectA` and `TargetObjectB` are scene objects. F8 selects the left-arm pose for A; F9 selects the right-arm pose for B. The original F1-F7 scenario paths remain in the same controls component.
+- Unity 6000.6.3f1 script compilation completed with `failed=false`, no errors, and no compilation failure. Play Mode confirmed the human is rendered in `RobotEyeRT` / `RobotPOVCanvas`.
+- Injected Input System states exercised F1-F7: F1/F2/F3 moved and oriented the human, F4 turned the observer to within 0.2 degrees of the human, F5 placed the occluder, F6 restored scenario transforms, and F7 selected Idle. F8/F9 selected the expected gesture and target.
+- Captures: `docs/evidence/human-target-left-point.png`, `docs/evidence/human-target-right-point.png`, `docs/evidence/scenario-f2-out-of-view.png`, and `docs/evidence/scenario-f4-turned-to-human.png`. The F2 Robot POV omits the person; after F4 turns, the person enters the preview.
+
+Limitations: the character is intentionally stylized and low-poly. The gesture controller provides arm pointing poses; it does not estimate pointing targets from images or implement a full-body animation system.
