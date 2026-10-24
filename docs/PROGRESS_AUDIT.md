@@ -55,3 +55,17 @@ Status: **PASS** for the rigged target and controllable arm poses.
 - Captures: `docs/evidence/human-target-left-point.png`, `docs/evidence/human-target-right-point.png`, `docs/evidence/scenario-f2-out-of-view.png`, and `docs/evidence/scenario-f4-turned-to-human.png`. The F2 Robot POV omits the person; after F4 turns, the person enters the preview.
 
 Limitations: the character is intentionally stylized and low-poly. The gesture controller provides arm pointing poses; it does not estimate pointing targets from images or implement a full-body animation system.
+
+## Phase 2 result
+
+Status: **PASS** for the ROS RGB image and CameraInfo pipeline.
+
+- `RobotCameraPublisher` on the existing `RobotEyeCamera` publishes the existing 640 x 360 RenderTexture at a configured 5 Hz. It uses asynchronous GPU readback when available and a reusable synchronous fallback, converts bottom-left Unity rows to top-left ROS rows, and pools outgoing messages.
+- ROS 2 Jazzy registered exactly one publisher on each required topic: `/camera/image_raw` (`sensor_msgs/msg/Image`) and `/camera/camera_info` (`sensor_msgs/msg/CameraInfo`). A capture subscriber validated paired timestamps and frame IDs, `rgb8`, dimensions 640 x 360, step 1920, 691200 bytes, zero distortion, and intrinsics `fx=fy=577.9135`, `cx=320`, `cy=180`.
+- A 12-frame run previously measured 5.198 Hz; current F4/F5 image samples measured 5.9/8.7 Hz over three-frame windows. Rate varies with Unity Editor scheduling; the component enforces a 5 Hz minimum interval, not real-time scheduling.
+- Camera evidence confirms the human absent in F2, visible after the observer turns toward that target, and fully occluded in F5. F4 turning and F5 occlusion were exercised through the live Unity scenario controller; this runtime session's synthetic keyboard injection did not change transforms, so the corresponding controller actions were invoked directly for the camera captures.
+- Unity's RGB image buffer is top-left-origin RGB and its header names the ROS optical frame convention. A static TF for the camera optical frame is not yet published and is documented as a required geometry extension.
+
+Evidence: `docs/evidence/ros-camera-sample.png`, `ros-camera-f2-out-of-view.png`, `ros-camera-f4-turned-to-human.png`, and `ros-camera-f5-occluded.png`; see `docs/ROS_CAMERA_PIPELINE.md` for reproduction details and frame conventions.
+
+Limitations: ROS system/UTC time is used; simulated ROS time is unsupported. CameraInfo assumes square pixels and no distortion. The publisher has no backpressure beyond avoiding overlapping GPU readbacks, and short sample rates vary by editor scheduling. No depth stream is implemented.
