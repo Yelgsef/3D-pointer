@@ -282,6 +282,9 @@ public sealed class RobotCameraPublisher : MonoBehaviour
 
     private bool IsCurrentCapture(int captureId)
     {
+        // Async GPU callbacks can arrive after Unity destroys this component during a reload.
+        if (this == null)
+            return false;
         return !destroying && isActiveAndEnabled && readbackPending && captureId == activeCaptureId;
     }
 
@@ -301,7 +304,7 @@ public sealed class RobotCameraPublisher : MonoBehaviour
 
     private void FailPendingFrame(int captureId, string message)
     {
-        if (captureId != activeCaptureId)
+        if (this == null || captureId != activeCaptureId)
             return;
         readbackPending = false;
         pendingRgbPixels = null;

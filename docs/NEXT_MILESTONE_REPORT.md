@@ -138,8 +138,48 @@ future work.
 
 ## Final state
 
-The requested foundation now runs from the existing RobotEye preview into a
-ROS RGB camera and MediaPipe detection/pose pipeline. The evidence supports the
-stylized simulation scenarios listed above; it does not support claims about
-real-world accuracy. RGB-D, simulation ground truth, camera TF, and
-pointing-object resolution remain future research milestones.
+The original project foundation above is extended by the current Instruction 4
+milestone. The phase ledger and concrete runtime evidence are in
+`docs/PROGRESS_AUDIT.md`.
+
+## Instruction 4 — RGB-D pointing pipeline
+
+| Phase | Status | Result |
+| --- | --- | --- |
+| 0. Baseline audit | PASS | Existing RGB, CameraInfo, rig, input bindings, and renderer inspected. |
+| 1. Metric depth | PASS | Existing camera publishes aligned 640 x 360 `32FC1` optical-Z meters; known planes at 2/4/6 m were verified. |
+| 2. Coordinate frames | PASS | Runtime TF connects `map → base_link → robot_camera_optical_frame`; unit and projection checks pass. |
+| 3. Separate simulation truth | PASS | Unity publishes joints, objects, ray, pointing labels, and visibility only under `/simulation/ground_truth/...`. |
+| 4. 3D keypoints | PASS | RGB pose, depth, and CameraInfo are synchronized; metric optical landmarks include per-keypoint validity. |
+| 5. Pointing estimator | PARTIAL | Both geometric methods, ranked candidates, safe abstention, and separate markers are implemented. Default F8/F9 rankings are usually wrong or exceed the angle limit. |
+| 6. Controlled evaluation | PARTIAL | Multiple arm, distance, orientation, observer, target-layout, and occlusion configurations were recorded. Only 2 of 113 default F8 frames selected A correctly; F9 selected no target. |
+| 7. Docs and regression | PARTIAL | Documentation, Unity/ROS builds, 21 unit tests, camera preview, control, navigation, gesture, and perception checks passed. RGB averaged 4.4 Hz and depth 2.4 Hz during the final run, below the configured 5 Hz. |
+
+The tested system demonstrates metric RGB-D reconstruction and conservative
+abstention. It does not yet demonstrate reliable pointing-target recognition.
+See `docs/3D_POSE_ESTIMATION.md`, `docs/POINTING_EVALUATION.md`, and
+`docs/evidence/pointing-metrics.json` for measurements and limits. This result
+is specific to the current stylized simulation and candidate layouts.
+
+### Phase 7 regression details
+
+- ROS `colcon build --symlink-install` completed for all five packages. Direct
+  `pytest` execution passed all 21 perception and navigation tests. Unity
+  compiled the guarded camera callback successfully, and runtime capture
+  resumed after the ROS TCP connection was restored.
+- Unity Play Mode confirmed the existing POV `RawImage` still references
+  `RobotEyeRT`. `/camera/image_raw`, `/camera/depth/image_raw`, and
+  `/camera/camera_info` published 640 x 360 messages with the expected
+  encodings, frame, and intrinsics. Measured rates under the full Editor and
+  perception load were 4.4 Hz RGB, 2.4 Hz depth, and 8.7 Hz `/robot/pose`;
+  rates varied across short windows.
+- A 1-second, 0.2 m/s `/cmd_vel` command moved the robot from Unity Z=-9.00 to
+  Z=-8.84. The navigation node accepted a map goal at ROS X=-8.60, reached
+  X=-8.73, and stopped within its 0.15 m tolerance. Runtime checks selected
+  `PointLeft/TargetObjectA`, `PointRight/TargetObjectB`, then restored Idle.
+  RGB perception, 3D pose, and pointing-estimate topics also produced messages.
+- Unity initially remained connected to a stale ROS TCP endpoint session after
+  Play Mode reload; restarting the endpoint restored registered topics and
+  bidirectional control. The measured RGB-D throughput remains below the
+  configured 5 Hz under this full load, so Phase 7 is PARTIAL pending a stable
+  5 Hz depth stream regression.

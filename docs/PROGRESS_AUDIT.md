@@ -300,4 +300,34 @@ Status: **PASS** for documentation reconciliation and required regression checks
 - `/cmd_vel` had one Unity subscriber. A 1-second 0.4 m/s command changed ROS pose X from -9.000 to -8.678; `/robot/pose` measured 9.68 Hz. The navigation node accepted a map goal at -8.20 and stopped at -8.342, inside its 0.15 m tolerance. `/camera/image_raw` measured 4.83 Hz.
 - Perception evaluation JSON and debug images for F1-F8 are under `docs/evidence/`; ROS camera PNGs and paired CameraInfo checks are also recorded there. No changes were made to the waypoint implementation.
 
-Limitations: keyboard simulation itself was not confirmed in this final Editor session; the scenario controller's runtime actions were verified directly and the same visible/out-of-view/occlusion results were independently observed through the ROS camera/perception stream. RGB-D, optical TF, simulation ground truth, metric 3D pose, and pointing-object inference remain unimplemented.
+At the end of this Phase 5 checkpoint, RGB-D, optical TF, simulation ground
+truth, metric 3D pose, and pointing-object inference remained unimplemented.
+The subsequent Instruction 4 work and Phase 7 regression results are recorded
+below.
+
+## Instruction 4 Phase 7 — Documentation and regression
+
+Status: **PARTIAL**. The required functionality and builds were rechecked, but
+the full-load depth stream did not sustain its configured 5 Hz rate.
+
+- `colcon build --symlink-install` completed for all five ROS packages.
+  Direct `pytest` execution passed 21 perception and navigation tests. Unity
+  had compiled the guarded async camera callback successfully in this Editor
+  session.
+- The Robot POV `RawImage` still references the existing `RobotEyeRT`.
+  RGB, depth, and CameraInfo messages were present at 640 x 360 with their
+  expected encodings and optical frame. Short-window rates under full load
+  measured 4.4 Hz RGB, 2.4 Hz depth, and 8.7 Hz `/robot/pose`.
+- A 1-second, 0.2 m/s `/cmd_vel` command moved the robot from Unity Z=-9.00 to
+  Z=-8.84. Navigation accepted a map goal at ROS X=-8.60 and reached X=-8.73,
+  within its 0.15 m tolerance. Unity runtime checks selected both pointing
+  gestures and restored Idle; RGB detection, 3D pose, and pointing estimates
+  published while perception was running.
+- A stale ROS TCP session after Play Mode reload temporarily left topic entries
+  visible without working bidirectional traffic. Restarting the local endpoint
+  restored message flow and command control. The Scene was not saved during
+  runtime regression.
+
+Phase 7 remains PARTIAL until depth maintains the configured 5 Hz rate while
+the perception pipeline is active. This is a throughput limitation; the
+previous known-plane metric-depth checks remain valid.
