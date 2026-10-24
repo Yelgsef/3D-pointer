@@ -2,7 +2,9 @@ import numpy as np
 import pytest
 
 from human_perception.rgbd_reconstruction import back_project, sample_depth
-from human_perception.pointing_geometry import angle_degrees, rank_candidates, transform_point
+from human_perception.pointing_geometry import (
+    angle_degrees, parse_candidates, rank_candidates, transform_point,
+)
 
 
 def test_center_pixel_reconstructs_on_optical_axis():
@@ -52,3 +54,13 @@ def test_quaternion_transform_rotates_and_translates_point():
 
 def test_opposite_ray_is_180_degrees():
     assert angle_degrees((1.0, 0.0, 0.0), (-1.0, 0.0, 0.0)) == pytest.approx(180.0)
+
+
+def test_candidate_registry_parses_stable_ids_and_xyz():
+    registry = parse_candidates('{"A":[1,2,3],"B":[4,5,6]}')
+    assert registry == {"A": (1.0, 2.0, 3.0), "B": (4.0, 5.0, 6.0)}
+
+
+def test_candidate_registry_rejects_incomplete_map():
+    with pytest.raises(ValueError):
+        parse_candidates('{"A":[1,2,3]}')

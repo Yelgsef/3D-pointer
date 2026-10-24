@@ -6,13 +6,16 @@ import json
 import rclpy
 from geometry_msgs.msg import Point, Vector3
 from human_perception_msgs.msg import HumanPose3D, PointingEstimate
+from rcl_interfaces.msg import SetParametersResult
 from rclpy.duration import Duration
 from rclpy.node import Node
 from rclpy.time import Time
 from tf2_ros import Buffer, TransformException, TransformListener
 from visualization_msgs.msg import Marker, MarkerArray
 
-from human_perception.pointing_geometry import normalize, rank_candidates, transform_point
+from human_perception.pointing_geometry import (
+    normalize, parse_candidates, rank_candidates, transform_point,
+)
 
 
 class PointingEstimator(Node):
@@ -27,7 +30,7 @@ class PointingEstimator(Node):
         self.declare_parameter("maximum_angle_deg", 45.0)
 
         self.map_frame = self.get_parameter("map_frame").value
-        self.candidates = json.loads(self.get_parameter("candidate_map_json").value)
+        self.candidates = parse_candidates(self.get_parameter("candidate_map_json").value)
         self.minimum_margin = float(self.get_parameter("minimum_margin_deg").value)
         self.maximum_angle = float(self.get_parameter("maximum_angle_deg").value)
         self.publisher = self.create_publisher(
@@ -41,6 +44,17 @@ class PointingEstimator(Node):
         self.subscription = self.create_subscription(
             HumanPose3D, self.get_parameter("input_topic").value, self.on_pose, 10
         )
+        self.add_on_set_parameters_callback(self.on_parameters)
+
+    def on_parameters(self, parameters):
+        for parameter in parameters:
+            if parameter.name != "candidate_map_json":
+                continue
+            try:
+                self.candidates = parse_candidates(parameter.value)
+            except (TypeError, ValueError, json.JSONDecodeError) as error:
+                return SetParametersResult(successful=False, reason=str(error))
+        return SetParametersResult(successful=True)
 
     def on_pose(self, pose):
         result = PointingEstimate()

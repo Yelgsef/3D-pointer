@@ -1,0 +1,385 @@
+trial_id,trial_config_json,stamp_sec,stamp_nanosec,actual_target_id,actual_arm,human_visible,detected,predicted_arm,ranked_ids,angular_errors_deg,top1_correct,top2_correct,abstained,selected_target_id,latency_ms
+F8_F9_initial,{},1792832393,906070000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84712982177734, 78.60272979736328]",False,False,True,,93.9
+F8_F9_initial,{},1792832394,109975000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84722137451172, 78.60282897949219]",False,False,True,,75.7
+F8_F9_initial,{},1792832394,314225000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84727478027344, 78.6029281616211]",False,False,True,,97.16
+F8_F9_initial,{},1792832394,517422000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84733581542969, 78.60311889648438]",False,False,True,,74.18
+F8_F9_initial,{},1792832394,723864000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84739685058594, 78.60326385498047]",False,False,True,,101.06
+F8_F9_initial,{},1792832394,927032000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.8474349975586, 78.60337829589844]",False,False,True,,103.82
+F8_F9_initial,{},1792832395,132281000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84746551513672, 78.60362243652344]",False,False,True,,89.54
+F8_F9_initial,{},1792832395,335714000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84748077392578, 78.60386657714844]",False,False,True,,73.14
+F8_F9_initial,{},1792832395,541243000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84751892089844, 78.6041030883789]",False,False,True,,89.26
+F8_F9_initial,{},1792832395,747481000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.8475341796875, 78.6043701171875]",False,False,True,,76.47
+F8_F9_initial,{},1792832395,951139000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84757232666016, 78.60447692871094]",False,False,True,,90.82
+F8_F9_initial,{},1792832396,166416000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84761047363281, 78.60457611083984]",False,False,True,,89.9
+F8_F9_initial,{},1792832396,372526000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84766387939453, 78.60470581054688]",False,False,True,,71.47
+F8_F9_initial,{},1792832396,576176000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84770965576172, 78.60487365722656]",False,False,True,,69.0
+F8_F9_initial,{},1792832396,781876000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84774780273438, 78.60499572753906]",False,False,True,,91.93
+F8_F9_initial,{},1792832396,985989000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84779357910156, 78.60509490966797]",False,False,True,,87.68
+F8_F9_initial,{},1792832397,189103000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84783935546875, 78.60518646240234]",False,False,True,,99.13
+F8_F9_initial,{},1792832397,395166000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84788513183594, 78.60527801513672]",False,False,True,,98.06
+F8_F9_initial,{},1792832397,599594000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84796905517578, 78.60533905029297]",False,False,True,,91.87
+F8_F9_initial,{},1792832397,805807000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84800720214844, 78.60538482666016]",False,False,True,,92.24
+F8_F9_initial,{},1792832398,9371000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.8480453491211, 78.60545349121094]",False,False,True,,82.56
+F8_F9_initial,{},1792832398,219736000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84809875488281, 78.60572052001953]",False,False,True,,87.83
+F8_F9_initial,{},1792832398,428141000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.8481674194336, 78.60602569580078]",False,False,True,,90.92
+F8_F9_initial,{},1792832398,631402000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84815216064453, 78.60636901855469]",False,False,True,,88.34
+F8_F9_initial,{},1792832398,839722000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84813690185547, 78.60682678222656]",False,False,True,,79.32
+F8_F9_initial,{},1792832399,48749000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84808349609375, 78.60735321044922]",False,False,True,,96.25
+F8_F9_initial,{},1792832399,251552000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84806060791016, 78.60765075683594]",False,False,True,,89.71
+F8_F9_initial,{},1792832399,454560000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84806823730469, 78.60787963867188]",False,False,True,,91.24
+F8_F9_initial,{},1792832399,661784000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84806060791016, 78.60820007324219]",False,False,True,,76.16
+F8_F9_initial,{},1792832399,869425000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84809112548828, 78.60844421386719]",False,False,True,,104.88
+F8_F9_initial,{},1792832400,76243000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84808349609375, 78.60869598388672]",False,False,True,,98.07
+F8_F9_initial,{},1792832400,279414000,,none,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.84809112548828, 78.6089096069336]",False,False,True,,85.75
+F8_F9_initial,{},1792832400,485069000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.79520416259766, 78.61752319335938]",False,True,True,,105.18
+F8_F9_initial,{},1792832400,699436000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.62513732910156, 78.70333099365234]",False,True,True,,100.04
+F8_F9_initial,{},1792832400,906217000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.15642547607422, 79.3096923828125]",False,True,True,,106.71
+F8_F9_initial,{},1792832401,109779000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.17008209228516, 79.41678619384766]",False,True,True,,96.29
+F8_F9_initial,{},1792832401,312534000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.29307556152344, 79.5759048461914]",False,True,True,,69.1
+F8_F9_initial,{},1792832401,516976000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.28424072265625, 79.58432006835938]",False,True,True,,77.99
+F8_F9_initial,{},1792832401,724302000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.45953369140625, 79.7246322631836]",False,True,True,,86.37
+F8_F9_initial,{},1792832401,928219000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.50090789794922, 79.74015045166016]",False,True,True,,86.58
+F8_F9_initial,{},1792832402,132945000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.54590606689453, 79.76022338867188]",False,True,True,,112.12
+F8_F9_initial,{},1792832402,335109000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.54891967773438, 79.74633026123047]",False,True,True,,79.83
+F8_F9_initial,{},1792832402,540559000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.55177307128906, 79.73576354980469]",False,True,True,,90.25
+F8_F9_initial,{},1792832402,747147000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.5543212890625, 79.72909545898438]",False,True,True,,98.21
+F8_F9_initial,{},1792832402,953334000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.59880065917969, 79.76708984375]",False,True,True,,100.49
+F8_F9_initial,{},1792832403,156310000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.60047149658203, 79.76469421386719]",False,True,True,,87.67
+F8_F9_initial,{},1792832403,360030000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.60152435302734, 79.76335906982422]",False,True,True,,116.87
+F8_F9_initial,{},1792832403,563951000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.60317993164062, 79.76136016845703]",False,True,True,,86.04
+F8_F9_initial,{},1792832403,770216000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.51615142822266, 79.7222671508789]",False,True,True,,100.26
+F8_F9_initial,{},1792832403,976168000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.44607543945312, 79.68135070800781]",False,True,True,,80.69
+F8_F9_initial,{},1792832404,181328000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.40617370605469, 79.6536636352539]",False,True,True,,106.06
+F8_F9_initial,{},1792832404,386946000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.3388442993164, 79.59487915039062]",False,True,True,,101.53
+F8_F9_initial,{},1792832404,589630000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.30400085449219, 79.54216766357422]",False,True,True,,120.19
+F8_F9_initial,{},1792832404,795429000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.3108901977539, 79.53427124023438]",False,True,True,,91.44
+F8_F9_initial,{},1792832405,1166000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.24946594238281, 79.46102142333984]",False,True,True,,85.8
+F8_F9_initial,{},1792832405,206523000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.18620300292969, 79.39300537109375]",False,True,True,,96.21
+F8_F9_initial,{},1792832405,412457000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.14860534667969, 79.35079956054688]",False,True,True,,101.88
+F8_F9_initial,{},1792832405,620628000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.15107727050781, 79.35173034667969]",False,True,True,,68.28
+F8_initial,{},1792832405,829149000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.15312194824219, 79.35260772705078]",False,True,True,,84.57
+F8_initial,{},1792832406,35873000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.15450286865234, 79.35368347167969]",False,True,True,,98.89
+F8_initial,{},1792832406,239502000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.08838653564453, 79.2877426147461]",False,True,True,,101.83
+F8_initial,{},1792832406,443653000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.08946228027344, 79.2880630493164]",False,True,True,,98.37
+F8_initial,{},1792832406,645263000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.09058380126953, 79.28801727294922]",False,True,True,,97.23
+F8_initial,{},1792832406,854155000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.091552734375, 79.28801727294922]",False,True,True,,90.02
+F8_initial,{},1792832407,57944000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.09272766113281, 79.28765869140625]",False,True,True,,88.92
+F8_initial,{},1792832407,259848000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.09419250488281, 79.28671264648438]",False,True,True,,90.46
+F8_initial,{},1792832407,464045000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.09503936767578, 79.28693389892578]",False,True,True,,101.13
+F8_initial,{},1792832407,676598000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.09636688232422, 79.28688049316406]",False,True,True,,86.5
+F8_initial,{},1792832407,881028000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.09747314453125, 79.28654479980469]",False,True,True,,116.02
+F8_initial,{},1792832408,82887000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.09855651855469, 79.28661346435547]",False,True,True,,89.46
+F8_initial,{},1792832408,287795000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.09967803955078, 79.2867660522461]",False,True,True,,83.39
+F8_initial,{},1792832408,492239000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.1007080078125, 79.28685760498047]",False,True,True,,100.82
+F8_initial,{},1792832408,697848000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.10200500488281, 79.28675842285156]",False,True,True,,90.18
+F8_initial,{},1792832408,901532000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.10353088378906, 79.2862548828125]",False,True,True,,101.2
+F8_initial,{},1792832409,104698000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.10430908203125, 79.28636932373047]",False,True,True,,79.94
+F8_initial,{},1792832409,307860000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.10527801513672, 79.28567504882812]",False,True,True,,68.22
+F8_initial,{},1792832409,514151000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.10613250732422, 79.2850570678711]",False,True,True,,76.68
+F8_initial,{},1792832409,719606000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.10708618164062, 79.2841796875]",False,True,True,,86.5
+F9_initial,{},1792832409,925728000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.10780334472656, 79.283447265625]",False,True,True,,66.03
+F9_initial,{},1792832410,129158000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.1083755493164, 79.2825927734375]",False,True,True,,95.37
+F9_initial,{},1792832410,334031000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.10912322998047, 79.281982421875]",False,True,True,,93.07
+F9_initial,{},1792832410,537324000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.1098403930664, 79.2812728881836]",False,True,True,,93.85
+F9_initial,{},1792832410,743255000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.1104736328125, 79.28083038330078]",False,True,True,,107.04
+F9_initial,{},1792832410,949970000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.11138153076172, 79.28004455566406]",False,True,True,,79.01
+F9_initial,{},1792832411,153009000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.11183166503906, 79.27960205078125]",False,True,True,,90.36
+F9_initial,{},1792832411,356575000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.1122817993164, 79.27918243408203]",False,True,True,,97.39
+F9_initial,{},1792832411,561272000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.11273956298828, 79.279052734375]",False,True,True,,75.99
+F9_initial,{},1792832411,767347000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.11328887939453, 79.27851867675781]",False,True,True,,84.87
+F9_initial,{},1792832411,977552000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.04736328125, 79.21156311035156]",False,True,True,,101.67
+F9_initial,{},1792832412,181196000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.04853057861328, 79.21039581298828]",False,True,True,,90.06
+F9_initial,{},1792832412,386511000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.04906463623047, 79.20976257324219]",False,True,True,,85.28
+F9_initial,{},1792832412,590752000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.0497817993164, 79.20915222167969]",False,True,True,,99.71
+F9_initial,{},1792832412,797280000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.05026245117188, 79.20834350585938]",False,True,True,,88.56
+F9_initial,{},1792832413,1499000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.05077362060547, 79.20756530761719]",False,True,True,,102.15
+F9_initial,{},1792832413,205766000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.0510482788086, 79.20701599121094]",False,True,True,,97.97
+F9_initial,{},1792832413,409830000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.0514144897461, 79.2063980102539]",False,True,True,,77.89
+F9_initial,{},1792832413,614827000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.05183410644531, 79.20571899414062]",False,True,True,,98.32
+F9_initial,{},1792832413,820944000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.05228424072266, 79.2050552368164]",False,True,True,,87.33
+F9_initial,{},1792832414,24718000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[72.05261993408203, 79.2041244506836]",False,True,True,,76.51
+F9_initial,{},1792832414,228172000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.66265106201172, 78.82207489013672]",False,True,True,,84.07
+F9_initial,{},1792832414,432436000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.66294860839844, 78.82123565673828]",False,True,True,,116.2
+F9_initial,{},1792832414,634994000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.66322326660156, 78.81991577148438]",False,True,True,,88.49
+F9_initial,{},1792832414,842782000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.6634750366211, 78.81854248046875]",False,True,True,,76.82
+F9_initial,{},1792832415,46560000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.66363525390625, 78.81694793701172]",False,True,True,,75.4
+F9_initial,{},1792832415,249201000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.66393280029297, 78.81485748291016]",False,True,True,,99.74
+F9_initial,{},1792832415,453345000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.66401672363281, 78.81326293945312]",False,True,True,,103.0
+F9_initial,{},1792832415,655669000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[71.66413879394531, 78.8117904663086]",False,True,True,,94.66
+F9_initial,{},1792832415,864845000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[96.24283599853516, 97.8382797241211]",False,True,True,,115.25
+F9_initial,{},1792832416,69407000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[4.731112957000732, 14.016711235046387]",False,True,False,TargetObjectA,94.99
+F9_initial,{},1792832416,275214000,TargetObjectB,right,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[102.2490234375, 111.57237243652344]",True,True,True,,81.64
+F9_initial,{},1792832416,478769000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.25717163085938, 79.39408111572266]",False,True,True,,78.76
+F9_initial,{},1792832416,685665000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.71378326416016, 80.06092071533203]",False,True,True,,81.84
+F9_initial,{},1792832416,888922000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.69473266601562, 80.13690185546875]",False,True,True,,64.79
+F9_initial,{},1792832417,92668000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.71074676513672, 80.21307373046875]",False,True,True,,92.36
+F9_initial,{},1792832417,295045000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.71247863769531, 80.22247314453125]",False,True,True,,71.4
+F9_initial,{},1792832417,497806000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.60685729980469, 80.12458801269531]",False,True,True,,75.45
+F9_initial,{},1792832417,704901000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.5435562133789, 80.06646728515625]",False,True,True,,78.32
+F9_initial,{},1792832417,907986000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.54521942138672, 80.06623077392578]",False,True,True,,80.94
+F9_initial,{},1792832418,111955000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.54645538330078, 80.06695556640625]",False,True,True,,91.3
+F9_initial,{},1792832418,316792000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.54936218261719, 80.06840515136719]",False,True,True,,98.81
+F9_initial,{},1792832418,522615000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.55164337158203, 80.06763458251953]",False,True,True,,94.49
+F9_initial,{},1792832418,725689000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.55393981933594, 80.06167602539062]",False,True,True,,94.33
+F9_initial,{},1792832418,930672000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.42622375488281, 79.91960906982422]",False,True,True,,92.81
+F9_initial,{},1792832419,133827000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.43134307861328, 79.90614318847656]",False,True,True,,81.77
+F9_initial,{},1792832419,338344000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.43657684326172, 79.89454650878906]",False,True,True,,99.81
+F9_initial,{},1792832419,540899000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.44212341308594, 79.88217163085938]",False,True,True,,88.84
+F9_initial,{},1792832419,747196000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.36673736572266, 79.78730773925781]",False,True,True,,92.8
+F9_initial,{},1792832419,951115000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.4107894897461, 79.81639099121094]",False,True,True,,103.66
+F9_initial,{},1792832420,155816000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.41368103027344, 79.80834197998047]",False,True,True,,89.81
+F9_initial,{},1792832420,358629000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.41571044921875, 79.80067443847656]",False,True,True,,71.86
+F9_initial,{},1792832420,562775000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.4178466796875, 79.79365539550781]",False,True,True,,75.47
+F9_initial,{},1792832420,767091000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.37893676757812, 79.74811553955078]",False,True,True,,90.92
+F9_initial,{},1792832420,974054000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.38019561767578, 79.74286651611328]",False,True,True,,95.29
+F9_initial,{},1792832421,177051000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.38134002685547, 79.73853302001953]",False,True,True,,99.16
+F9_initial,{},1792832421,380098000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35587310791016, 79.7084732055664]",False,True,True,,88.66
+F9_initial,{},1792832421,583433000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35700225830078, 79.70413970947266]",False,True,True,,93.78
+F9_initial,{},1792832421,792317000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35762023925781, 79.7015609741211]",False,True,True,,109.81
+F9_initial,{},1792832421,996053000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35794067382812, 79.69999694824219]",False,True,True,,77.26
+F9_initial,{},1792832422,198735000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35843658447266, 79.69818878173828]",False,True,True,,78.67
+F9_initial,{},1792832422,401944000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35879516601562, 79.69683074951172]",False,True,True,,74.66
+F9_initial,{},1792832422,607757000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35903930664062, 79.69590759277344]",False,True,True,,69.67
+F9_initial,{},1792832422,816168000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35920715332031, 79.69454193115234]",False,True,True,,79.3
+F9_initial,{},1792832423,20203000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35954284667969, 79.69270324707031]",False,True,True,,86.69
+F9_initial,{},1792832423,223897000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35968780517578, 79.69136810302734]",False,True,True,,86.5
+F9_initial,{},1792832423,428039000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.35979461669922, 79.6902084350586]",False,True,True,,96.3
+F9_initial,{},1792832423,630817000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3598861694336, 79.68914794921875]",False,True,True,,76.87
+F9_initial,{},1792832423,837196000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.36002349853516, 79.68775177001953]",False,True,True,,78.67
+F9_initial,{},1792832424,41352000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.36100769042969, 79.68568420410156]",False,True,True,,88.56
+F9_initial,{},1792832424,252863000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.36195373535156, 79.68347930908203]",False,True,True,,92.35
+F9_initial,{},1792832424,457194000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.36285400390625, 79.68133544921875]",False,True,True,,90.64
+F9_initial,{},1792832424,659650000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.36366271972656, 79.67918395996094]",False,True,True,,88.99
+F9_initial,{},1792832424,868725000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3387680053711, 79.65312194824219]",False,True,True,,81.11
+F9_initial,{},1792832425,73151000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3392562866211, 79.6517105102539]",False,True,True,,76.5
+F9_initial,{},1792832425,277198000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3394775390625, 79.65068817138672]",False,True,True,,106.73
+F9_initial,{},1792832425,484697000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33961486816406, 79.64984130859375]",False,True,True,,87.18
+F9_initial,{},1792832425,689853000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3397216796875, 79.64891815185547]",False,True,True,,73.69
+F9_initial,{},1792832425,894941000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33985137939453, 79.64743041992188]",False,True,True,,70.89
+F9_initial,{},1792832426,101010000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3400650024414, 79.64588165283203]",False,True,True,,79.2
+F9_initial,{},1792832426,305452000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.34021759033203, 79.6446762084961]",False,True,True,,106.27
+F2_out_of_view,{},1792832426,510183000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3403091430664, 79.64351654052734]",False,True,True,,87.09
+F2_out_of_view,{},1792832426,717562000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3401870727539, 79.64309692382812]",False,True,True,,108.76
+F2_out_of_view,{},1792832426,923051000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.34017944335938, 79.64209747314453]",False,True,True,,107.65
+F2_out_of_view,{},1792832427,126544000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.34019470214844, 79.64112854003906]",False,True,True,,97.55
+F2_out_of_view,{},1792832427,340769000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.34007263183594, 79.64055633544922]",False,True,True,,104.56
+F2_out_of_view,{},1792832427,544828000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.34007263183594, 79.63948059082031]",False,True,True,,98.78
+F2_out_of_view,{},1792832427,751113000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33995056152344, 79.63902282714844]",False,True,True,,83.0
+F2_out_of_view,{},1792832427,955018000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33992767333984, 79.63839721679688]",False,True,True,,98.48
+F2_out_of_view,{},1792832428,165880000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33977508544922, 79.6379623413086]",False,True,True,,84.41
+F2_out_of_view,{},1792832428,369891000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33964538574219, 79.63749694824219]",False,True,True,,101.09
+F2_out_of_view,{},1792832428,573234000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3394775390625, 79.63713073730469]",False,True,True,,81.57
+F2_out_of_view,{},1792832428,779542000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33936309814453, 79.63666534423828]",False,True,True,,92.58
+F2_out_of_view,{},1792832428,983867000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3392562866211, 79.63633728027344]",False,True,True,,99.52
+F2_out_of_view,{},1792832429,187269000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.3392105102539, 79.63569641113281]",False,True,True,,98.25
+F2_out_of_view,{},1792832429,391086000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33914947509766, 79.63526916503906]",False,True,True,,111.68
+F2_out_of_view,{},1792832429,595605000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33912658691406, 79.63478088378906]",False,True,True,,78.64
+F2_out_of_view,{},1792832429,802033000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33909606933594, 79.63409423828125]",False,True,True,,91.2
+F2_out_of_view,{},1792832430,5902000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33895874023438, 79.6336898803711]",False,True,True,,76.99
+F2_out_of_view,{},1792832430,208822000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33881378173828, 79.63339233398438]",False,True,True,,93.07
+F2_out_of_view,{},1792832430,412622000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33869171142578, 79.63291931152344]",False,True,True,,94.66
+F2_out_of_view,{},1792832430,621417000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33853149414062, 79.6325454711914]",False,True,True,,85.75
+F2_out_of_view,{},1792832430,826171000,TargetObjectB,right,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[72.33846282958984, 79.6321792602539]",False,True,True,,75.1
+F2_out_of_view,{},1792832431,41400000,TargetObjectA,left,False,False,,[],[],False,False,True,,75.61
+F2_out_of_view,{},1792832431,243928000,TargetObjectA,left,False,False,,[],[],False,False,True,,86.8
+F2_out_of_view,{},1792832431,450212000,TargetObjectA,left,False,False,,[],[],False,False,True,,70.98
+F2_out_of_view,{},1792832431,651581000,TargetObjectA,left,False,False,,[],[],False,False,True,,92.9
+F2_out_of_view,{},1792832431,861682000,TargetObjectA,left,False,False,,[],[],False,False,True,,79.92
+F2_out_of_view,{},1792832432,62262000,TargetObjectA,left,False,False,,[],[],False,False,True,,70.92
+F2_out_of_view,{},1792832432,265411000,TargetObjectA,left,False,False,,[],[],False,False,True,,76.87
+F2_out_of_view,{},1792832432,465834000,TargetObjectA,left,False,False,,[],[],False,False,True,,92.08
+F2_out_of_view,{},1792832432,671328000,TargetObjectA,left,False,False,,[],[],False,False,True,,83.9
+F2_out_of_view,{},1792832432,875522000,TargetObjectA,left,False,False,,[],[],False,False,True,,82.37
+F2_out_of_view,{},1792832433,78127000,TargetObjectA,left,False,False,,[],[],False,False,True,,80.14
+F2_out_of_view,{},1792832433,281037000,TargetObjectA,left,False,False,,[],[],False,False,True,,64.8
+F2_out_of_view,{},1792832433,483888000,TargetObjectA,left,False,False,,[],[],False,False,True,,82.94
+F2_out_of_view,{},1792832433,688186000,TargetObjectA,left,False,False,,[],[],False,False,True,,99.86
+F2_out_of_view,{},1792832433,893595000,TargetObjectA,left,False,False,,[],[],False,False,True,,75.62
+F2_out_of_view,{},1792832434,96700000,TargetObjectA,left,False,False,,[],[],False,False,True,,72.33
+F2_out_of_view,{},1792832434,299407000,TargetObjectA,left,False,False,,[],[],False,False,True,,72.84
+F2_out_of_view,{},1792832434,503678000,TargetObjectA,left,False,False,,[],[],False,False,True,,83.88
+F2_out_of_view,{},1792832434,708860000,TargetObjectA,left,False,False,,[],[],False,False,True,,84.55
+F2_out_of_view,{},1792832434,909914000,TargetObjectA,left,False,False,,[],[],False,False,True,,80.39
+F2_out_of_view,{},1792832435,122845000,TargetObjectA,left,False,False,,[],[],False,False,True,,67.2
+F2_out_of_view,{},1792832435,324052000,TargetObjectA,left,False,False,,[],[],False,False,True,,67.09
+F2_out_of_view,{},1792832435,528428000,TargetObjectA,left,False,False,,[],[],False,False,True,,83.21
+F2_out_of_view,{},1792832435,744857000,TargetObjectA,left,False,False,,[],[],False,False,True,,89.66
+F2_out_of_view,{},1792832435,951373000,TargetObjectA,left,False,False,,[],[],False,False,True,,77.66
+F2_out_of_view,{},1792832436,157718000,TargetObjectA,left,False,False,,[],[],False,False,True,,82.13
+F2_out_of_view,{},1792832436,364062000,TargetObjectA,left,False,False,,[],[],False,False,True,,97.71
+F2_out_of_view,{},1792832436,564602000,TargetObjectA,left,False,False,,[],[],False,False,True,,80.12
+F2_out_of_view,{},1792832436,770297000,TargetObjectA,left,False,False,,[],[],False,False,True,,110.72
+F2_out_of_view,{},1792832436,973271000,TargetObjectA,left,False,False,,[],[],False,False,True,,73.76
+F2_out_of_view,{},1792832437,178544000,TargetObjectA,left,False,False,,[],[],False,False,True,,85.65
+F2_out_of_view,{},1792832437,382033000,TargetObjectA,left,False,False,,[],[],False,False,True,,79.81
+F2_out_of_view,{},1792832437,584652000,TargetObjectA,left,False,False,,[],[],False,False,True,,80.85
+F2_out_of_view,{},1792832437,790807000,TargetObjectA,left,False,False,,[],[],False,False,True,,78.55
+F2_out_of_view,{},1792832437,993031000,TargetObjectA,left,False,False,,[],[],False,False,True,,81.59
+F2_out_of_view,{},1792832438,196387000,TargetObjectA,left,False,False,,[],[],False,False,True,,64.0
+F2_out_of_view,{},1792832438,404529000,TargetObjectA,left,False,False,,[],[],False,False,True,,66.6
+F2_out_of_view,{},1792832438,616695000,TargetObjectA,left,False,False,,[],[],False,False,True,,62.74
+F2_out_of_view,{},1792832438,826654000,TargetObjectA,left,False,False,,[],[],False,False,True,,65.15
+F2_out_of_view,{},1792832439,32565000,TargetObjectA,left,False,False,,[],[],False,False,True,,103.32
+F2_out_of_view,{},1792832439,237450000,TargetObjectA,left,False,False,,[],[],False,False,True,,93.76
+F2_out_of_view,{},1792832439,451910000,TargetObjectA,left,False,False,,[],[],False,False,True,,89.58
+F2_out_of_view,{},1792832439,652373000,TargetObjectA,left,False,False,,[],[],False,False,True,,89.46
+F2_out_of_view,{},1792832439,860270000,TargetObjectA,left,False,False,,[],[],False,False,True,,90.9
+F2_out_of_view,{},1792832440,73910000,TargetObjectA,left,False,False,,[],[],False,False,True,,84.15
+F2_out_of_view,{},1792832440,280363000,TargetObjectA,left,False,False,,[],[],False,False,True,,81.98
+F2_out_of_view,{},1792832440,486946000,TargetObjectA,left,False,False,,[],[],False,False,True,,84.21
+F2_out_of_view,{},1792832440,698262000,TargetObjectA,left,False,False,,[],[],False,False,True,,74.01
+F2_out_of_view,{},1792832440,907480000,TargetObjectA,left,False,False,,[],[],False,False,True,,66.79
+F2_out_of_view,{},1792832441,127771000,TargetObjectA,left,False,False,,[],[],False,False,True,,92.25
+F2_out_of_view,{},1792832441,328524000,TargetObjectA,left,False,False,,[],[],False,False,True,,88.83
+F2_out_of_view,{},1792832441,531298000,TargetObjectA,left,False,False,,[],[],False,False,True,,73.87
+F2_out_of_view,{},1792832441,737682000,TargetObjectA,left,False,False,,[],[],False,False,True,,71.79
+F2_out_of_view,{},1792832441,943011000,TargetObjectA,left,False,False,,[],[],False,False,True,,77.49
+F2_out_of_view,{},1792832442,146148000,TargetObjectA,left,False,False,,[],[],False,False,True,,83.68
+F4_turned_toward_human,{},1792832442,362464000,TargetObjectA,left,False,False,,[],[],False,False,True,,75.26
+F4_turned_toward_human,{},1792832442,565623000,TargetObjectA,left,False,False,,[],[],False,False,True,,80.86
+F4_turned_toward_human,{},1792832442,774530000,TargetObjectA,left,False,False,,[],[],False,False,True,,73.42
+F4_turned_toward_human,{},1792832442,977830000,TargetObjectA,left,False,False,,[],[],False,False,True,,81.24
+F4_turned_toward_human,{},1792832443,179897000,TargetObjectA,left,False,False,,[],[],False,False,True,,110.82
+F4_turned_toward_human,{},1792832443,381854000,TargetObjectA,left,False,False,,[],[],False,False,True,,63.0
+F4_turned_toward_human,{},1792832443,584364000,TargetObjectA,left,False,False,,[],[],False,False,True,,75.01
+F4_turned_toward_human,{},1792832443,789209000,TargetObjectA,left,False,False,,[],[],False,False,True,,85.7
+F4_turned_toward_human,{},1792832443,991935000,TargetObjectA,left,False,False,,[],[],False,False,True,,85.07
+F4_turned_toward_human,{},1792832444,197916000,TargetObjectA,left,False,False,,[],[],False,False,True,,86.53
+F4_turned_toward_human,{},1792832444,408240000,TargetObjectA,left,False,False,,[],[],False,False,True,,79.46
+F4_turned_toward_human,{},1792832444,610611000,TargetObjectA,left,False,False,,[],[],False,False,True,,79.29
+F4_turned_toward_human,{},1792832444,817870000,TargetObjectA,left,False,False,,[],[],False,False,True,,93.5
+F4_turned_toward_human,{},1792832445,23492000,TargetObjectA,left,False,False,,[],[],False,False,True,,68.83
+F4_turned_toward_human,{},1792832445,226842000,TargetObjectA,left,False,False,,[],[],False,False,True,,83.43
+F4_turned_toward_human,{},1792832445,428396000,TargetObjectA,left,False,False,,[],[],False,False,True,,91.64
+F4_turned_toward_human,{},1792832445,636514000,TargetObjectA,left,False,False,,[],[],False,False,True,,94.03
+F4_turned_toward_human,{},1792832445,843142000,TargetObjectA,left,False,False,,[],[],False,False,True,,83.28
+F4_turned_toward_human,{},1792832446,51803000,TargetObjectA,left,False,False,,[],[],False,False,True,,88.48
+F4_turned_toward_human,{},1792832446,261382000,TargetObjectA,left,False,False,,[],[],False,False,True,,86.29
+F4_turned_toward_human,{},1792832446,479303000,TargetObjectA,left,False,False,,[],[],False,False,True,,76.74
+F4_turned_toward_human,{},1792832446,687523000,TargetObjectA,left,False,False,,[],[],False,False,True,,87.7
+F4_turned_toward_human,{},1792832446,894583000,TargetObjectA,left,False,False,,[],[],False,False,True,,144.11
+F4_turned_toward_human,{},1792832447,95375000,TargetObjectA,left,False,False,,[],[],False,False,True,,95.12
+F4_turned_toward_human,{},1792832447,300215000,TargetObjectA,left,False,False,,[],[],False,False,True,,121.87
+F4_turned_toward_human,{},1792832447,516862000,TargetObjectA,left,False,False,,[],[],False,False,True,,95.27
+F4_turned_toward_human,{},1792832447,720044000,TargetObjectA,left,False,False,,[],[],False,False,True,,83.98
+F4_turned_toward_human,{},1792832447,937896000,TargetObjectA,left,False,False,,[],[],False,False,True,,105.05
+F4_turned_toward_human,{},1792832448,150849000,TargetObjectA,left,False,False,,[],[],False,False,True,,79.66
+F4_turned_toward_human,{},1792832448,362157000,TargetObjectA,left,False,False,,[],[],False,False,True,,84.57
+F4_turned_toward_human,{},1792832448,579473000,TargetObjectA,left,False,False,,[],[],False,False,True,,79.1
+F4_turned_toward_human,{},1792832448,793783000,TargetObjectA,left,False,False,,[],[],False,False,True,,74.23
+F4_turned_toward_human,{},1792832449,62898000,TargetObjectA,left,True,False,,[],[],False,False,True,,76.25
+F4_turned_toward_human,{},1792832449,273331000,TargetObjectA,left,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[45.14286804199219, 47.60072708129883]",True,True,True,,127.59
+F4_turned_toward_human,{},1792832449,479214000,TargetObjectA,left,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[47.572811126708984, 52.849151611328125]",True,True,True,,90.68
+F4_turned_toward_human,{},1792832449,700375000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.80101776123047, 109.46643829345703]",True,True,True,,92.99
+F4_turned_toward_human,{},1792832449,913043000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.90520477294922, 109.5790023803711]",True,True,True,,97.12
+F4_turned_toward_human,{},1792832450,141125000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.89147186279297, 109.56744384765625]",True,True,True,,111.14
+F4_turned_toward_human,{},1792832450,344889000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.87554931640625, 109.5541000366211]",True,True,True,,88.98
+F4_turned_toward_human,{},1792832450,557857000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.97298431396484, 109.66401672363281]",True,True,True,,71.0
+F4_turned_toward_human,{},1792832450,773365000,TargetObjectA,left,True,True,right,"[""TargetObjectA"", ""TargetObjectB""]","[46.287803649902344, 47.52753829956055]",True,True,True,,92.29
+F4_turned_toward_human,{},1792832450,985906000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.92733764648438, 109.62509155273438]",True,True,True,,83.56
+F4_turned_toward_human,{},1792832451,192615000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.91360473632812, 109.61336517333984]",True,True,True,,88.9
+F4_turned_toward_human,{},1792832451,414252000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.88848876953125, 109.58837890625]",True,True,True,,116.47
+F4_turned_toward_human,{},1792832451,622959000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.87272644042969, 109.5765380859375]",True,True,True,,93.14
+F4_turned_toward_human,{},1792832451,830377000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.97134399414062, 109.73833465576172]",True,True,True,,106.77
+F4_turned_toward_human,{},1792832452,47140000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[109.11028289794922, 109.9698715209961]",True,True,True,,108.41
+F4_turned_toward_human,{},1792832452,264685000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.99589538574219, 109.83733367919922]",True,True,True,,115.43
+F4_turned_toward_human,{},1792832452,488931000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.39604949951172, 109.30996704101562]",True,True,True,,95.19
+F4_turned_toward_human,{},1792832452,699659000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[95.84712219238281, 97.12923431396484]",False,True,True,,80.82
+F4_turned_toward_human,{},1792832452,908148000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[87.7074966430664, 88.15483856201172]",False,True,True,,82.39
+F4_turned_toward_human,{},1792832453,117945000,TargetObjectA,left,True,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[89.47172546386719, 89.90067291259766]",False,True,True,,103.05
+F4_turned_toward_human,{},1792832453,331511000,TargetObjectA,left,True,True,,[],[],False,False,True,,85.47
+F4_turned_toward_human,{},1792832453,538680000,TargetObjectA,left,True,True,,[],[],False,False,True,,86.01
+F4_turned_toward_human,{},1792832453,754848000,TargetObjectA,left,True,True,right,"[""TargetObjectB"", ""TargetObjectA""]","[90.10246276855469, 90.71173858642578]",False,True,True,,97.21
+F4_turned_toward_human,{},1792832453,960691000,TargetObjectA,left,True,True,,[],[],False,False,True,,125.47
+F4_turned_toward_human,{},1792832454,168107000,TargetObjectA,left,True,True,,[],[],False,False,True,,99.85
+F4_turned_toward_human,{},1792832454,370806000,TargetObjectA,left,True,True,,[],[],False,False,True,,110.64
+F4_turned_toward_human,{},1792832454,581323000,TargetObjectA,left,True,True,,[],[],False,False,True,,104.77
+F4_turned_toward_human,{},1792832454,794735000,TargetObjectA,left,True,True,,[],[],False,False,True,,92.49
+F4_turned_toward_human,{},1792832455,12918000,TargetObjectA,left,True,True,,[],[],False,False,True,,125.52
+F4_turned_toward_human,{},1792832455,228263000,TargetObjectA,left,True,True,,[],[],False,False,True,,74.71
+F4_turned_toward_human,{},1792832455,446132000,TargetObjectA,left,True,True,,[],[],False,False,True,,89.31
+F4_turned_toward_human,{},1792832455,660705000,TargetObjectA,left,True,True,,[],[],False,False,True,,97.83
+F4_turned_toward_human,{},1792832455,876174000,TargetObjectA,left,True,True,,[],[],False,False,True,,81.41
+F4_turned_toward_human,{},1792832456,76981000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.27869415283203, 109.00269317626953]",True,True,True,,96.54
+F4_turned_toward_human,{},1792832456,287892000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.29512786865234, 109.01731872558594]",True,True,True,,77.27
+F4_turned_toward_human,{},1792832456,491953000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.30181884765625, 109.02271270751953]",True,True,True,,93.25
+F4_turned_toward_human,{},1792832456,714043000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.30159759521484, 109.02217864990234]",True,True,True,,88.98
+F4_turned_toward_human,{},1792832456,919960000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.29824829101562, 109.0185775756836]",True,True,True,,96.27
+F4_turned_toward_human,{},1792832457,139319000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.29600524902344, 109.01592254638672]",True,True,True,,114.26
+F4_turned_toward_human,{},1792832457,340336000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.26522064208984, 108.98714447021484]",True,True,True,,76.77
+F4_turned_toward_human,{},1792832457,550212000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.27713012695312, 108.99829864501953]",True,True,True,,85.35
+F4_turned_toward_human,{},1792832457,761851000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.26152801513672, 108.98402404785156]",True,True,True,,112.68
+F4_turned_toward_human,{},1792832457,972911000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.24809265136719, 108.9712905883789]",True,True,True,,100.68
+F4_turned_toward_human,{},1792832458,194057000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.23529052734375, 108.9588851928711]",True,True,True,,92.99
+F4_turned_toward_human,{},1792832458,419267000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.2403793334961, 108.96287536621094]",True,True,True,,88.75
+F4_turned_toward_human,{},1792832458,620582000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.24203491210938, 108.9636001586914]",True,True,True,,78.38
+F4_turned_toward_human,{},1792832458,834418000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.24530029296875, 108.96607971191406]",True,True,True,,81.94
+F4_turned_toward_human,{},1792832459,52828000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.24530792236328, 108.96554565429688]",True,True,True,,70.77
+F5_occluded,{},1792832459,273333000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.24323272705078, 108.96332550048828]",True,True,True,,80.57
+F5_occluded,{},1792832459,478105000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.22718048095703, 108.94773864746094]",True,True,True,,63.94
+F5_occluded,{},1792832459,680666000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.16255950927734, 108.86640167236328]",True,True,True,,76.83
+F5_occluded,{},1792832459,883174000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.16258239746094, 108.86624908447266]",True,True,True,,98.28
+F5_occluded,{},1792832460,101503000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.1208724975586, 108.80826568603516]",True,True,True,,84.0
+F5_occluded,{},1792832460,319154000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.12621307373047, 108.8268814086914]",True,True,True,,99.63
+F5_occluded,{},1792832460,538114000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.13044738769531, 108.83099365234375]",True,True,True,,85.65
+F5_occluded,{},1792832460,744626000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.10482025146484, 108.78963470458984]",True,True,True,,76.1
+F5_occluded,{},1792832460,964227000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.09270477294922, 108.77593231201172]",True,True,True,,93.01
+F5_occluded,{},1792832461,165035000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.08500671386719, 108.7671890258789]",True,True,True,,106.99
+F5_occluded,{},1792832461,369521000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.07435607910156, 108.75601196289062]",True,True,True,,76.78
+F5_occluded,{},1792832461,588276000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.06519317626953, 108.75951385498047]",True,True,True,,111.1
+F5_occluded,{},1792832461,791484000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.0619888305664, 108.75581359863281]",True,True,True,,92.31
+F5_occluded,{},1792832461,997808000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.05181884765625, 108.74542236328125]",True,True,True,,90.37
+F5_occluded,{},1792832462,207212000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.03874969482422, 108.73249816894531]",True,True,True,,89.88
+F5_occluded,{},1792832462,411592000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.0281982421875, 108.72189331054688]",True,True,True,,97.09
+F5_occluded,{},1792832462,613704000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.02193450927734, 108.7153091430664]",True,True,True,,76.43
+F5_occluded,{},1792832462,833396000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[108.01065826416016, 108.70401763916016]",True,True,True,,85.38
+F5_occluded,{},1792832463,36746000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.99970245361328, 108.69292449951172]",True,True,True,,75.69
+F5_occluded,{},1792832463,253983000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.97945404052734, 108.673095703125]",True,True,True,,95.33
+F5_occluded,{},1792832463,472971000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.96611022949219, 108.6600112915039]",True,True,True,,74.6
+F5_occluded,{},1792832463,679882000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.95429229736328, 108.64849853515625]",True,True,True,,101.58
+F5_occluded,{},1792832463,898397000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.94581604003906, 108.63114929199219]",True,True,True,,74.2
+F5_occluded,{},1792832464,117447000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.92302703857422, 108.60894775390625]",True,True,True,,77.82
+F5_occluded,{},1792832464,325144000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.91896057128906, 108.60466003417969]",True,True,True,,77.1
+F5_occluded,{},1792832464,541814000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.91555786132812, 108.60102081298828]",True,True,True,,115.68
+F5_occluded,{},1792832464,745242000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.90953826904297, 108.59452056884766]",True,True,True,,95.22
+F5_occluded,{},1792832464,949015000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.90821075439453, 108.59293365478516]",True,True,True,,74.0
+F5_occluded,{},1792832465,168273000,TargetObjectA,left,True,True,left,"[""TargetObjectA"", ""TargetObjectB""]","[107.90686798095703, 108.59127044677734]",True,True,True,,101.03
+F5_occluded,{},1792832465,397554000,TargetObjectA,left,False,True,left,"[""TargetObjectB"", ""TargetObjectA""]","[88.94974517822266, 95.44998168945312]",False,True,True,,68.39
+F5_occluded,{},1792832465,605408000,TargetObjectA,left,False,False,,[],[],False,False,True,,77.53
+F5_occluded,{},1792832465,809744000,TargetObjectA,left,False,False,,[],[],False,False,True,,78.39
+F5_occluded,{},1792832466,17348000,TargetObjectA,left,False,False,,[],[],False,False,True,,105.52
+F5_occluded,{},1792832466,233256000,TargetObjectA,left,False,False,,[],[],False,False,True,,90.47
+F5_occluded,{},1792832466,452289000,TargetObjectA,left,False,False,,[],[],False,False,True,,87.3
+F5_occluded,{},1792832466,655200000,TargetObjectA,left,False,False,,[],[],False,False,True,,94.9
+F5_occluded,{},1792832466,862622000,TargetObjectA,left,False,False,,[],[],False,False,True,,68.25
+F5_occluded,{},1792832467,63721000,TargetObjectA,left,False,False,,[],[],False,False,True,,71.63
+F5_occluded,{},1792832467,269114000,TargetObjectA,left,False,False,,[],[],False,False,True,,81.57
+F5_occluded,{},1792832467,468578000,TargetObjectA,left,False,False,,[],[],False,False,True,,75.48
+F5_occluded,{},1792832467,670705000,TargetObjectA,left,False,False,,[],[],False,False,True,,77.84
+F5_occluded,{},1792832467,893118000,TargetObjectA,left,False,False,,[],[],False,False,True,,82.46
+F5_occluded,{},1792832468,116838000,TargetObjectA,left,False,False,,[],[],False,False,True,,108.15
+F5_occluded,{},1792832468,342712000,TargetObjectA,left,False,False,,[],[],False,False,True,,67.22
+F5_occluded,{},1792832468,559295000,TargetObjectA,left,False,False,,[],[],False,False,True,,73.44
+F5_occluded,{},1792832468,783378000,TargetObjectA,left,False,False,,[],[],False,False,True,,74.09
+F5_occluded,{},1792832469,4709000,TargetObjectA,left,False,False,,[],[],False,False,True,,79.82
+F5_occluded,{},1792832469,204941000,TargetObjectA,left,False,False,,[],[],False,False,True,,90.96
+F5_occluded,{},1792832469,428969000,TargetObjectA,left,False,False,,[],[],False,False,True,,101.86
+F5_occluded,{},1792832469,631971000,TargetObjectA,left,False,False,,[],[],False,False,True,,101.36
+F5_occluded,{},1792832469,835487000,TargetObjectA,left,False,False,,[],[],False,False,True,,82.46
+F5_occluded,{},1792832470,36824000,TargetObjectA,left,False,False,,[],[],False,False,True,,89.18
+F5_occluded,{},1792832470,239966000,TargetObjectA,left,False,False,,[],[],False,False,True,,115.1
+F5_occluded,{},1792832470,444767000,TargetObjectA,left,False,False,,[],[],False,False,True,,104.38
+F5_occluded,{},1792832470,653000000,TargetObjectA,left,False,False,,[],[],False,False,True,,95.76
+F5_occluded,{},1792832470,869965000,TargetObjectA,left,False,False,,[],[],False,False,True,,105.41
+F5_occluded,{},1792832471,82134000,TargetObjectA,left,False,False,,[],[],False,False,True,,74.54
+F5_occluded,{},1792832471,294728000,TargetObjectA,left,False,False,,[],[],False,False,True,,71.55
+F5_occluded,{},1792832471,500768000,TargetObjectA,left,False,False,,[],[],False,False,True,,71.89
+F5_occluded,{},1792832471,715108000,TargetObjectA,left,False,False,,[],[],False,False,True,,75.42
+F5_occluded,{},1792832471,928928000,TargetObjectA,left,False,False,,[],[],False,False,True,,64.49
+F5_occluded,{},1792832472,133999000,TargetObjectA,left,False,False,,[],[],False,False,True,,74.72
+F5_occluded,{},1792832472,348475000,TargetObjectA,left,False,False,,[],[],False,False,True,,105.03
+F5_occluded,{},1792832472,554907000,TargetObjectA,left,False,False,,[],[],False,False,True,,70.99
+F5_occluded,{},1792832472,758504000,TargetObjectA,left,False,False,,[],[],False,False,True,,80.71
+F5_occluded,{},1792832472,959646000,TargetObjectA,left,False,False,,[],[],False,False,True,,89.61
+F5_occluded,{},1792832473,162681000,TargetObjectA,left,False,False,,[],[],False,False,True,,86.38
+F5_occluded,{},1792832473,385445000,TargetObjectA,left,False,False,,[],[],False,False,True,,70.26

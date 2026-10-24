@@ -172,6 +172,31 @@ See `docs/POINTING_EVALUATION.md`. The method is implemented, but target
 recognition is not demonstrated; Phase 6 must measure this failure across
 distinct scene configurations and report it honestly.
 
+### Instruction 4 Phase 6 — Controlled evaluation
+
+Status: **PARTIAL**. The pipeline was evaluated across target layouts, gesture
+arms, human distances/orientations, observer angles, and occlusion conditions.
+
+- Logged three evidence files with per-frame predictions, actual labels,
+  visibility, detection, candidate order/scores, abstention, and latency.
+  Rollups are in `docs/evidence/pointing-metrics.json`; repeated frames within
+  one unchanged setup are not treated as independent trials.
+- Default layout F8/A ranked A first on 2/113 frames and selected it correctly
+  twice; F9/B ranked B first on 0/55 ranked frames and selected nothing. A
+  second candidate layout yielded 3/116 top-1 A rankings for F8 and 0/43 for
+  F9; the estimator abstained on every frame in that layout. At 7 m, A ranked
+  first on all 109 F3 frames, but all abstained because of angular error.
+- In the out-of-view segment, 59 samples had no detection and no target
+  selection. After observer rotation, F4 recovered 44/44 visible detections.
+  Full-body occlusion produced 78 hidden samples with no false detections.
+  Arm-only occlusion left head visibility and human detection true while the
+  left wrist validity bit changed to false.
+- End-to-end latency averaged about 87–92 ms. Top-2 is uninformative with only
+  two candidates. Target ranking and selected-target success remain limited;
+  no perfect-accuracy claim is made.
+
+See `docs/POINTING_EVALUATION.md` for trial interpretation and limitations.
+
 This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
 ## Current verified state
