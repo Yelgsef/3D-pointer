@@ -1,0 +1,75 @@
+{
+  "unity_version": "6000.6.3f1",
+  "render_pipeline": "Built-in",
+  "resolution": [640, 360],
+  "encoding": "32FC1",
+  "units": "meters",
+  "frame_id": "robot_camera_optical_frame",
+  "invalid_value_m": 0.0,
+  "configured_publish_rate_hz": 5.0,
+  "observed_delivery_rate_hz": {
+    "rgb_hz_approx": 4.0,
+    "depth_hz_approx": 2.4,
+    "note": "short Unity Editor/ROS TCP windows varied during startup and after large paired image messages"
+  },
+  "sample_method": "median of center 9x9 pixels on a camera-facing temporary opaque plane",
+  "distance_trials": [
+    {
+      "reference_m": 2.0,
+      "measured_m": 2.00002,
+      "absolute_error_m": 0.00002,
+      "valid_pixels": 81
+    },
+    {
+      "reference_m": 4.0,
+      "measured_m": 4.0,
+      "absolute_error_m": 0.0,
+      "valid_pixels": 81
+    },
+    {
+      "reference_m": 6.0,
+      "measured_m": 5.99996,
+      "absolute_error_m": 0.00004,
+      "valid_pixels": 81
+    }
+  ],
+  "rgb_depth_alignment": {
+    "same_timestamp_and_frame_id": true,
+    "rgb_encoding": "rgb8",
+    "depth_encoding": "32FC1",
+    "sample_pixel_uv": [320, 180],
+    "rgb_pixel": [255, 42, 244],
+    "depth_m": 5.99996
+  },
+  "occlusion_trial": {
+    "far_surface_m": 6.0,
+    "near_surface_m": 3.0,
+    "measured_center_depth_m": 3.0
+  },
+  "rotation_trial": {
+    "camera_yaw_deg": 90.0,
+    "reference_m": 4.0,
+    "measured_m": 3.99994,
+    "absolute_error_m": 0.00006
+  },
+  "background_trial": {
+    "zero_valued_pixels": 20398,
+    "total_pixels": 230400
+  },
+  "scene_occlusion_trial": {
+    "scenario": "F5 obstacle occludes HumanTarget",
+    "center_region_median_depth_m": 1.98,
+    "human_surface_depth_m": 4.72
+  },
+  "depth_discontinuity_trial": {
+    "scanline_y": 180,
+    "samples": [
+      { "u": 220, "depth_m": 6.0 },
+      { "u": 230, "depth_m": 3.0 },
+      { "u": 410, "depth_m": 3.0 },
+      { "u": 420, "depth_m": 6.0 }
+    ],
+    "interpretation": "one-pixel sampling shows the near plane boundary without blending the far-plane depth"
+  },
+  "scale_assumption": "Unity scene units are treated as meters; no independent physical-scale calibration was performed."
+}

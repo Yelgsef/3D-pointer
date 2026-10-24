@@ -24,6 +24,36 @@ dependency for 3D work: no TF publisher exists. The next phase must validate a
 depth capture path against known distances before adding TF, ground truth, or
 3D inference dependencies.
 
+### Instruction 4 Phase 1 — Metric depth camera
+
+Status: **PASS** for simulated metric axial depth capture and message
+synchronization.
+
+- Extended the existing `RobotCameraPublisher`; no second camera or RGB
+  RenderTexture was added. The existing preview remains sourced from
+  `RobotEyeRT`.
+- Unity compilation completed with `failed=false`, `errors=[]`, and
+  `compilationFailed=false`. Runtime confirms `DepthTextureMode.Depth`, a
+  found linearization shader, and RFloat render-target support.
+- `/camera/depth/image_raw` publishes `sensor_msgs/msg/Image` with `32FC1`,
+  640 x 360, 2560-byte rows, meters along camera optical Z, zero invalid
+  pixels, and the same timestamps/frame IDs as RGB and CameraInfo.
+- Known-plane errors were 0.00002 m at 2 m, 0 m at 4 m, and 0.00004 m at 6 m.
+  A rotated-camera test measured 3.99994 m at 4 m. A magenta RGB plane paired
+  with 5.99996 m depth at the same pixel and timestamp. The existing F5
+  obstacle read about 1.98 m in front of the human at 4.72 m; a controlled
+  near/far plane edge switched directly between 3 m and 6 m.
+- A normal scene capture had 20,398 zero-valued pixels out of 230,400. Runtime
+  validation objects were removed and scenario transforms reset; the saved
+  scene remained clean.
+
+Limitations: Unity units are assumed to be meters and have not been calibrated
+against physical measurements. Although configured for 5 Hz, short observed
+delivery windows varied around 4.0 Hz RGB and 2.4 Hz depth; sustained rate
+needs further performance tuning. The camera depth pass does not include
+transparent or custom materials without a suitable depth pass. TF is still
+absent; this is addressed by Phase 2.
+
 This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
 ## Current verified state
