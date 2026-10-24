@@ -115,6 +115,38 @@ camera frustum and first raycast hit, not a pixel mask. Ground-truth messages
 are intentionally evaluation inputs only and must not be wired into the
 3D-pose or pointing estimator.
 
+### Instruction 4 Phase 4 — RGB-D 3D keypoints
+
+Status: **PASS** for synchronized metric optical-frame reconstruction and
+runtime output with per-landmark validity.
+
+- Added `HumanPose3D` and `human_pose_3d`. Approximate-time synchronization
+  joins predicted 2D pose, `32FC1` depth, and CameraInfo (100 ms slop); the
+  node checks image dimensions and depth/CameraInfo frame agreement.
+- A 3 x 3 median sampler ignores nonfinite/nonpositive samples and rejects
+  depth discontinuities above `max(0.08 m, 5% of median)`. It rejects low
+  visibility and out-of-image points and marks every rejected point invalid.
+  It publishes all 33 landmarks in `robot_camera_optical_frame`, preserving
+  the RGB acquisition stamp.
+- Built `human_perception_msgs` and `human_perception`; 10 reconstruction and
+  coordinate tests pass. Live node output ran at 4.9 Hz. A visible idle sample
+  had 31/33 valid landmarks (93.9%); head/torso/wrist optical Z was about
+  4.7–4.9 m. The two invalid points were foot indices outside usable depth.
+- A single static Unity comparison, transformed using measured TF, produced
+  approximately 0.03 m wrist offsets and 0.04 m elbow offsets after accounting
+  for reversed limb labels in the rear view; shoulder offsets were about
+  0.25 m. This is explicitly an illustrative one-frame comparison, not an
+  accuracy claim.
+- The node subscribes only to predicted 2D pose, depth, and CameraInfo; it
+  does not subscribe to simulation truth. Start/stop scripts now manage it
+  alongside the existing perception detector.
+- Evidence and method: `docs/3D_POSE_ESTIMATION.md` and the unit tests in
+  `human_perception/test/test_rgbd_reconstruction.py`.
+
+Limitation: the current wrist/shoulder errors are not yet measured across
+distances or partial occlusions, and eye/head reference correspondence remains
+approximate. Controlled repeated comparison is part of later evaluation.
+
 This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
 ## Current verified state

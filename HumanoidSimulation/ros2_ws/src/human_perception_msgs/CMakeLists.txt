@@ -10,6 +10,7 @@ find_package(std_msgs REQUIRED)
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/HumanDetection2D.msg"
   "msg/HumanPose2D.msg"
+  "msg/HumanPose3D.msg"
   DEPENDENCIES geometry_msgs sensor_msgs std_msgs
 )
 

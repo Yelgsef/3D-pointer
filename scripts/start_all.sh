@@ -6,6 +6,7 @@ WS_DIR="$ROOT_DIR/HumanoidSimulation/ros2_ws"
 STATE_DIR="$ROOT_DIR/HumanoidSimulation/Logs/start_all"
 ENDPOINT_PID_FILE="$STATE_DIR/endpoint.pid"
 PERCEPTION_PID_FILE="$STATE_DIR/perception.pid"
+POSE_3D_PID_FILE="$STATE_DIR/pose_3d.pid"
 TF_RELAY_PID_FILE="$STATE_DIR/tf_static_relay.pid"
 UNITY_PID_FILE="$STATE_DIR/unity.pid"
 NO_PERCEPTION=false
@@ -50,6 +51,18 @@ start_perception_node() {
     fi
 }
 
+start_pose_3d_node() {
+    mkdir -p "$STATE_DIR"
+    if pgrep -af '[h]uman_perception.human_pose_3d_node' >/dev/null; then
+        echo "3D human pose node is already running; leaving it untouched."
+    else
+        rm -f "$POSE_3D_PID_FILE"
+        setsid "$ROOT_DIR/scripts/start_human_pose_3d.sh" </dev/null >"$STATE_DIR/pose_3d.log" 2>&1 &
+        echo "$!" >"$POSE_3D_PID_FILE"
+        echo "Started 3D human pose node (PID $(<"$POSE_3D_PID_FILE"))."
+    fi
+}
+
 start_tf_static_relay() {
     mkdir -p "$STATE_DIR"
     if pgrep -af '[s]tatic_tf_relay' >/dev/null; then
@@ -63,12 +76,14 @@ start_tf_static_relay() {
 }
 
 if [[ "${1:-}" == "--stop" ]]; then
+    stop_owned_process "$POSE_3D_PID_FILE" "3D human pose" "human_perception.human_pose_3d_node"
     stop_owned_process "$PERCEPTION_PID_FILE" "human perception" "human_perception.pose_detector"
     stop_owned_process "$TF_RELAY_PID_FILE" "static TF relay" "static_tf_relay"
     stop_owned_process "$ENDPOINT_PID_FILE" "ROS TCP endpoint" "default_server_endpoint"
     stop_owned_process "$UNITY_PID_FILE" "Unity Editor" "-projectPath $ROOT_DIR/HumanoidSimulation"
     exit 0
 elif [[ "${1:-}" == "--stop-perception" ]]; then
+    stop_owned_process "$POSE_3D_PID_FILE" "3D human pose" "human_perception.human_pose_3d_node"
     stop_owned_process "$PERCEPTION_PID_FILE" "human perception" "human_perception.pose_detector"
     exit 0
 elif [[ "${1:-}" == "--start-perception" ]]; then
@@ -82,6 +97,7 @@ elif [[ "${1:-}" == "--start-perception" ]]; then
     source "$WS_DIR/install/setup.bash"
     set -u
     start_perception_node
+    start_pose_3d_node
     exit 0
 elif [[ "${1:-}" == "--no-perception" ]]; then
     NO_PERCEPTION=true
@@ -141,6 +157,7 @@ start_tf_static_relay
 
 if [[ "$NO_PERCEPTION" != true ]]; then
     start_perception_node
+    start_pose_3d_node
 else
     echo "Human perception is disabled for this startup."
 fi
