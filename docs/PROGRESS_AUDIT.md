@@ -13,7 +13,7 @@ audit.
 | --- | --- | --- |
 | Existing RGB and CameraInfo | PASS | Active scene has one `RobotCameraPublisher` on the existing `RobotEyeCamera`, using `RobotEyeRT` at 640 x 360 and 5 Hz. Play Mode published `/camera/image_raw` at about 4.7 Hz. CameraInfo was live with matching `robot_camera_optical_frame`, 640 x 360, and `fx=fy=577.9135`, `cx=320`, `cy=180`. |
 | Human rig and gesture source wiring | PASS | Live Unity hierarchy has `HumanTarget`, Animator, `HumanTargetGestureController`, 22-bone Armature, and one skinned mesh; scenario controls reference `TargetObjectA` and `TargetObjectB`. |
-| F8/F9 input bindings | PARTIAL | `activeInputHandler: 1` enables the new Input System, and `RobotObserverScenarioControls.Update` checks `Keyboard.current.f8Key` / `f9Key`. Unity MCP `simulate_key` returned success but did not change the runtime gesture from Idle, so actual key-to-action delivery is not verified through this Editor session. |
+| F8/F9 input bindings | PASS | With the Unity Game view focused by clicking its surface, actual F8/F9 key events sent through XTest changed the runtime gesture and independent simulation ground truth to left-pointing/TargetObjectA and right-pointing/TargetObjectB. Unity MCP `simulate_key` alone did not deliver these shortcuts. |
 | 2D pose schema and synchronization | PASS (code inspection) | `HumanPose2D` carries 33 named landmarks, pixel-space x/y, MediaPipe-relative z, confidences, and the source image header. MediaPipe indices used for shoulders/elbows/wrists are 11/12, 13/14, and 15/16. The pose is not metric 3D. |
 | Camera calibration and frame convention | PASS for intrinsics; PARTIAL for frames | Runtime FOV is 34.6 degrees vertical; the published pinhole intrinsics match the 640 x 360 square-pixel model. The image is labeled `robot_camera_optical_frame`, but the live `/tf` graph has zero publishers, so the frame is not connected to `base_link` or `map`. |
 | Depth capture and render pipeline | BLOCKED before implementation | Unity reports `depthTextureMode=None`; the project uses Built-in Render Pipeline and the existing RenderTexture depth attachment is not an exported depth image. No metric depth topic exists yet. |
@@ -347,3 +347,12 @@ The bounded queue allows up to three RGB/depth readback pairs in flight; each
 pair retains its capture timestamp and is published only after both buffers
 complete. Phase 7 remains PARTIAL because the measured 4.70 Hz is below the
 configured 5 Hz. The editor scene remained unmodified by runtime trials.
+
+### Phase 0 input verification follow-up
+
+Actual keyboard input was verified after focusing the Unity Game view with a
+click and sending F8/F9 through XTest. F8 changed the independent runtime
+ground-truth label to left/A; F9 changed it to right/B. The earlier MCP
+`simulate_key` result was not sufficient because it did not trigger the
+Editor shortcut. This confirms the configured Unity input binding works when
+the Game view has focus.

@@ -146,7 +146,7 @@ milestone. The phase ledger and concrete runtime evidence are in
 
 | Phase | Status | Result |
 | --- | --- | --- |
-| 0. Baseline audit | PARTIAL | Source bindings and active Input System were inspected, but Unity MCP key injection did not trigger F8/F9 in this Editor session. Gestures were verified through the existing controller API. |
+| 0. Baseline audit | PASS | With the Game view focused by clicking it, actual F8/F9 key events sent through XTest changed independent ground truth to left/A and right/B. Unity MCP `simulate_key` alone did not trigger these Editor shortcuts. |
 | 1. Metric depth | PASS | Existing camera publishes aligned 640 x 360 `32FC1` optical-Z meters; known planes at 2/4/6 m were verified. |
 | 2. Coordinate frames | PASS | Runtime TF connects `map → base_link → robot_camera_optical_frame`; unit and projection checks pass. |
 | 3. Separate simulation truth | PASS | Unity publishes joints, objects, ray, pointing labels, and visibility only under `/simulation/ground_truth/...`. |
@@ -184,5 +184,14 @@ real-world accuracy claims. See `docs/3D_POSE_ESTIMATION.md`,
   prediction scores, angular and keypoint errors, latency, visibility, and
   abstention. The summary keeps each named configuration separate.
 - Phase 7 remains PARTIAL: synchronized RGB-D delivery measured 4.70 Hz, below
-  the configured 5 Hz. The scene was not rebuilt or saved from scratch, and
-  runtime trial transforms were restored before leaving Play Mode.
+  the configured 5 Hz. A four-pair queue test measured 4.66 Hz RGB, 4.70 Hz
+  depth, and 4.75 Hz CameraInfo, with no reliable improvement over three
+  pairs. The scene was not rebuilt or saved from scratch, and runtime trial
+  transforms were restored before leaving Play Mode.
+
+### Phase 0 input verification follow-up
+
+Actual Game-view keyboard input is verified: after focusing the Game view with
+a click, XTest F8 selected left-pointing/TargetObjectA and F9 selected
+right-pointing/TargetObjectB in independent simulation ground truth. The
+earlier Unity MCP `simulate_key` call did not deliver these shortcut events.
