@@ -29,6 +29,7 @@ HumanoidSimulation/mono_crash.*
 
 # ROS 2 workspace outputs and local endpoint checkout
 /log/
+/instructions/
 HumanoidSimulation/ros2_ws/build/
 HumanoidSimulation/ros2_ws/install/
 HumanoidSimulation/ros2_ws/log/
