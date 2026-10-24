@@ -152,7 +152,7 @@ milestone. The phase ledger and concrete runtime evidence are in
 | 3. Separate simulation truth | PASS | Unity publishes joints, objects, ray, pointing labels, and visibility only under `/simulation/ground_truth/...`. |
 | 4. 3D keypoints | PASS | RGB pose, depth, and CameraInfo are synchronized; metric optical landmarks include per-keypoint validity and a 0.9 m arm-link outlier gate. |
 | 5. Pointing estimator | PASS | The prior matches Unity's map X=-6 coordinates; both default gestures and a second layout select their intended candidates in live observations. |
-| 6. Controlled evaluation | PARTIAL | Corrected trials cover F8/F9, two layouts, 7 m distance, 10° observer yaw, out-of-view, recovery, and wrist occlusion. Frame counts are not independent trials. |
+| 6. Controlled evaluation | PASS | Corrected trials cover F8/F9, two layouts, 7 m distance, 10° observer yaw, out-of-view, recovery, and wrist occlusion. Results are per-configuration simulated demonstrations; repeated frames are not independent trials. |
 | 7. Docs and regression | PARTIAL | ROS/Unity builds and 28 Python tests pass. A bounded three-frame readback queue raised synchronized RGB-D delivery to 4.70 Hz, still below the configured 5 Hz. |
 
 The tested system demonstrates metric RGB-D reconstruction, target selection
