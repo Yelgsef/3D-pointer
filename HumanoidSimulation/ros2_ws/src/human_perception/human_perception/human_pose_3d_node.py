@@ -10,7 +10,11 @@ from rclpy.executors import ExternalShutdownException
 from rclpy.node import Node
 from sensor_msgs.msg import CameraInfo, Image
 
-from human_perception.rgbd_reconstruction import back_project, sample_depth
+from human_perception.rgbd_reconstruction import (
+    back_project,
+    reject_implausible_arm_links,
+    sample_depth,
+)
 
 
 class HumanPose3DNode(Node):
@@ -85,6 +89,12 @@ class HumanPose3DNode(Node):
             point = Point(x=x, y=y, z=z)
             output.keypoints.append(point)
             output.valid.append(True)
+        output.valid = reject_implausible_arm_links(
+            output.keypoint_names, output.keypoints, output.valid
+        )
+        for index, is_valid in enumerate(output.valid):
+            if not is_valid:
+                output.keypoints[index] = Point()
         self.publisher.publish(output)
 
     @staticmethod

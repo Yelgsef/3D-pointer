@@ -1,7 +1,11 @@
 import numpy as np
 import pytest
 
-from human_perception.rgbd_reconstruction import back_project, sample_depth
+from human_perception.rgbd_reconstruction import (
+    back_project,
+    reject_implausible_arm_links,
+    sample_depth,
+)
 from human_perception.pointing_geometry import (
     angle_degrees, parse_candidates, rank_candidates, transform_point,
 )
@@ -31,6 +35,18 @@ def test_depth_sampler_rejects_invalid_and_discontinuous_regions():
 
 def test_depth_sampler_rejects_pixels_outside_image():
     assert sample_depth(np.ones((2, 2), dtype=np.float32), -0.6, 0) is None
+
+
+def test_arm_link_validation_rejects_background_wrist_outlier():
+    names = ["left_elbow", "left_wrist", "right_elbow", "right_wrist"]
+    points = [
+        type("Point", (), {"x": 0.0, "y": 0.0, "z": 2.0})(),
+        type("Point", (), {"x": 0.1, "y": 0.0, "z": 2.1})(),
+        type("Point", (), {"x": 0.0, "y": 0.0, "z": 2.0})(),
+        type("Point", (), {"x": 0.0, "y": 0.0, "z": 12.0})(),
+    ]
+
+    assert reject_implausible_arm_links(names, points, [True] * 4) == [True, True, True, False]
 
 
 def test_back_projection_rejects_nonpositive_optical_depth():

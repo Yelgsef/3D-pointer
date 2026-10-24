@@ -36,3 +36,26 @@ def back_project(u, v, depth_m, fx, fy, cx, cy):
     if depth_m <= 0 or fx <= 0 or fy <= 0:
         raise ValueError("Depth and focal lengths must be positive")
     return ((u - cx) * depth_m / fx, (v - cy) * depth_m / fy, depth_m)
+
+
+def reject_implausible_arm_links(names, points, valid, max_segment_length=0.9):
+    """Invalidate distal points whose metric 3D arm segment is implausible."""
+    corrected = list(valid)
+    indices = {name: index for index, name in enumerate(names)}
+    for side in ("left", "right"):
+        for parent, child in ((f"{side}_shoulder", f"{side}_elbow"),
+                              (f"{side}_elbow", f"{side}_wrist")):
+            parent_index = indices.get(parent)
+            child_index = indices.get(child)
+            if (parent_index is None or child_index is None or
+                    not corrected[parent_index] or not corrected[child_index]):
+                continue
+            first = points[parent_index]
+            second = points[child_index]
+            distance = math.sqrt(sum(
+                (getattr(first, axis) - getattr(second, axis)) ** 2
+                for axis in ("x", "y", "z")
+            ))
+            if not math.isfinite(distance) or distance > max_segment_length:
+                corrected[child_index] = False
+    return corrected
