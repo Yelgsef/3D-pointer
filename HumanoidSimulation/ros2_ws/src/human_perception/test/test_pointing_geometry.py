@@ -7,6 +7,10 @@ from human_perception.pointing_geometry import (
     rank_candidates,
     semantic_arm_label,
 )
+from human_perception.evaluation_geometry import (
+    keypoint_error_metrics,
+    pointing_angular_error,
+)
 
 
 def test_default_candidate_map_uses_unity_scene_map_coordinates():
@@ -38,3 +42,29 @@ def test_observed_left_and_right_rays_select_their_scene_targets():
 def test_scene_calibration_corrects_reversed_landmark_side_labels(landmark_arm, expected):
     assert semantic_arm_label(landmark_arm, swap_sides=True) == expected
     assert semantic_arm_label(landmark_arm, swap_sides=False) == landmark_arm
+
+
+def test_offline_keypoint_metrics_apply_calibrated_side_mapping():
+    predicted = {
+        "left_eye": (0.0, 0.0, 1.0),
+        "right_eye": (0.0, 0.0, 1.0),
+        "right_shoulder": (1.0, 0.0, 1.0),
+        "left_shoulder": (-1.0, 0.0, 1.0),
+    }
+    truth = {
+        "head_reference": (0.0, 0.0, 1.0),
+        "left_shoulder": (1.0, 0.0, 1.0),
+        "right_shoulder": (-1.0, 0.0, 1.0),
+    }
+
+    metrics = keypoint_error_metrics(predicted, truth)
+
+    assert metrics["errors_m"]["head_reference"] == pytest.approx(0.0)
+    assert metrics["errors_m"]["left_shoulder"] == pytest.approx(0.0)
+    assert metrics["errors_m"]["right_shoulder"] == pytest.approx(0.0)
+    assert metrics["valid_count"] == 3
+    assert metrics["valid_rate"] == pytest.approx(3 / 7)
+
+
+def test_offline_pointing_angle_metric_compares_map_rays():
+    assert pointing_angular_error((1.0, 0.0, 0.0), (0.0, 1.0, 0.0)) == pytest.approx(90.0)

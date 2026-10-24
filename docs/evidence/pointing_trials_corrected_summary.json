@@ -1,0 +1,442 @@
+{
+  "source_csv": "docs/evidence/pointing_trials_corrected.csv",
+  "metric_note": "Rows are repeated synchronized frames within each fixed configuration, not independent trials. This summary is descriptive and does not establish independent-trial accuracy.",
+  "trials": [
+    {
+      "trial_id": "F8_A_default_v2",
+      "configuration": {
+        "gesture": "F8",
+        "target": "TargetObjectA",
+        "layout": "default",
+        "human_unity": [
+          0,
+          0,
+          -4
+        ],
+        "observer_unity": [
+          0,
+          0,
+          -9
+        ],
+        "observer_yaw_deg": 0
+      },
+      "matched_frames": 159,
+      "actual_target_id": "TargetObjectA",
+      "actual_arm": "left",
+      "human_visible_counts": {
+        "True": 159
+      },
+      "detection_counts": {
+        "True": 159
+      },
+      "predicted_arm_counts": {
+        "left": 159
+      },
+      "top1_rank_correct_frames": 159,
+      "top1_rank_accuracy": 1.0,
+      "selected_target_counts": {
+        "TargetObjectA": 159
+      },
+      "selected_target_correct_frames": 159,
+      "top2_rank_accuracy": 1.0,
+      "abstention_rate": 0.0,
+      "mean_ground_truth_ray_error_deg": 6.452,
+      "mean_keypoint_error_m": 0.133,
+      "mean_keypoint_valid_rate": 0.9825,
+      "mean_latency_ms": 96.04,
+      "camera_position_map": [
+        -8.880000114440918,
+        0.0,
+        1.399999976158142
+      ],
+      "candidate_positions_map": {
+        "TargetObjectA": [
+          -6.0,
+          -1.2999999523162842,
+          0.2800000011920929
+        ],
+        "TargetObjectB": [
+          -6.0,
+          1.2999999523162842,
+          0.2800000011920929
+        ]
+      }
+    },
+    {
+      "trial_id": "F9_B_default_v2",
+      "configuration": {
+        "gesture": "F9",
+        "target": "TargetObjectB",
+        "layout": "default",
+        "human_unity": [
+          0,
+          0,
+          -4
+        ],
+        "observer_unity": [
+          0,
+          0,
+          -9
+        ],
+        "observer_yaw_deg": 0
+      },
+      "matched_frames": 129,
+      "actual_target_id": "TargetObjectB",
+      "actual_arm": "right",
+      "human_visible_counts": {
+        "": 1,
+        "True": 128
+      },
+      "detection_counts": {
+        "True": 129
+      },
+      "predicted_arm_counts": {
+        "right": 129
+      },
+      "top1_rank_correct_frames": 129,
+      "top1_rank_accuracy": 1.0,
+      "selected_target_counts": {
+        "TargetObjectB": 129
+      },
+      "selected_target_correct_frames": 129,
+      "top2_rank_accuracy": 1.0,
+      "abstention_rate": 0.0,
+      "mean_ground_truth_ray_error_deg": 6.441,
+      "mean_keypoint_error_m": 0.126,
+      "mean_keypoint_valid_rate": 0.9723,
+      "mean_latency_ms": 91.29,
+      "camera_position_map": [
+        -8.880000114440918,
+        0.0,
+        1.399999976158142
+      ],
+      "candidate_positions_map": {
+        "TargetObjectA": [
+          -6.0,
+          -1.2999999523162842,
+          0.2800000011920929
+        ],
+        "TargetObjectB": [
+          -6.0,
+          1.2999999523162842,
+          0.2800000011920929
+        ]
+      }
+    },
+    {
+      "trial_id": "F8_A_7m_yaw10_v3",
+      "configuration": {
+        "gesture": "F8",
+        "target": "TargetObjectA",
+        "layout": "default",
+        "human_unity": [
+          0,
+          0,
+          -4
+        ],
+        "observer_unity": [
+          0,
+          0,
+          -11
+        ],
+        "observer_yaw_deg": 10
+      },
+      "matched_frames": 115,
+      "actual_target_id": "TargetObjectA",
+      "actual_arm": "left",
+      "human_visible_counts": {
+        "True": 115
+      },
+      "detection_counts": {
+        "True": 115
+      },
+      "predicted_arm_counts": {
+        "left": 115
+      },
+      "top1_rank_correct_frames": 115,
+      "top1_rank_accuracy": 1.0,
+      "selected_target_counts": {
+        "TargetObjectA": 115
+      },
+      "selected_target_correct_frames": 115,
+      "top2_rank_accuracy": 1.0,
+      "abstention_rate": 0.0,
+      "mean_ground_truth_ray_error_deg": 6.107,
+      "mean_keypoint_error_m": 0.126,
+      "mean_keypoint_valid_rate": 1.0,
+      "mean_latency_ms": 91.7,
+      "camera_position_map": [
+        -10.881823541109835,
+        -0.0208377795370357,
+        1.399999976158142
+      ],
+      "candidate_positions_map": {
+        "TargetObjectA": [
+          -6.0,
+          -1.2999999523162842,
+          0.2800000011920929
+        ],
+        "TargetObjectB": [
+          -6.0,
+          1.2999999523162842,
+          0.2800000011920929
+        ]
+      }
+    },
+    {
+      "trial_id": "F8_A_layout2_7m_yaw10",
+      "configuration": {
+        "gesture": "F8",
+        "target": "TargetObjectA",
+        "layout": "wide_y4",
+        "human_unity": [
+          0,
+          0,
+          -4
+        ],
+        "observer_unity": [
+          0,
+          0,
+          -11
+        ],
+        "observer_yaw_deg": 10
+      },
+      "matched_frames": 154,
+      "actual_target_id": "TargetObjectA",
+      "actual_arm": "left",
+      "human_visible_counts": {
+        "True": 154
+      },
+      "detection_counts": {
+        "True": 154
+      },
+      "predicted_arm_counts": {
+        "left": 154
+      },
+      "top1_rank_correct_frames": 154,
+      "top1_rank_accuracy": 1.0,
+      "selected_target_counts": {
+        "TargetObjectA": 154
+      },
+      "selected_target_correct_frames": 154,
+      "top2_rank_accuracy": 1.0,
+      "abstention_rate": 0.0,
+      "mean_ground_truth_ray_error_deg": 7.198,
+      "mean_keypoint_error_m": 0.121,
+      "mean_keypoint_valid_rate": 0.9697,
+      "mean_latency_ms": 90.34,
+      "camera_position_map": [
+        -10.881823541109835,
+        -0.0208377795370357,
+        1.399999976158142
+      ],
+      "candidate_positions_map": {
+        "TargetObjectA": [
+          -6.0,
+          -2.0,
+          0.2800000011920929
+        ],
+        "TargetObjectB": [
+          -6.0,
+          2.0,
+          0.2800000011920929
+        ]
+      }
+    },
+    {
+      "trial_id": "F9_B_layout2_7m_yaw10",
+      "configuration": {
+        "gesture": "F9",
+        "target": "TargetObjectB",
+        "layout": "wide_y4",
+        "human_unity": [
+          0,
+          0,
+          -4
+        ],
+        "observer_unity": [
+          0,
+          0,
+          -11
+        ],
+        "observer_yaw_deg": 10
+      },
+      "matched_frames": 129,
+      "actual_target_id": "TargetObjectB",
+      "actual_arm": "right",
+      "human_visible_counts": {
+        "True": 129
+      },
+      "detection_counts": {
+        "True": 129
+      },
+      "predicted_arm_counts": {
+        "right": 129
+      },
+      "top1_rank_correct_frames": 129,
+      "top1_rank_accuracy": 1.0,
+      "selected_target_counts": {
+        "TargetObjectB": 129
+      },
+      "selected_target_correct_frames": 129,
+      "top2_rank_accuracy": 1.0,
+      "abstention_rate": 0.0,
+      "mean_ground_truth_ray_error_deg": 7.31,
+      "mean_keypoint_error_m": 0.117,
+      "mean_keypoint_valid_rate": 1.0,
+      "mean_latency_ms": 86.67,
+      "camera_position_map": [
+        -10.881823541109835,
+        -0.0208377795370357,
+        1.399999976158142
+      ],
+      "candidate_positions_map": {
+        "TargetObjectA": [
+          -6.0,
+          -2.0,
+          0.2800000011920929
+        ],
+        "TargetObjectB": [
+          -6.0,
+          2.0,
+          0.2800000011920929
+        ]
+      }
+    },
+    {
+      "trial_id": "C_out_of_view",
+      "configuration": {},
+      "matched_frames": 95,
+      "actual_target_id": "TargetObjectB",
+      "actual_arm": "right",
+      "human_visible_counts": {
+        "False": 95
+      },
+      "detection_counts": {
+        "False": 95
+      },
+      "predicted_arm_counts": {
+        "": 95
+      },
+      "top1_rank_correct_frames": 0,
+      "top1_rank_accuracy": 0.0,
+      "selected_target_counts": {
+        "": 95
+      },
+      "selected_target_correct_frames": 0,
+      "top2_rank_accuracy": 0.0,
+      "abstention_rate": 1.0,
+      "mean_ground_truth_ray_error_deg": null,
+      "mean_keypoint_error_m": null,
+      "mean_keypoint_valid_rate": 0.0,
+      "mean_latency_ms": 83.87,
+      "camera_position_map": [
+        -8.880000114440918,
+        0.0,
+        1.399999976158142
+      ],
+      "candidate_positions_map": {
+        "TargetObjectA": [
+          -6.0,
+          -1.2999999523162842,
+          0.2800000011920929
+        ],
+        "TargetObjectB": [
+          -6.0,
+          1.2999999523162842,
+          0.2800000011920929
+        ]
+      }
+    },
+    {
+      "trial_id": "D_visible_recovery",
+      "configuration": {},
+      "matched_frames": 145,
+      "actual_target_id": "TargetObjectA",
+      "actual_arm": "left",
+      "human_visible_counts": {
+        "True": 145
+      },
+      "detection_counts": {
+        "True": 145
+      },
+      "predicted_arm_counts": {
+        "left": 145
+      },
+      "top1_rank_correct_frames": 145,
+      "top1_rank_accuracy": 1.0,
+      "selected_target_counts": {
+        "TargetObjectA": 145
+      },
+      "selected_target_correct_frames": 145,
+      "top2_rank_accuracy": 1.0,
+      "abstention_rate": 0.0,
+      "mean_ground_truth_ray_error_deg": 6.621,
+      "mean_keypoint_error_m": 0.128,
+      "mean_keypoint_valid_rate": 0.9705,
+      "mean_latency_ms": 95.05,
+      "camera_position_map": [
+        -8.880000114440918,
+        0.0,
+        1.399999976158142
+      ],
+      "candidate_positions_map": {
+        "TargetObjectA": [
+          -6.0,
+          -1.2999999523162842,
+          0.2800000011920929
+        ],
+        "TargetObjectB": [
+          -6.0,
+          1.2999999523162842,
+          0.2800000011920929
+        ]
+      }
+    },
+    {
+      "trial_id": "E_right_wrist_occlusion",
+      "configuration": {},
+      "matched_frames": 94,
+      "actual_target_id": "TargetObjectA",
+      "actual_arm": "left",
+      "human_visible_counts": {
+        "True": 94
+      },
+      "detection_counts": {
+        "True": 94
+      },
+      "predicted_arm_counts": {
+        "right": 94
+      },
+      "top1_rank_correct_frames": 0,
+      "top1_rank_accuracy": 0.0,
+      "selected_target_counts": {
+        "": 94
+      },
+      "selected_target_correct_frames": 0,
+      "top2_rank_accuracy": 1.0,
+      "abstention_rate": 1.0,
+      "mean_ground_truth_ray_error_deg": 77.967,
+      "mean_keypoint_error_m": 0.136,
+      "mean_keypoint_valid_rate": 0.9091,
+      "mean_latency_ms": 93.26,
+      "camera_position_map": [
+        -8.880000114440918,
+        0.0,
+        1.399999976158142
+      ],
+      "candidate_positions_map": {
+        "TargetObjectA": [
+          -6.0,
+          -1.2999999523162842,
+          0.2800000011920929
+        ],
+        "TargetObjectB": [
+          -6.0,
+          1.2999999523162842,
+          0.2800000011920929
+        ]
+      }
+    }
+  ]
+}

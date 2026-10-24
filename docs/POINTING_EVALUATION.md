@@ -40,59 +40,39 @@ and selected target. `/human_perception/pointing_markers` publishes separate
 ROS visualization markers for the predicted arm skeleton, ray, and labeled
 candidate objects. No annotation is drawn into the raw RGB stream.
 
-## Corrected live demonstration
+## Corrected-registry evaluation
 
-| Scenario | Ground-truth label (evaluator only) | Method A ranking | Method B | Decision |
-| --- | --- | --- | --- | --- |
-| F8 left arm | TargetObjectA | A 18.0°, B 68.2° | A | Select A; reported arm left |
-| F9 right arm | TargetObjectB | B 20.6°, A 70.1° | B | Select B; reported arm right |
+The evaluator joins labels after inference and is the only perception-side
+node subscribed to Unity ground truth. The estimator continues to consume
+only predicted 3D landmarks, TF, and the candidate-position prior.
+`docs/evidence/pointing_trials_corrected.csv` contains the frame-level records;
+`docs/evidence/pointing_trials_corrected_summary.json` contains descriptive
+per-configuration rollups. Samples within one fixed pose are repeated frames,
+not independent trials.
 
-The first live run exposed a sign error in the candidate map prior: the Unity
-objects are at map X=-6, but the estimator used X=+6. Correcting that static
-prior changed both default target rankings and removed the false abstentions.
-MediaPipe also assigned the opposite wrist side in this camera view, so the
-reported anatomical arm label uses a configurable side swap; ray geometry
-continues to use only predicted keypoints.
+| Trial/configuration | Frames | Top-1 ranking | Correct selected target | Mean ray error vs truth | Mean 3D keypoint error | Abstentions |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| F8/A, default, 5 m | 159 | 159/159 | 159/159 | 6.45° | 0.133 m | 0% |
+| F9/B, default, 5 m | 129 | 129/129 | 129/129 | 6.44° | 0.126 m | 0% |
+| F8/A, default, 7 m, observer yaw 10° | 115 | 115/115 | 115/115 | 6.11° | 0.126 m | 0% |
+| F8/A, wide layout (Y=±2 m), 7 m, yaw 10° | 154 | 154/154 | 154/154 | 7.20° | 0.121 m | 0% |
+| F9/B, wide layout (Y=±2 m), 7 m, yaw 10° | 129 | 129/129 | 129/129 | 7.31° | 0.117 m | 0% |
+| C: human outside FOV | 95 | no candidate ray | 0 selected | n/a | n/a | 100% |
+| D: visible after restoring view | 145 | 145/145 | 145/145 | 6.62° | 0.128 m | 0% |
+| E: pointing wrist occluded | 94 | B ranked first | 0 selected | 77.97° | 0.136 m | 100% |
 
-## Controlled results
+For C, all 95 rows reported invisible, undetected, and abstained. For E, all
+94 rows retained person visibility and detection while the tested wrist became
+invalid in 3D; the estimator abstained because its best ray exceeded the
+45-degree acceptance limit. Top-2 is not informative with only two candidates.
 
-The earlier files `pointing_trials_controlled.csv`,
-`docs/evidence/pointing_trials_layout2.csv`,
-`docs/evidence/pointing_trials_occlusion.csv`, and
-`docs/evidence/pointing-metrics.json` contain the initial run's frame-level
-records and rollups. That run used X=+6 and is not a result for the corrected
-registry. New corrected-registry controlled files will replace these rollups;
-the evaluator joins labels after inference and the estimator never subscribes
-to them. Frames in each stationary setup are repeated observations, not
-independent trials.
-
-- Default target layout: F8/A ranked A first on 2/113 frames and selected it
-  correctly twice; it abstained on 111 frames. F9/B ranked B first on 0/55
-  ranked frames and selected nothing. A second candidate layout yielded 3/116
-  top-1 A rankings for F8 and 0/43 top-1 B rankings for F9; all frames
-  abstained. Scores were generally outside the 45-degree acceptance limit.
-- At 7 m, all 109 ranked F3 frames placed A first, but the angular gate still
-  abstained on all 109. This shows ranking alone is not enough to claim a
-  usable target prediction.
-- Out-of-view F2 produced 59 hidden samples with zero detections and no target
-  selection. After turning, F4 had 44 visible frames and 44 detections. F5
-  full-body occlusion had 78 hidden samples and zero false detections.
-- In the arm-only occlusion sample, the head visibility check and person
-  detection remained true while the left wrist's 3D validity bit became
-  false. This verified invalid-depth/keypoint handling under partial
-  occlusion; it did not produce a target estimate.
-- Logged end-to-end latency averaged about 87–92 ms in these runs. Top-2
-  accuracy is 100% for ranked frames because the registry contains exactly
-  two candidates, so that metric is not discriminative here.
-
-Phase 6 is **PARTIAL**: the controlled visibility, recovery, distance, layout,
-and occlusion behavior is measured, but target identification is not reliable
-enough. More distinct poses and object geometries are needed; the present
-frame counts must not be reported as independent-trial accuracy.
-
-The geometry helpers have deterministic unit tests. Controlled multi-layout
-evaluation and accuracy/abstention reporting remain necessary before any
-success claim.
+Phase 6 remains **PARTIAL**. Both gestures succeeded in two candidate layouts,
+including a 7 m observation at a 10-degree observer yaw, and the expected
+out-of-view and occlusion abstentions were measured. These are still repeated
+frames from one stylized human and a small number of fixed geometries; they do
+not establish independent-trial generalization or real-world performance.
+Ground-truth wrist/elbow comparisons are surface-depth measurements and may
+not coincide with internal skeletal joint centers.
 
 ## Recording trials
 
@@ -104,7 +84,7 @@ frame:
 ./scripts/evaluate_pointing.sh --ros-args \
   -p output_csv:=docs/evidence/pointing_trials.csv \
   -p trial_id:=F8_initial \
-  -p trial_config_json:='{"gesture":"F8","observer_pose":"initial","distance_m":5}'
+  -p trial_config_json:='"{\"gesture\":\"F8\",\"observer_pose\":\"initial\",\"distance_m\":5}"'
 ```
 
 Change `trial_id` and `trial_config_json` between distinct configurations
