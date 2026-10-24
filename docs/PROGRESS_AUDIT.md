@@ -37,11 +37,12 @@ This audit was made against the current Unity Editor, active scene, ROS 2 endpoi
 
 ## Phase plan
 
+0. **PASS**: Audit the live repository, scene, ROS connection, and current implementation before changes.
 1. **PASS**: Replace the primitive human visual with an original, locally generated skinned humanoid rig and functional left/right pointing poses. No third-party character asset was downloaded.
-2. Publish the existing RobotEyeRT as `sensor_msgs/Image` and matching `CameraInfo`, then verify pixel order, metadata, frame IDs, and runtime rate over the existing endpoint.
-3. Add a reproducible human detector and pose estimator using compatible, documented model weights; keep predictions separate from Unity ground truth.
-4. Document the RGB-D and ground-truth extension points without presenting them as implemented.
-5. Reconcile older docs and run the required Unity, ROS, perception, navigation, camera, and scenario regression checks.
+2. **PASS**: Publish the existing RobotEyeRT as `sensor_msgs/Image` and matching `CameraInfo`; verify pixels, metadata, frame IDs, and runtime rate over ROS.
+3. **PASS**: Add a reproducible human detector and pose estimator using documented model weights; keep predictions separate from Unity ground truth.
+4. **PASS**: Document RGB-D and ground-truth extension points without presenting them as implemented.
+5. **PENDING**: Reconcile older docs and run the required Unity, ROS, perception, navigation, camera, and scenario regression checks.
 
 ## Phase 1 result
 
@@ -81,3 +82,14 @@ Status: **PASS** for the single-human RGB detection and 2D pose baseline on the 
 - Evidence JSON is in `docs/evidence/perception-f1.json` through `perception-f6.json` plus `perception-f8-pointing.json`. `perception-debug-f1.png` and `perception-debug-f4.png` show detections/keypoints on a separate debug image; the raw camera topic remains unmodified.
 
 Limitations: the custom `human_perception_msgs` interfaces are used because `vision_msgs` is absent from this ROS installation. Pose z is MediaPipe-relative, not metric depth. The visibility-based detection score is not a calibrated detector probability. Results only cover this stylized single-person simulation; no real-world robustness is claimed. Pointing-object inference is not implemented.
+
+## Phase 4 result
+
+Status: **PASS** for the requested RGB-D and ground-truth design documentation; no sensor or truth publisher was added.
+
+- Inspected the active project settings and Unity runtime: Built-in Render Pipeline, `RobotEyeRT` at 640 x 360 with `R8G8B8A8_SRGB` color and `D24_UNorm_S8_UInt` depth-stencil, camera `depthTextureMode=None`, and 0.03/100 m near/far planes.
+- Documented enabling the existing camera's depth texture or a dedicated linear-depth shader target, correct nonlinear-depth conversion, a proposed `32FC1` meter encoding, invalid-pixel convention, validation distances, and the uncalibrated one-Unity-unit-equals-one-meter assumption.
+- Proposed separate `/simulation/ground_truth/...` interfaces for joints, gesture target, object poses, and camera visibility. Recorded that this rig has a head bone but no eye bones, and that camera optical TF is not published.
+- Documented the future depth back-projection, TF, pointing-ray, and candidate-ranking stages. The perception node remains independent of all Unity truth.
+
+Evidence: `docs/RGBD_AND_GROUND_TRUTH_PLAN.md`, current RenderTexture asset, `ProjectSettings/GraphicsSettings.asset`, and runtime inspection of `RobotEyeCamera.depthTextureMode` / `RobotEyeRT.graphicsFormat`.
