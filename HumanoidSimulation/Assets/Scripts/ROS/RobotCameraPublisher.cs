@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using RosMessageTypes.BuiltinInterfaces;
 using RosMessageTypes.Sensor;
 using RosMessageTypes.Std;
@@ -14,11 +15,21 @@ public sealed class RobotCameraPublisher : MonoBehaviour
 {
     private const string OpticalFrameId = "robot_camera_optical_frame";
 
+    private sealed class PendingCapture
+    {
+        public int id;
+        public TimeMsg stamp;
+        public int completions;
+        public byte[] rgbPixels;
+        public float[] depthPixels;
+    }
+
     [SerializeField] private RenderTexture sourceTexture;
     [SerializeField] private string imageTopic = "/camera/image_raw";
     [SerializeField] private string cameraInfoTopic = "/camera/camera_info";
     [SerializeField] private string depthImageTopic = "/camera/depth/image_raw";
     [SerializeField, Min(0.1f)] private float publishRate = 5f;
+    [SerializeField, Min(1)] private int maxPendingReadbacks = 3;
 
     private Camera captureCamera;
     private ROSConnection ros;
@@ -31,15 +42,11 @@ public sealed class RobotCameraPublisher : MonoBehaviour
     private Material linearDepthMaterial;
     private DepthTextureMode originalDepthTextureMode;
     private float nextCaptureTime;
-    private bool readbackPending;
     private bool destroying;
     private bool hasWarnedReadback;
     private bool hasOriginalDepthTextureMode;
     private int activeCaptureId;
-    private int pendingCompletions;
-    private byte[] pendingRgbPixels;
-    private float[] pendingDepthPixels;
-    private TimeMsg pendingStamp;
+    private readonly Dictionary<int, PendingCapture> pendingCaptures = new Dictionary<int, PendingCapture>();
 
     private void Awake()
     {
@@ -157,7 +164,7 @@ public sealed class RobotCameraPublisher : MonoBehaviour
         }
 
         EnsureRosPublishers();
-        readbackPending = false;
+        pendingCaptures.Clear();
         RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
     }
 
@@ -166,9 +173,7 @@ public sealed class RobotCameraPublisher : MonoBehaviour
         RenderPipelineManager.endCameraRendering -= OnEndCameraRendering;
         if (captureCamera != null && hasOriginalDepthTextureMode)
             captureCamera.depthTextureMode = originalDepthTextureMode;
-        readbackPending = false;
-        pendingRgbPixels = null;
-        pendingDepthPixels = null;
+        pendingCaptures.Clear();
     }
 
     private void OnPostRender()
@@ -186,32 +191,30 @@ public sealed class RobotCameraPublisher : MonoBehaviour
     {
         if (ros == null || imagePool == null || cameraInfoPool == null || depthImagePool == null)
             EnsureRosPublishers();
-        if (readbackPending || Time.unscaledTime < nextCaptureTime)
+        if (Time.unscaledTime < nextCaptureTime)
             return;
 
         nextCaptureTime = Time.unscaledTime + 1f / Mathf.Max(0.1f, publishRate);
+        if (SystemInfo.supportsAsyncGPUReadback && pendingCaptures.Count >= Mathf.Max(1, maxPendingReadbacks))
+            return;
+
         TimeMsg stamp = CreateRosTimestamp(DateTime.UtcNow);
         Graphics.Blit(Texture2D.blackTexture, linearDepthTexture, linearDepthMaterial);
 
         if (SystemInfo.supportsAsyncGPUReadback)
         {
-            activeCaptureId++;
-            int captureId = activeCaptureId;
-            pendingStamp = stamp;
-            pendingCompletions = 0;
-            pendingRgbPixels = null;
-            pendingDepthPixels = null;
-            readbackPending = true;
+            var capture = new PendingCapture { id = ++activeCaptureId, stamp = stamp };
+            pendingCaptures.Add(capture.id, capture);
             try
             {
                 AsyncGPUReadback.Request(sourceTexture, 0, TextureFormat.RGB24,
-                    request => CompleteRgbReadback(request, captureId));
+                    request => CompleteRgbReadback(request, capture));
                 AsyncGPUReadback.Request(linearDepthTexture, 0, TextureFormat.RFloat,
-                    request => CompleteDepthReadback(request, captureId));
+                    request => CompleteDepthReadback(request, capture));
             }
             catch (Exception exception)
             {
-                FailPendingFrame(captureId, "Unable to request asynchronous camera readback: " + exception.Message);
+                FailPendingFrame(capture, "Unable to request asynchronous camera readback: " + exception.Message);
             }
             return;
         }
@@ -219,13 +222,13 @@ public sealed class RobotCameraPublisher : MonoBehaviour
         PublishSynchronousReadback(stamp);
     }
 
-    private void CompleteRgbReadback(AsyncGPUReadbackRequest request, int captureId)
+    private void CompleteRgbReadback(AsyncGPUReadbackRequest request, PendingCapture capture)
     {
-        if (!IsCurrentCapture(captureId))
+        if (!IsCurrentCapture(capture))
             return;
         if (request.hasError)
         {
-            FailPendingFrame(captureId, "Unity reported an error while reading RobotEyeRT.");
+            FailPendingFrame(capture, "Unity reported an error while reading RobotEyeRT.");
             return;
         }
 
@@ -235,23 +238,23 @@ public sealed class RobotCameraPublisher : MonoBehaviour
         int rowBytes = width * 3;
         if (pixels.Length != rowBytes * height)
         {
-            FailPendingFrame(captureId, "RGB readback returned an unexpected buffer size.");
+            FailPendingFrame(capture, "RGB readback returned an unexpected buffer size.");
             return;
         }
 
-        pendingRgbPixels = new byte[pixels.Length];
+        capture.rgbPixels = new byte[pixels.Length];
         for (int row = 0; row < height; row++)
-            NativeArray<byte>.Copy(pixels, (height - row - 1) * rowBytes, pendingRgbPixels, row * rowBytes, rowBytes);
-        CompleteReadback(captureId);
+            NativeArray<byte>.Copy(pixels, (height - row - 1) * rowBytes, capture.rgbPixels, row * rowBytes, rowBytes);
+        CompleteReadback(capture);
     }
 
-    private void CompleteDepthReadback(AsyncGPUReadbackRequest request, int captureId)
+    private void CompleteDepthReadback(AsyncGPUReadbackRequest request, PendingCapture capture)
     {
-        if (!IsCurrentCapture(captureId))
+        if (!IsCurrentCapture(capture))
             return;
         if (request.hasError)
         {
-            FailPendingFrame(captureId, "Unity reported an error while reading the linear depth target.");
+            FailPendingFrame(capture, "Unity reported an error while reading the linear depth target.");
             return;
         }
 
@@ -260,11 +263,11 @@ public sealed class RobotCameraPublisher : MonoBehaviour
         int height = sourceTexture.height;
         if (pixels.Length != width * height)
         {
-            FailPendingFrame(captureId, "Depth readback returned an unexpected buffer size.");
+            FailPendingFrame(capture, "Depth readback returned an unexpected buffer size.");
             return;
         }
 
-        pendingDepthPixels = new float[pixels.Length];
+        capture.depthPixels = new float[pixels.Length];
         for (int row = 0; row < height; row++)
         {
             int sourceOffset = (height - row - 1) * width;
@@ -272,43 +275,39 @@ public sealed class RobotCameraPublisher : MonoBehaviour
             for (int column = 0; column < width; column++)
             {
                 float depth = pixels[sourceOffset + column];
-                pendingDepthPixels[destinationOffset + column] =
+                capture.depthPixels[destinationOffset + column] =
                     float.IsNaN(depth) || float.IsInfinity(depth) || depth <= 0f || depth >= captureCamera.farClipPlane
                         ? 0f : depth;
             }
         }
-        CompleteReadback(captureId);
+        CompleteReadback(capture);
     }
 
-    private bool IsCurrentCapture(int captureId)
+    private bool IsCurrentCapture(PendingCapture capture)
     {
         // Async GPU callbacks can arrive after Unity destroys this component during a reload.
         if (this == null)
             return false;
-        return !destroying && isActiveAndEnabled && readbackPending && captureId == activeCaptureId;
+        return !destroying && isActiveAndEnabled && pendingCaptures.TryGetValue(capture.id, out var current) &&
+               ReferenceEquals(current, capture);
     }
 
-    private void CompleteReadback(int captureId)
+    private void CompleteReadback(PendingCapture capture)
     {
-        if (!IsCurrentCapture(captureId))
+        if (!IsCurrentCapture(capture))
             return;
-        pendingCompletions++;
-        if (pendingCompletions < 2)
+        capture.completions++;
+        if (capture.completions < 2)
             return;
 
-        readbackPending = false;
-        PublishPixels(pendingRgbPixels, pendingDepthPixels, pendingStamp);
-        pendingRgbPixels = null;
-        pendingDepthPixels = null;
+        pendingCaptures.Remove(capture.id);
+        PublishPixels(capture.rgbPixels, capture.depthPixels, capture.stamp);
     }
 
-    private void FailPendingFrame(int captureId, string message)
+    private void FailPendingFrame(PendingCapture capture, string message)
     {
-        if (this == null || captureId != activeCaptureId)
+        if (this == null || capture == null || !pendingCaptures.Remove(capture.id))
             return;
-        readbackPending = false;
-        pendingRgbPixels = null;
-        pendingDepthPixels = null;
         WarnReadbackFailure(message);
     }
 

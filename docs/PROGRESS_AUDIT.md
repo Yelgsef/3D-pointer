@@ -140,6 +140,10 @@ runtime output with per-landmark validity.
 - The node subscribes only to predicted 2D pose, depth, and CameraInfo; it
   does not subscribe to simulation truth. Start/stop scripts now manage it
   alongside the existing perception detector.
+- A metric arm-link gate now invalidates distal 3D keypoints when an adjacent
+  shoulder/elbow/wrist segment exceeds 0.9 m. Its regression test rejects a
+  background-depth wrist outlier; the rebuilt live node continued publishing
+  usable 3D arm landmarks after restart.
 - Evidence and method: `docs/3D_POSE_ESTIMATION.md` and the unit tests in
   `human_perception/test/test_rgbd_reconstruction.py`.
 
@@ -183,30 +187,28 @@ must not be used as corrected-registry results.
 
 ### Instruction 4 Phase 6 — Controlled evaluation
 
-Status: **PARTIAL / RERUN REQUIRED**. Prior trials covered target layouts,
-gesture arms, human distances/orientations, observer angles, and occlusion, but
-used the sign-flipped candidate registry and therefore do not establish the
-corrected estimator's accuracy.
+Status: **PARTIAL**. Corrected-registry trials now cover both pointing arms,
+two candidate layouts, a 7 m observation at 10-degree observer yaw, out-of-view
+detection, view recovery, and pointing-wrist occlusion. The repeated frame
+counts describe each fixed configuration and are not independent trials.
 
-- Logged three evidence files with per-frame predictions, actual labels,
-  visibility, detection, candidate order/scores, abstention, and latency.
-  Rollups are in `docs/evidence/pointing-metrics.json`; repeated frames within
-  one unchanged setup are not treated as independent trials.
-- Default layout F8/A ranked A first on 2/113 frames and selected it correctly
-  twice; F9/B ranked B first on 0/55 ranked frames and selected nothing. A
-  second candidate layout yielded 3/116 top-1 A rankings for F8 and 0/43 for
-  F9; the estimator abstained on every frame in that layout. At 7 m, A ranked
-  first on all 109 F3 frames, but all abstained because of angular error.
-- In the out-of-view segment, 59 samples had no detection and no target
-  selection. After observer rotation, F4 recovered 44/44 visible detections.
-  Full-body occlusion produced 78 hidden samples with no false detections.
-  Arm-only occlusion left head visibility and human detection true while the
-  left wrist validity bit changed to false.
-- End-to-end latency averaged about 87–92 ms. Top-2 is uninformative with only
-  two candidates. Target ranking and selected-target success remain limited;
-  no perfect-accuracy claim is made.
+- `docs/evidence/pointing_trials_corrected.csv` stores synchronized
+  post-inference records; `docs/evidence/pointing_trials_corrected_summary.json`
+  contains rollups limited to the named corrected trials.
+- In the default layout at 5 m, F8/A selected A in 159/159 matched frames
+  (mean ground-truth ray error 6.45 degrees; mean keypoint error 0.133 m), and
+  F9/B selected B in 129/129 (6.44 degrees; 0.126 m). At 7 m and yaw 10
+  degrees, F8/A selected A in 115/115 frames. With targets moved to map
+  Y=+/-2 m, F8/A selected A in 154/154 and F9/B selected B in 129/129.
+- Out-of-view produced 95/95 invisible, undetected abstentions with no
+  selection. Restoring visibility yielded 145/145 selected B frames. In the
+  isolated wrist-occlusion setup, detection remained true in 94/94 frames, the
+  targeted 3D wrist became invalid, and the estimator abstained in 94/94.
+- These results are limited to one stylized simulated person, two objects,
+  and a small number of fixed configurations. No independent-trial or
+  real-world accuracy claim is made; top-2 is uninformative with two candidates.
 
-See `docs/POINTING_EVALUATION.md` for trial interpretation and limitations.
+See `docs/POINTING_EVALUATION.md` for the trial table and limitations.
 
 This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
@@ -318,17 +320,19 @@ below.
 
 ## Instruction 4 Phase 7 — Documentation and regression
 
-Status: **PARTIAL**. The required functionality and builds were rechecked, but
-the full-load depth stream did not sustain its configured 5 Hz rate.
+Status: **PARTIAL**. A bounded three-capture asynchronous readback queue
+improved camera throughput while preserving paired timestamps, but measured
+delivery remained slightly below the configured 5 Hz.
 
 - `colcon build --symlink-install` completed for all five ROS packages.
-  Direct `pytest` execution passed 21 perception and navigation tests. Unity
-  had compiled the guarded async camera callback successfully in this Editor
-  session.
+  Direct `pytest` execution passed 22 perception tests; the six navigation
+  tests also pass. Unity script compilation after the readback-queue change
+  completed with `failed=false`, `errors=[]`, and `compilationFailed=false`.
 - The Robot POV `RawImage` still references the existing `RobotEyeRT`.
   RGB, depth, and CameraInfo messages were present at 640 x 360 with their
-  expected encodings and optical frame. Short-window rates under full load
-  measured 4.4 Hz RGB, 2.4 Hz depth, and 8.7 Hz `/robot/pose`.
+  expected encodings and optical frame. A single 12-second synchronized
+  subscriber measured 4.70 Hz for RGB, depth, and CameraInfo, with 52 unique
+  shared acquisition stamps. `/robot/pose` remained around 8.7-9.2 Hz.
 - A 1-second, 0.2 m/s `/cmd_vel` command moved the robot from Unity Z=-9.00 to
   Z=-8.84. Navigation accepted a map goal at ROS X=-8.60 and reached X=-8.73,
   within its 0.15 m tolerance. Unity runtime checks selected both pointing
@@ -339,6 +343,7 @@ the full-load depth stream did not sustain its configured 5 Hz rate.
   restored message flow and command control. The Scene was not saved during
   runtime regression.
 
-Phase 7 remains PARTIAL until depth maintains the configured 5 Hz rate while
-the perception pipeline is active. This is a throughput limitation; the
-previous known-plane metric-depth checks remain valid.
+The bounded queue allows up to three RGB/depth readback pairs in flight; each
+pair retains its capture timestamp and is published only after both buffers
+complete. Phase 7 remains PARTIAL because the measured 4.70 Hz is below the
+configured 5 Hz. The editor scene remained unmodified by runtime trials.
