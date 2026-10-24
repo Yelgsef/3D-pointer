@@ -2,6 +2,28 @@
 
 Audit date: 2026-10-24. Repository checkpoint: `f3e10a1` (`Remove root instructions file`).
 
+## Instruction 4 baseline audit
+
+Audit date: 2026-10-24. This audit is against commit `1253bc8`, the active
+`HumanoidSimulation` scene, the running Unity Editor, and the live ROS 2 graph.
+No scene generator was run and no scene objects were changed during this
+audit.
+
+| Requirement | Status | Evidence / discrepancy |
+| --- | --- | --- |
+| Existing RGB and CameraInfo | PASS | Active scene has one `RobotCameraPublisher` on the existing `RobotEyeCamera`, using `RobotEyeRT` at 640 x 360 and 5 Hz. Play Mode published `/camera/image_raw` at about 4.7 Hz. CameraInfo was live with matching `robot_camera_optical_frame`, 640 x 360, and `fx=fy=577.9135`, `cx=320`, `cy=180`. |
+| Human rig and gesture source wiring | PASS | Live Unity hierarchy has `HumanTarget`, Animator, `HumanTargetGestureController`, 22-bone Armature, and one skinned mesh; scenario controls reference `TargetObjectA` and `TargetObjectB`. |
+| F8/F9 input bindings | PARTIAL | `activeInputHandler: 1` enables the new Input System, and `RobotObserverScenarioControls.Update` checks `Keyboard.current.f8Key` / `f9Key`. Unity MCP `simulate_key` returned success but did not change the runtime gesture from Idle, so actual key-to-action delivery is not verified through this Editor session. |
+| 2D pose schema and synchronization | PASS (code inspection) | `HumanPose2D` carries 33 named landmarks, pixel-space x/y, MediaPipe-relative z, confidences, and the source image header. MediaPipe indices used for shoulders/elbows/wrists are 11/12, 13/14, and 15/16. The pose is not metric 3D. |
+| Camera calibration and frame convention | PASS for intrinsics; PARTIAL for frames | Runtime FOV is 34.6 degrees vertical; the published pinhole intrinsics match the 640 x 360 square-pixel model. The image is labeled `robot_camera_optical_frame`, but the live `/tf` graph has zero publishers, so the frame is not connected to `base_link` or `map`. |
+| Depth capture and render pipeline | BLOCKED before implementation | Unity reports `depthTextureMode=None`; the project uses Built-in Render Pipeline and the existing RenderTexture depth attachment is not an exported depth image. No metric depth topic exists yet. |
+
+The Editor entered Play Mode for the RGB and calibration checks. Runtime
+evidence confirms the old RGB pipeline is alive, but also exposes a critical
+dependency for 3D work: no TF publisher exists. The next phase must validate a
+depth capture path against known distances before adding TF, ground truth, or
+3D inference dependencies.
+
 This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
 ## Current verified state
