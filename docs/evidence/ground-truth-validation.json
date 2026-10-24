@@ -1,0 +1,49 @@
+{
+  "date": "2026-10-24",
+  "unity_scene": "Assets/Scenes/HumanoidSimulation.unity",
+  "unity_compilation": {
+    "failed": false,
+    "errors": []
+  },
+  "topics": {
+    "/simulation/ground_truth/human_joints": {
+      "type": "geometry_msgs/msg/PoseArray",
+      "frame_id": "map",
+      "pose_count": 7,
+      "head_reference_map_xyz_m": [-4.0, 0.0, 1.76],
+      "joint_order": [
+        "head_reference",
+        "left_shoulder",
+        "right_shoulder",
+        "left_elbow",
+        "right_elbow",
+        "left_wrist",
+        "right_wrist"
+      ]
+    },
+    "/simulation/ground_truth/objects": {
+      "type": "geometry_msgs/msg/PoseArray",
+      "frame_id": "map",
+      "order": ["TargetObjectA", "TargetObjectB"]
+    },
+    "/simulation/ground_truth/pointing_ray": {
+      "type": "geometry_msgs/msg/PoseStamped",
+      "frame_id": "map"
+    },
+    "/simulation/ground_truth/pointing_label": {
+      "type": "std_msgs/msg/String",
+      "left_trial": {"arm": "left", "intended_target_id": "TargetObjectA"},
+      "right_trial": {"arm": "right", "intended_target_id": "TargetObjectB"},
+      "idle_trial": {"arm": "none", "intended_target_id": ""}
+    },
+    "/simulation/ground_truth/camera_visibility": {
+      "type": "std_msgs/msg/String",
+      "visible_trial": true
+    }
+  },
+  "independence_check": {
+    "pose_detector_subscriptions": ["/camera/image_raw"],
+    "ground_truth_topics_read_by_perception": false
+  },
+  "scene_reset": "Gesture returned to Idle after runtime checks."
+}

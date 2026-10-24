@@ -85,6 +85,36 @@ publisher; simulated ROS time is not enabled. Camera rotation and motion were
 checked during the runtime phase, but should remain part of regression checks
 as the 3D pose pipeline is added.
 
+### Instruction 4 Phase 3 — Separate simulation ground truth
+
+Status: **PASS** for publishing Unity simulation labels on isolated topics and
+verifying that the current perception node does not consume them.
+
+- Added `SimulationGroundTruthPublisher` to the existing scene's
+  `ROSConnection` object. It publishes Unity bone positions, stable-order
+  Target A/B poses, an eye-to-wrist simulation ray, gesture arm/target labels,
+  and a camera frustum/raycast visibility sample. It uses actual rig transform
+  names when a Humanoid shoulder mapping is absent; the eye reference is
+  explicitly derived from the head bone.
+- Runtime graph exposed all five `/simulation/ground_truth/...` topics.
+  `/human_joints` published seven positions stamped in `map`; observed head
+  reference was `(-4.0, 0.0, 1.76)` m. `/objects` published both registered
+  candidates in stable order. Camera visibility reported `true` for the visible
+  scenario.
+- Direct controller trials produced `left / TargetObjectA`, `right /
+  TargetObjectB`, and `none / empty` in Idle. Unity compilation succeeded with
+  no errors; the scene was saved with the publisher attached and the runtime
+  gesture was restored to Idle.
+- Independence check: `human_perception/pose_detector.py` subscribes only to
+  `/camera/image_raw`; no ground-truth topic is referenced by perception.
+- Interface and evidence: `docs/GROUND_TRUTH_INTERFACE.md` and
+  `docs/evidence/ground-truth-validation.json`.
+
+Limitation: visibility is a single head-height sample checked against the
+camera frustum and first raycast hit, not a pixel mask. Ground-truth messages
+are intentionally evaluation inputs only and must not be wired into the
+3D-pose or pointing estimator.
+
 This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
 ## Current verified state

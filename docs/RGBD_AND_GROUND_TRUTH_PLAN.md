@@ -59,9 +59,10 @@ frustum plus a raycast against the same occluder geometry used for rendering.
 
 Use a declared ROS world frame and publish camera/base/world transforms via
 `tf`. The current tree connects `map`, `base_link`, and
-`robot_camera_optical_frame`; see `docs/TF_FRAME_CONVENTIONS.md`. The truth
-publisher must publish its own messages from Unity simulation state and must
-not be a dependency of `human_perception`. Never embed truth in
+`robot_camera_optical_frame`; see `docs/TF_FRAME_CONVENTIONS.md`. The Unity
+truth publisher now publishes on isolated `/simulation/ground_truth/...`
+topics; see `docs/GROUND_TRUTH_INTERFACE.md`. It is not a dependency of
+`human_perception`. Never embed truth in
 `/camera/image_raw`, CameraInfo,
 detector messages, or debug images. Evaluation tools may join truth and
 predictions by timestamp after inference for offline scoring.

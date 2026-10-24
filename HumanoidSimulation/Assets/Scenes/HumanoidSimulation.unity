@@ -946,7 +946,13 @@ MonoBehaviour:
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::RobotPosePublisher
   poseTopic: /robot/pose
+  tfTopic: /tf
+  staticTfInputTopic: /unity/tf_static
+  mapFrame: map
+  baseFrame: base_link
+  cameraOpticalFrame: robot_camera_optical_frame
   publishRate: 10
+  staticTransformPublishRate: 1
 --- !u!114 &518742605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1525,6 +1531,7 @@ GameObject:
   - component: {fileID: 973546059}
   - component: {fileID: 973546058}
   - component: {fileID: 973546057}
+  - component: {fileID: 973546060}
   m_Layer: 0
   m_Name: ROSConnection
   m_TagString: Untagged
@@ -1588,6 +1595,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &973546060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973546056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88cb40816f5b4f6ca96d214b8f0ebde5, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::SimulationGroundTruthPublisher
+  humanTarget: {fileID: 0}
+  robotCamera: {fileID: 0}
+  targetObjectA: {fileID: 0}
+  targetObjectB: {fileID: 0}
+  publishRate: 10
+  worldFrame: map
 --- !u!1 &991294917
 GameObject:
   m_ObjectHideFlags: 0
@@ -1764,6 +1789,7 @@ MonoBehaviour:
   sourceTexture: {fileID: 8400000, guid: 77ebc117e2c1e2bb0b555db9fbe5242c, type: 2}
   imageTopic: /camera/image_raw
   cameraInfoTopic: /camera/camera_info
+  depthImageTopic: /camera/depth/image_raw
   publishRate: 5
 --- !u!1 &1235748903
 GameObject:

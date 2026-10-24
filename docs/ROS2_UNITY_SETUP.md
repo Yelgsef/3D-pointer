@@ -17,6 +17,9 @@ a separate debug image. Predictions are not mixed with Unity ground truth.
 `RobotPosePublisher` publishes `map → base_link` on `/tf`. The mounted camera
 transform is published through `/unity/tf_static` and relayed to `/tf_static`
 with transient-local QoS. See [TF_FRAME_CONVENTIONS.md](TF_FRAME_CONVENTIONS.md).
+An isolated simulation-only publisher provides evaluation labels under
+`/simulation/ground_truth/...`; its schema and independence boundary are
+documented in [GROUND_TRUTH_INTERFACE.md](GROUND_TRUTH_INTERFACE.md).
 
 Unity uses +Z forward, +X right, and +Y up. ROS pose conversion uses FLU
 (X forward, Y left, Z up). The camera optical frame uses X right, Y down, and
@@ -121,6 +124,11 @@ perform obstacle avoidance.
 | `/tf` | `tf2_msgs/msg/TFMessage` | Unity to ROS | Dynamic `map → base_link` transform |
 | `/unity/tf_static` | `tf2_msgs/msg/TFMessage` | Unity to relay | Actual camera mount transform source |
 | `/tf_static` | `tf2_msgs/msg/TFMessage` | ROS relay | Transient-local `base_link → robot_camera_optical_frame` |
+| `/simulation/ground_truth/human_joints` | `geometry_msgs/msg/PoseArray` | Unity to evaluation | Seven Unity joint positions, fixed order, `map` frame |
+| `/simulation/ground_truth/objects` | `geometry_msgs/msg/PoseArray` | Unity to evaluation | Target A then Target B poses in `map` |
+| `/simulation/ground_truth/pointing_ray` | `geometry_msgs/msg/PoseStamped` | Unity to evaluation | Simulation ray origin and direction |
+| `/simulation/ground_truth/pointing_label` | `std_msgs/msg/String` | Unity to evaluation | JSON arm and intended target label |
+| `/simulation/ground_truth/camera_visibility` | `std_msgs/msg/String` | Unity to evaluation | JSON single-point frustum/raycast result |
 | `/human_perception/detection` | `human_perception_msgs/msg/HumanDetection2D` | ROS internal | Detection flag and bounding box |
 | `/human_perception/pose` | `human_perception_msgs/msg/HumanPose2D` | ROS internal | 33 RGB-predicted 2D keypoints |
 | `/human_perception/debug/image` | `sensor_msgs/msg/Image` | ROS internal | Separate visualization overlay |
