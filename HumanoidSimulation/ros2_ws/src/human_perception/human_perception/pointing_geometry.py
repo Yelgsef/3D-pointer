@@ -4,6 +4,13 @@ import math
 import json
 
 
+# Static map prior for the current Unity layout, expressed in ROS map XYZ.
+DEFAULT_CANDIDATES = {
+    "TargetObjectA": (-6.0, -1.3, 0.28),
+    "TargetObjectB": (-6.0, 1.3, 0.28),
+}
+
+
 def normalize(vector):
     length = math.sqrt(sum(component * component for component in vector))
     if not math.isfinite(length) or length < 1e-8:
@@ -43,6 +50,13 @@ def rank_candidates(origin, direction, candidates):
         to_candidate = tuple(position[i] - origin[i] for i in range(3))
         ranked.append((candidate_id, angle_degrees(direction, to_candidate)))
     return sorted(ranked, key=lambda item: (item[1], item[0]))
+
+
+def semantic_arm_label(landmark_arm, swap_sides=False):
+    """Map a MediaPipe side label to the calibrated scene's anatomical side."""
+    if not swap_sides:
+        return landmark_arm
+    return {"left": "right", "right": "left"}.get(landmark_arm, landmark_arm)
 
 
 def parse_candidates(serialized):

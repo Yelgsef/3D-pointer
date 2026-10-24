@@ -151,8 +151,8 @@ milestone. The phase ledger and concrete runtime evidence are in
 | 2. Coordinate frames | PASS | Runtime TF connects `map → base_link → robot_camera_optical_frame`; unit and projection checks pass. |
 | 3. Separate simulation truth | PASS | Unity publishes joints, objects, ray, pointing labels, and visibility only under `/simulation/ground_truth/...`. |
 | 4. 3D keypoints | PASS | RGB pose, depth, and CameraInfo are synchronized; metric optical landmarks include per-keypoint validity. |
-| 5. Pointing estimator | PARTIAL | Both geometric methods, ranked candidates, safe abstention, and separate markers are implemented. Default F8/F9 rankings are usually wrong or exceed the angle limit. |
-| 6. Controlled evaluation | PARTIAL | Multiple arm, distance, orientation, observer, target-layout, and occlusion configurations were recorded. Only 2 of 113 default F8 frames selected A correctly; F9 selected no target. |
+| 5. Pointing estimator | PASS | Corrected the static registry to Unity's map X=-6 coordinates; live F8/A and F9/B both selected the intended object at 18.0° and 20.6°. |
+| 6. Controlled evaluation | PARTIAL / RERUN REQUIRED | Existing scenario data used the sign-flipped candidate registry; controlled metrics are being regenerated for the corrected prior. |
 | 7. Docs and regression | PARTIAL | Documentation, Unity/ROS builds, 21 unit tests, camera preview, control, navigation, gesture, and perception checks passed. RGB averaged 4.4 Hz and depth 2.4 Hz during the final run, below the configured 5 Hz. |
 
 The tested system demonstrates metric RGB-D reconstruction and conservative

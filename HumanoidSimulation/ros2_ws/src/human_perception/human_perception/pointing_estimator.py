@@ -14,7 +14,8 @@ from tf2_ros import Buffer, TransformException, TransformListener
 from visualization_msgs.msg import Marker, MarkerArray
 
 from human_perception.pointing_geometry import (
-    normalize, parse_candidates, rank_candidates, transform_point,
+    DEFAULT_CANDIDATES, normalize, parse_candidates, rank_candidates,
+    semantic_arm_label, transform_point,
 )
 
 
@@ -25,14 +26,16 @@ class PointingEstimator(Node):
         self.declare_parameter("output_topic", "/human_perception/pointing_estimate")
         self.declare_parameter("marker_topic", "/human_perception/pointing_markers")
         self.declare_parameter("map_frame", "map")
-        self.declare_parameter("candidate_map_json", '{"TargetObjectA":[6.0,-1.3,0.28],"TargetObjectB":[6.0,1.3,0.28]}')
+        self.declare_parameter("candidate_map_json", json.dumps(DEFAULT_CANDIDATES, separators=(",", ":")))
         self.declare_parameter("minimum_margin_deg", 8.0)
         self.declare_parameter("maximum_angle_deg", 45.0)
+        self.declare_parameter("swap_predicted_arm_labels", True)
 
         self.map_frame = self.get_parameter("map_frame").value
         self.candidates = parse_candidates(self.get_parameter("candidate_map_json").value)
         self.minimum_margin = float(self.get_parameter("minimum_margin_deg").value)
         self.maximum_angle = float(self.get_parameter("maximum_angle_deg").value)
+        self.swap_arm_labels = bool(self.get_parameter("swap_predicted_arm_labels").value)
         self.publisher = self.create_publisher(
             PointingEstimate, self.get_parameter("output_topic").value, 10
         )
@@ -124,7 +127,7 @@ class PointingEstimator(Node):
 
         _, arm, ray, ranked_a, ranked_b, ray_origin = min(arm_trials, key=lambda item: (item[0], item[1]))
         result.has_ray = True
-        result.predicted_arm = arm
+        result.predicted_arm = semantic_arm_label(arm, self.swap_arm_labels)
         result.ray_origin = Point(x=ray_origin[0], y=ray_origin[1], z=ray_origin[2])
         result.direction = Vector3(x=ray[0], y=ray[1], z=ray[2])
         result.candidate_ids = [item[0] for item in ranked_a]

@@ -149,8 +149,10 @@ approximate. Controlled repeated comparison is part of later evaluation.
 
 ### Instruction 4 Phase 5 — Pointing direction and candidate ranking
 
-Status: **PARTIAL**. The geometric estimator and visualization run, but current
-left/right pointing trials do not identify the intended targets.
+Status: **PASS** for the required F8/A and F9/B unambiguous demonstrations.
+The first controlled-results batch used a candidate map with the wrong X sign;
+those metrics remain historical and Phase 6 is being rerun against the fixed
+registry.
 
 - Added deterministic eye-to-wrist Method A and elbow-to-wrist Method B,
   candidate ranking from a prior map registry, TF conversion to `map`,
@@ -159,23 +161,32 @@ left/right pointing trials do not identify the intended targets.
   segments, pointing ray, and labeled candidate positions; raw RGB is not
   modified. The estimator subscribes only to `/human_perception/pose_3d` and
   `/tf`.
-- F8 actual A trial ranked B first at 72.4 degrees (A 80.0); F9 actual B trial
-  ranked A first at 72.7 degrees (B 80.2). Both methods selected the same
-  wrong top candidate and both results abstained due to excessive angular
-  error/ambiguity. No target was fabricated.
+- Unity publishes both target positions at map X=-6. The estimator's former
+  static map prior incorrectly placed them at X=+6. Correcting the prior made
+  the live F8/A trial select A at 18.0 degrees and F9/B select B at 20.6
+  degrees; both cleared the 45-degree and 8-degree margin gates.
+- A runtime comparison found MediaPipe's left/right wrist labels reversed for
+  this camera/model view. The estimator now applies a configurable reporting
+  label swap, while its ray and candidate ranking still use predicted points.
+- Added regression tests for the default candidate map, both observed target
+  rankings, and calibrated arm labels. The perception and navigation unit
+  suites pass 25 tests.
 - Runtime also exposed TF executor starvation and a marker point constructor
   error; the callback was made nonblocking and the marker publisher corrected.
   TF freshness is bounded to 250 ms on the latest-transform fallback.
 - Tests cover angular ranking, opposite rays, and quaternion transformation.
 
-See `docs/POINTING_EVALUATION.md`. The method is implemented, but target
-recognition is not demonstrated; Phase 6 must measure this failure across
-distinct scene configurations and report it honestly.
+See `docs/POINTING_EVALUATION.md`. Method A and B independently rank the
+correct target in the two demonstrated poses. Phase 6 must now evaluate the
+corrected registry across distinct scene configurations; the prior rollups
+must not be used as corrected-registry results.
 
 ### Instruction 4 Phase 6 — Controlled evaluation
 
-Status: **PARTIAL**. The pipeline was evaluated across target layouts, gesture
-arms, human distances/orientations, observer angles, and occlusion conditions.
+Status: **PARTIAL / RERUN REQUIRED**. Prior trials covered target layouts,
+gesture arms, human distances/orientations, observer angles, and occlusion, but
+used the sign-flipped candidate registry and therefore do not establish the
+corrected estimator's accuracy.
 
 - Logged three evidence files with per-frame predictions, actual labels,
   visibility, detection, candidate order/scores, abstention, and latency.

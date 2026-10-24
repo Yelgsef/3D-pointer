@@ -6,20 +6,33 @@ positions are an explicit prior registry parameter, defaulting to the current
 scene's configured map positions:
 
 ```json
-{"TargetObjectA":[6.0,-1.3,0.28],"TargetObjectB":[6.0,1.3,0.28]}
+{"TargetObjectA":[-6.0,-1.3,0.28],"TargetObjectB":[-6.0,1.3,0.28]}
 ```
+
+These coordinates are ROS `map` XYZ from the static scene registry. The Unity
+ground-truth pose topics independently confirmed the objects at map X=-6; an
+earlier registry version used X=+6 and produced the failed rankings in the
+initial trial tables below. Those initial metrics are retained as historical
+evidence and are not results for the corrected registry.
 
 The node transforms predicted points through TF to `map` at the observation
 stamp. Method A forms a normalized eye-midpoint-to-wrist ray (falling back to
 the predicted nose if neither eye is valid). Method B independently compares
 the elbow-to-wrist direction with candidate directions from the elbow. The
-arm producing the smallest Method A angular error is reported. Candidate
-ranking is by angular error, with score `1 - angle/180`.
+arm producing the smallest Method A angular error determines the ray. The
+reported anatomical arm label is then calibrated from that MediaPipe side.
+Candidate ranking is by angular error, with score `1 - angle/180`.
 
 The estimator abstains if it cannot form a valid eye/elbow/wrist ray, if the
 best candidate is farther than 45 degrees, or if the best-vs-second-best
 margin is under 8 degrees. TF lookup is nonblocking in the pose callback; a
 latest-transform fallback is accepted only within 250 ms of the image stamp.
+
+The default `swap_predicted_arm_labels=true` corrects the measured left/right
+landmark inversion in the current HumanTarget camera view. It changes only the
+reported anatomical arm label; the ray and candidate ranking still use the
+predicted landmark coordinates. Set it to `false` for a camera/model
+calibration whose MediaPipe side labels match the subject's anatomical sides.
 
 `human_perception_msgs/msg/PointingEstimate` publishes the ray, predicted arm,
 ranked candidate IDs and scores, both method winners, ambiguity, abstention,
@@ -27,29 +40,31 @@ and selected target. `/human_perception/pointing_markers` publishes separate
 ROS visualization markers for the predicted arm skeleton, ray, and labeled
 candidate objects. No annotation is drawn into the raw RGB stream.
 
-## Initial live trial
+## Corrected live demonstration
 
 | Scenario | Ground-truth label (evaluator only) | Method A ranking | Method B | Decision |
 | --- | --- | --- | --- | --- |
-| F8 left arm | TargetObjectA | B 72.4°, A 80.0° | B | Abstain |
-| F9 right arm | TargetObjectB | A 72.7°, B 80.2° | A | Abstain |
+| F8 left arm | TargetObjectA | A 18.0°, B 68.2° | A | Select A; reported arm left |
+| F9 right arm | TargetObjectB | B 20.6°, A 70.1° | B | Select B; reported arm right |
 
-Both outputs correctly identified which predicted arm was extended, but the
-candidate ranking was wrong and the angular errors exceeded the 45-degree
-limit, so no target prediction was emitted. This is a measured failure of the
-current pointing geometry in these two trials. It does not demonstrate target
-recognition. The large downward/lateral wrist rays suggest that the stylized
-arm pose, eye-to-wrist baseline, or limb correspondence needs calibration.
+The first live run exposed a sign error in the candidate map prior: the Unity
+objects are at map X=-6, but the estimator used X=+6. Correcting that static
+prior changed both default target rankings and removed the false abstentions.
+MediaPipe also assigned the opposite wrist side in this camera view, so the
+reported anatomical arm label uses a configurable side swap; ray geometry
+continues to use only predicted keypoints.
 
 ## Controlled results
 
-`docs/evidence/pointing_trials_controlled.csv`,
+The earlier files `pointing_trials_controlled.csv`,
 `docs/evidence/pointing_trials_layout2.csv`,
 `docs/evidence/pointing_trials_occlusion.csv`, and
-`docs/evidence/pointing-metrics.json` contain the frame-level records and
-rollups. The evaluator joined labels after inference; the estimator never
-subscribed to them. Frames in each stationary setup are repeated observations,
-not independent trials.
+`docs/evidence/pointing-metrics.json` contain the initial run's frame-level
+records and rollups. That run used X=+6 and is not a result for the corrected
+registry. New corrected-registry controlled files will replace these rollups;
+the evaluator joins labels after inference and the estimator never subscribes
+to them. Frames in each stationary setup are repeated observations, not
+independent trials.
 
 - Default target layout: F8/A ranked A first on 2/113 frames and selected it
   correctly twice; it abstained on 111 frames. F9/B ranked B first on 0/55
