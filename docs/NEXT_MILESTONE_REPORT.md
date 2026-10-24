@@ -153,7 +153,7 @@ milestone. The phase ledger and concrete runtime evidence are in
 | 4. 3D keypoints | PASS | RGB pose, depth, and CameraInfo are synchronized; metric optical landmarks include per-keypoint validity and a 0.9 m arm-link outlier gate. |
 | 5. Pointing estimator | PASS | The prior matches Unity's map X=-6 coordinates; both default gestures and a second layout select their intended candidates in live observations. |
 | 6. Controlled evaluation | PASS | Corrected trials cover F8/F9, two layouts, 7 m distance, 10° observer yaw, out-of-view, recovery, and wrist occlusion. Results are per-configuration simulated demonstrations; repeated frames are not independent trials. |
-| 7. Docs and regression | PARTIAL | ROS/Unity builds and 28 Python tests pass. A bounded three-frame readback queue raised synchronized RGB-D delivery to 4.70 Hz, still below the configured 5 Hz. |
+| 7. Docs and regression | PASS | ROS build, Unity runtime compilation, and 28 Python tests pass. Phase-anchored capture scheduling delivered synchronized RGB-D and CameraInfo at approximately 5 Hz in two 22-second runs with perception enabled. |
 
 The tested system demonstrates metric RGB-D reconstruction, target selection
 in the measured simulated configurations, and abstention when the subject is
@@ -183,11 +183,19 @@ real-world accuracy claims. See `docs/3D_POSE_ESTIMATION.md`,
 - Corrected evaluation records include camera and object map positions,
   prediction scores, angular and keypoint errors, latency, visibility, and
   abstention. The summary keeps each named configuration separate.
-- Phase 7 remains PARTIAL: synchronized RGB-D delivery measured 4.70 Hz, below
-  the configured 5 Hz. A four-pair queue test measured 4.66 Hz RGB, 4.70 Hz
-  depth, and 4.75 Hz CameraInfo, with no reliable improvement over three
-  pairs. The scene was not rebuilt or saved from scratch, and runtime trial
-  transforms were restored before leaving Play Mode.
+- The initial queued-readback configuration measured 4.70 Hz. Phase-anchored
+  scheduling now avoids accumulating one frame's timing delay into every
+  subsequent capture interval. Two 22-second measurements with the perception
+  pipeline enabled recorded RGB at 4.973/5.029 Hz, depth at 4.993/5.001 Hz,
+  and CameraInfo at 4.994/4.998 Hz. Matching RGB/depth/CameraInfo acquisition
+  stamps numbered 101/102 and 104/104 respectively. A single ROS subscriber
+  received all three topics in each run.
+
+The final regression also rebuilt all five ROS packages, passed 28 perception
+and navigation tests, and confirmed live `/human_perception/pose_3d` and
+`/human_perception/pointing_estimate` messages. Unity ran the changed camera
+publisher in Play Mode; the scene was not dirty or saved, and no scene
+generator was run.
 
 ### Phase 0 input verification follow-up
 

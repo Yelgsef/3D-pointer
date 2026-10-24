@@ -320,9 +320,10 @@ below.
 
 ## Instruction 4 Phase 7 — Documentation and regression
 
-Status: **PARTIAL**. A bounded three-capture asynchronous readback queue
-improved camera throughput while preserving paired timestamps, but measured
-delivery remained slightly below the configured 5 Hz.
+Status: **PASS** after phase-anchored scheduling. The asynchronous readback
+queue preserves paired timestamps, and repeated synchronized measurements with
+the full perception pipeline delivered RGB, depth, and CameraInfo at
+approximately the configured 5 Hz.
 
 - `colcon build --symlink-install` completed for all five ROS packages.
   Direct `pytest` execution passed 22 perception tests; the six navigation
@@ -345,8 +346,17 @@ delivery remained slightly below the configured 5 Hz.
 
 The bounded queue allows up to three RGB/depth readback pairs in flight; each
 pair retains its capture timestamp and is published only after both buffers
-complete. Phase 7 remains PARTIAL because the measured 4.70 Hz is below the
-configured 5 Hz. The editor scene remained unmodified by runtime trials.
+complete. The initial queue-only change measured 4.70 Hz. A later fixed-phase
+scheduler prevents render-time jitter from accumulating into the next capture
+deadline. In two 22-second measurements with perception enabled, RGB measured
+4.973/5.029 Hz, depth 4.993/5.001 Hz, and CameraInfo 4.994/4.998 Hz. Matched
+RGB/depth/CameraInfo acquisition stamps numbered 101/102 and 104/104. Each
+measurement used one ROS node subscribed to all three topics. The Editor scene
+remained unmodified by runtime trials.
+
+- Final regression: all five ROS packages built; 28 perception and navigation
+  tests passed; Unity compiled and ran the updated publisher; live 3D pose and
+  pointing-estimate messages were observed. No scene generator was run.
 
 ### Phase 0 input verification follow-up
 

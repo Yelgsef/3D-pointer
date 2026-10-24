@@ -191,10 +191,15 @@ public sealed class RobotCameraPublisher : MonoBehaviour
     {
         if (ros == null || imagePool == null || cameraInfoPool == null || depthImagePool == null)
             EnsureRosPublishers();
-        if (Time.unscaledTime < nextCaptureTime)
+        float now = Time.unscaledTime;
+        float captureInterval = 1f / Mathf.Max(0.1f, publishRate);
+        if (now < nextCaptureTime)
             return;
 
-        nextCaptureTime = Time.unscaledTime + 1f / Mathf.Max(0.1f, publishRate);
+        // Keep the capture cadence anchored to its original schedule so frame-time jitter does not accumulate.
+        if (nextCaptureTime <= 0f)
+            nextCaptureTime = now;
+        nextCaptureTime += (Mathf.Floor((now - nextCaptureTime) / captureInterval) + 1f) * captureInterval;
         if (SystemInfo.supportsAsyncGPUReadback && pendingCaptures.Count >= Mathf.Max(1, maxPendingReadbacks))
             return;
 
