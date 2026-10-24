@@ -2,24 +2,22 @@
 
 Audit date: 2026-10-24. Repository checkpoint: `f3e10a1` (`Remove root instructions file`).
 
-This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. The older implementation documents describe the earlier humanoid-as-robot architecture and are not authoritative for the current scene.
+This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
-## Verified baseline
+## Current verified state
 
 | Feature | Status | Evidence |
 | --- | --- | --- |
-| Independent `RobotObserver` and `HumanTarget` | PASS | Unity hierarchy shows both as independent roots. `HumanTarget` has `CharacterController` and `Animator`; observer movement/publishing components are on `RobotObserver`. |
-| Robot camera and live preview | PASS | Runtime inspection: `RobotEyeCamera` is under `RobotObserver/CameraMount`; vertical FOV 34.6 degrees, horizontal FOV 57.948 degrees, aspect 16:9, clip planes 0.03/100 m. `RobotEyeRT` is 640x360 and is assigned to both camera and preview RawImage. |
-| Main camera and audio | PASS | `Main Camera` remains active and follows `RobotObserver`. Two cameras are active, with one AudioListener. |
-| `/cmd_vel` input | PASS | With the endpoint and Unity in Play Mode, `ros2 topic info /cmd_vel --verbose` reported one Unity subscription. The subscriber component is `RosAnimationController` on `RobotObserver`; none remains on the human. |
-| `/robot/pose` output | PASS | ROS reported one publisher. `ros2 topic echo --once /robot/pose` returned finite pose data for the observer at its initial Unity position. |
-| Waypoint navigation | PASS | `scripts/start_navigation.sh` and `humanoid_navigation/controller.py` exist. The six navigation math tests pass (`6 passed`). Unity still registers `/goal_pose` and `/goal_cancel` publishers. |
-| Rigged human target | FAIL at baseline | The human visual is the original primitive assembly under `HumanTarget/Visuals`. No FBX/OBJ/Blend/GLB model, Humanoid Avatar, or `SkinnedMeshRenderer` asset/component is present. |
-| Pointing gestures | FAIL at baseline | `HumanoidLocomotion.controller` has only a locomotion blend tree with Idle/Walk/Run. No armature, pointing clip, or pointing state exists. |
-| ROS camera image and CameraInfo | FAIL at baseline | Live ROS topic list has no `/camera/image_raw` or `/camera/camera_info`; project contains no corresponding generated C# message classes or publishers. `sensor_msgs/msg/Image` and `CameraInfo` are available in ROS Jazzy. |
-| Human detection / pose estimation | FAIL at baseline | No perception ROS package, model weights, detector, pose node, or prediction output exists. |
-| Available local tools | PARTIAL | Blender is installed; MediaPipe 0.10.21 and OpenCV 4.6.0 import in the system Python. PyTorch, ONNX Runtime, and Ultralytics are not installed. No third-party humanoid model is present in project assets. |
-| Unity compilation | PASS | The connected Unity 6000.6.3f1 Editor reports no failed or pending script compilation. No relevant compile/runtime exception appeared in the current log tail. |
+| Independent `RobotObserver` and `HumanTarget` | PASS | Unity hierarchy shows separate roots. Observer movement/publishing scripts remain on `RobotObserver`; the human has its own collider, Animator, gesture controller, and rigged visual. |
+| Robot camera and live preview | PASS | `RobotEyeCamera` remains under `RobotObserver/CameraMount`; 34.6-degree vertical FOV, 57.95-degree horizontal FOV, and 640 x 360 `RobotEyeRT` assigned to camera and preview. |
+| Main camera and audio | PASS | `Main Camera` follows `RobotObserver`; one AudioListener remains active. |
+| `/cmd_vel` and `/robot/pose` | PASS | Unity has one `/cmd_vel` subscriber and one `/robot/pose` publisher. A 0.4 m/s command moved the robot 0.32 m; ROS measured the pose topic at 9.68 Hz after compilation and Play Mode restart. |
+| Waypoint navigation | PASS | Live goal at ROS X -8.20 stopped at -8.342, 0.142 m away within the 0.15 m tolerance. Six navigation tests pass. |
+| Rigged human and gestures | PASS | Original 22-bone FBX, valid Humanoid Avatar, one `SkinnedMeshRenderer`, and detected left-point pose in F8. No third-party model downloaded. |
+| ROS RGB and CameraInfo | PASS | One publisher per topic; 640 x 360 `rgb8`, correct paired metadata, and `fx=fy=577.9135`, `cx=320`, `cy=180`. Current delivery measured at 4.76 Hz. |
+| Human detection and pose | PASS on this stylized simulation | F1/F4/F6/F7/F8 each detected 20/20 frames; F2/F3/F5 each had 0/20 false detections. Mean F1 important-keypoint visibility 0.957; inference latency 28.06 ms. |
+| Unity compilation and Play Mode | PASS | Forced compilation completed with no errors. After a Play Mode restart, the camera and pose publishers ran without runtime exceptions. |
+| RGB-D, ground truth, optical TF | PARTIAL / planned | Design is documented. No depth image, simulation truth interface, or camera TF publisher has been implemented. |
 
 ## Evidence locations
 
@@ -31,9 +29,9 @@ This audit was made against the current Unity Editor, active scene, ROS 2 endpoi
 - Navigation: `HumanoidSimulation/ros2_ws/src/humanoid_navigation/humanoid_navigation/controller.py`
 - Earlier scene/ROS documentation: `docs/UNITY_SCENE_INSPECTION.md`, `docs/ROS2_UNITY_SETUP.md`, `docs/IMPLEMENTATION_REPORT.md`
 
-## Corrections required
+## Documentation reconciliation
 
-`docs/IMPLEMENTATION_REPORT.md` and `docs/UNITY_SCENE_INSPECTION.md` still say `Humanoid` is the robot and `Main Camera` follows it. The live scene instead uses `RobotObserver` and a separate `HumanTarget`. `docs/ROS2_UNITY_SETUP.md` also describes `/cmd_vel` animating the humanoid. These documents must be reconciled with the final architecture during the documentation phase.
+The older documents have been updated to describe `RobotObserver` + `HumanTarget`, the real ROS camera, the perception node, and the future-only RGB-D/truth work. `docs/IMPLEMENTATION_REPORT.md` now distinguishes the original controller/navigation work from the current perception milestone.
 
 ## Phase plan
 
@@ -42,7 +40,7 @@ This audit was made against the current Unity Editor, active scene, ROS 2 endpoi
 2. **PASS**: Publish the existing RobotEyeRT as `sensor_msgs/Image` and matching `CameraInfo`; verify pixels, metadata, frame IDs, and runtime rate over ROS.
 3. **PASS**: Add a reproducible human detector and pose estimator using documented model weights; keep predictions separate from Unity ground truth.
 4. **PASS**: Document RGB-D and ground-truth extension points without presenting them as implemented.
-5. **PENDING**: Reconcile older docs and run the required Unity, ROS, perception, navigation, camera, and scenario regression checks.
+5. **PASS**: Reconcile older docs and run the required Unity, ROS, perception, navigation, camera, and scenario regression checks.
 
 ## Phase 1 result
 
@@ -93,3 +91,18 @@ Status: **PASS** for the requested RGB-D and ground-truth design documentation; 
 - Documented the future depth back-projection, TF, pointing-ray, and candidate-ranking stages. The perception node remains independent of all Unity truth.
 
 Evidence: `docs/RGBD_AND_GROUND_TRUTH_PLAN.md`, current RenderTexture asset, `ProjectSettings/GraphicsSettings.asset`, and runtime inspection of `RobotEyeCamera.depthTextureMode` / `RobotEyeRT.graphicsFormat`.
+
+## Phase 5 result
+
+Status: **PASS** for documentation reconciliation and required regression checks.
+
+- Updated `HUMAN_TARGET_SETUP.md`, `ROBOT_OBSERVER_SETUP.md`, `ROS2_UNITY_SETUP.md`, `UNITY_SCENE_INSPECTION.md`, and `IMPLEMENTATION_REPORT.md` to use the current architecture and topic names. Added `NEXT_MILESTONE_REPORT.md` with the requested phase-by-phase status, files, scene components, test evidence, and limits.
+- Updated `RobotCameraPublisher` and `RobotPosePublisher` to initialize/register their ROS publishers on enable and recover their pools after an Editor script-domain reload. Forced Unity script compilation completed with `failed=false`, `errors=[]`, and `compilationFailed=false`; stopping and re-entering Play Mode restored the ROS TCP graph without further runtime exceptions.
+- Runtime inspection confirmed `RobotEyeCamera`, `RobotEyeRT`, POV preview, ROSConnection, `/cmd_vel`, `/robot/pose`, and F1-F9 control components. After compilation and a Play Mode restart, ROS again received paired camera topics and `/robot/pose` at about 9.68 Hz.
+- Exercised F1-F7 behavior through the same scenario controller methods in Unity runtime: F1/F2/F3 positions, F4 ended at 0-degree heading error, F5 placed the 3 m obstacle at the observer/human midpoint, F6 restored initial transforms and obstacle scale, and F7 selected the Idle clip/gesture. F8 was also recognized by the perception model. Synthetic keyboard injection did not update the transforms in this final Editor session, so scenario methods were invoked directly for this regression.
+- Full `colcon build --symlink-install` succeeded for all four packages. The existing navigation test suite reported `6 passed`. The endpoint exposed all expected camera, perception, command, pose, and navigation topics with the expected message types.
+- After adding an `rclpy.ok()` shutdown guard, `human_perception` rebuilt and exited cleanly on SIGINT with process exit code 0.
+- `/cmd_vel` had one Unity subscriber. A 1-second 0.4 m/s command changed ROS pose X from -9.000 to -8.678; `/robot/pose` measured 9.68 Hz. The navigation node accepted a map goal at -8.20 and stopped at -8.342, inside its 0.15 m tolerance. `/camera/image_raw` measured 4.83 Hz.
+- Perception evaluation JSON and debug images for F1-F8 are under `docs/evidence/`; ROS camera PNGs and paired CameraInfo checks are also recorded there. No changes were made to the waypoint implementation.
+
+Limitations: keyboard simulation itself was not confirmed in this final Editor session; the scenario controller's runtime actions were verified directly and the same visible/out-of-view/occlusion results were independently observed through the ROS camera/perception stream. RGB-D, optical TF, simulation ground truth, metric 3D pose, and pointing-object inference remain unimplemented.

@@ -13,17 +13,29 @@ public sealed class RobotPosePublisher : MonoBehaviour
     private float publishInterval;
     private float nextPublishTime;
 
-    private void Start()
+    private void OnEnable()
     {
-        ros = ROSConnection.GetOrCreateInstance();
-        ros.RegisterPublisher<PoseMsg>(poseTopic);
+        EnsurePublisher();
+    }
+
+    private void EnsurePublisher()
+    {
+        if (ros == null)
+            ros = ROSConnection.GetOrCreateInstance();
+
+        var topic = ros.GetTopic(poseTopic);
+        if (topic == null || !topic.IsPublisher)
+            ros.RegisterPublisher<PoseMsg>(poseTopic);
+
         publishInterval = 1f / publishRate;
         nextPublishTime = Time.time;
     }
 
     private void Update()
     {
-        if (ros == null || Time.time < nextPublishTime)
+        if (ros == null || ros.GetTopic(poseTopic) == null || !ros.GetTopic(poseTopic).IsPublisher)
+            EnsurePublisher();
+        if (Time.time < nextPublishTime)
             return;
 
         nextPublishTime = Time.time + publishInterval;

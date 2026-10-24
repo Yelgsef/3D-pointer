@@ -2,88 +2,105 @@
 
 ## Architecture
 
-The Unity 6 project is `HumanoidSimulation/`; the simulation scene is
-`Assets/Scenes/HumanoidSimulation.unity`. The original template scene,
-`Assets/Scenes/SampleScene.unity`, remains in the project. Unity connects to the
-ROS 2 Jazzy TCP endpoint at `127.0.0.1:10000` using ROS-TCP-Connector 0.7.0.
+`HumanoidSimulation/` is the Unity 6 project. The active scene,
+`Assets/Scenes/HumanoidSimulation.unity`, separates a mobile `RobotObserver`
+from a rigged `HumanTarget`. Unity `6000.6.3f1` uses ROS-TCP-Connector 0.7.0 to
+connect to the ROS 2 Jazzy TCP endpoint at `127.0.0.1:10000`.
 
-`/cmd_vel` (`geometry_msgs/msg/Twist`) drives the humanoid's
-`CharacterController`. The Animator uses the generated Idle, Walk, and Run
-clips. `/robot/pose` (`geometry_msgs/msg/Pose`) publishes the root transform at
-10 Hz. ROS coordinates use FLU (X forward, Y left, Z up); Unity uses +Z forward,
-+X right, and +Y up. Connector ROSGeometry conversions handle pose values, and
-positive `angular.z` turns left.
+`RobotObserver` subscribes to `/cmd_vel` and publishes `/robot/pose`. Its
+existing RobotEyeCamera renders 640 x 360 RGB pixels to `RobotEyeRT`; the same
+texture drives the live POV preview and `/camera/image_raw`. Matching
+`/camera/camera_info` reports a pinhole model. A separate MediaPipe node reads
+only `/camera/image_raw` and publishes human detection, 33 pose keypoints, and
+a separate debug image. Predictions are not mixed with Unity ground truth.
 
-## Prerequisites
+Unity uses +Z forward, +X right, and +Y up. ROS pose conversion uses FLU
+(X forward, Y left, Z up). The image header is labeled
+`robot_camera_optical_frame`; static camera TF is not currently published.
 
-- Ubuntu with ROS 2 Jazzy installed at `/opt/ros/jazzy`.
+## Prerequisites and build
+
+- Ubuntu 24.04 with ROS 2 Jazzy at `/opt/ros/jazzy`.
 - `colcon`, `rosdep`, and Git.
-- Unity `6000.6.3f1` with the project package dependencies resolved.
-- `ros-jazzy-teleop-twist-keyboard` for keyboard control.
+- Unity `6000.6.3f1` with project packages resolved.
+- Python 3.12 and an interactive TTY for keyboard teleoperation.
 
-The helper scripts unset Conda and Python override variables before sourcing
-ROS. Use the system ROS Python environment.
-
-## Build the ROS workspace
-
-From the repository root, run this once to clone the ROS 2 endpoint branch,
-install dependencies, and build it:
+Build the ROS workspace and fetch the Unity ROS TCP Endpoint source if needed:
 
 ```bash
 ./scripts/setup_ros_workspace.sh
 ```
 
-The local endpoint checkout and workspace build outputs are ignored by Git.
-The endpoint source uses the `main-ros2` branch of
-`Unity-Technologies/ROS-TCP-Endpoint`.
+This builds the endpoint, navigation package, custom perception messages, and
+perception package. Workspace outputs and the local endpoint checkout are
+ignored by Git.
 
-## Start the simulation
+## Start Unity and ROS
 
-In separate terminals:
+Start the endpoint in one terminal:
 
 ```bash
 ./scripts/start_ros_endpoint.sh
 ```
 
 Open `HumanoidSimulation/` in Unity Hub, open
-`Assets/Scenes/HumanoidSimulation.unity`, and enter Play Mode. The scene's
-`ROSConnection` component connects to `127.0.0.1:10000` on startup.
+`Assets/Scenes/HumanoidSimulation.unity`, and enter Play Mode. `ROSConnection`
+connects to port 10000.
 
-Start keyboard teleoperation in a terminal with a usable TTY:
+## Human perception
+
+Prepare the project-local ROS-compatible environment and run the model node in
+another terminal:
+
+```bash
+./scripts/setup_perception_venv.sh
+./scripts/start_human_perception.sh
+```
+
+The venv uses system ROS Jazzy `rclpy`, OpenCV, and NumPy, while MediaPipe
+0.10.21 and its dependencies are installed locally with pinned versions. The
+TFLite model runs on CPU using XNNPACK. For setup, outputs, and per-scenario
+evaluation see [PERCEPTION_BASELINE.md](PERCEPTION_BASELINE.md).
+
+## Waypoint navigation and teleoperation
+
+Start one control source at a time. For keyboard teleoperation:
 
 ```bash
 ./scripts/start_teleop.sh
 ```
 
-The standard `u i o / j k l / m , .` keys publish velocity commands. A terminal
-without an interactive TTY cannot provide keyboard input to this node.
-
-For click-to-goal navigation, start the navigation node instead of keyboard
-teleoperation:
+The standard `u i o / j k l / m , .` keys publish velocity commands from a
+usable TTY. For click-to-goal navigation instead:
 
 ```bash
 ./scripts/start_navigation.sh
 ```
 
-Click the ground in the Unity Game view to publish `/goal_pose`; press Escape
-to cancel. The proportional controller turns in place for large heading
-errors, drives toward the goal, slows near the target, and stops within its
-position tolerance. This is basic goal seeking, not obstacle avoidance.
+Click the ground in Unity's Game view to publish `/goal_pose`; press Escape to
+cancel with `/goal_cancel`. This is a proportional controller and does not
+perform obstacle avoidance.
 
-## Topics and parameters
+## Topics
 
 | Topic | Type | Direction | Purpose |
 | --- | --- | --- | --- |
-| `/cmd_vel` | `geometry_msgs/msg/Twist` | ROS to Unity | Linear X velocity and angular Z yaw rate |
-| `/robot/pose` | `geometry_msgs/msg/Pose` | Unity to ROS | Live world position and orientation |
-| `/goal_pose` | `geometry_msgs/msg/PoseStamped` | Unity to ROS | Clicked destination in the `map` frame |
-| `/goal_cancel` | `std_msgs/msg/Bool` | Unity to ROS | Cancel the active goal (`true`) |
+| `/cmd_vel` | `geometry_msgs/msg/Twist` | ROS to Unity | Observer velocity command |
+| `/robot/pose` | `geometry_msgs/msg/Pose` | Unity to ROS | Observer world pose |
+| `/goal_pose` | `geometry_msgs/msg/PoseStamped` | Unity to ROS | Clicked `map` goal |
+| `/goal_cancel` | `std_msgs/msg/Bool` | Unity to ROS | Cancel navigation |
+| `/camera/image_raw` | `sensor_msgs/msg/Image` | Unity to ROS | Real RGB camera image (`rgb8`) |
+| `/camera/camera_info` | `sensor_msgs/msg/CameraInfo` | Unity to ROS | FOV-derived pinhole intrinsics |
+| `/human_perception/detection` | `human_perception_msgs/msg/HumanDetection2D` | ROS internal | Detection flag and bounding box |
+| `/human_perception/pose` | `human_perception_msgs/msg/HumanPose2D` | ROS internal | 33 RGB-predicted 2D keypoints |
+| `/human_perception/debug/image` | `sensor_msgs/msg/Image` | ROS internal | Separate visualization overlay |
 
-The Unity movement component exposes maximum linear speed (3.0 m/s), maximum
-yaw rate (1.57 rad/s), acceleration/deceleration (4.0), command timeout (0.7
-s), and gravity in the Inspector. Pose publishing defaults to 10 Hz.
+The scene also exposes F1-F7 scenario controls and F8/F9 pointing-pose controls.
+RGB-D, metric 3D joints, camera TF, simulation ground-truth messages, and
+pointing-object inference remain future work. See
+[RGBD_AND_GROUND_TRUTH_PLAN.md](RGBD_AND_GROUND_TRUTH_PLAN.md).
 
-## Verify and debug
+## Verify and troubleshoot
 
 ```bash
 ./scripts/check_ros_topics.sh
@@ -93,24 +110,16 @@ source HumanoidSimulation/ros2_ws/install/setup.bash
 python3 -m pytest HumanoidSimulation/ros2_ws/src/humanoid_navigation/test
 ```
 
-The motion helper publishes a zero Twist when the requested duration ends. To
-inspect a live pose directly:
+To validate the RGB stream and paired CameraInfo, follow
+[ROS_CAMERA_PIPELINE.md](ROS_CAMERA_PIPELINE.md). To inspect a changing pose:
 
 ```bash
 source /opt/ros/jazzy/setup.bash
 ros2 topic echo /robot/pose
 ```
 
-If Unity does not connect, confirm the endpoint is listening on port 10000,
-Unity is in Play Mode, and the endpoint did not reject a duplicate process. If
-topics disappear after a Unity script recompile, exit and re-enter Play Mode so
-the connector starts a fresh connection. If the robot does not move, inspect
-the `/cmd_vel` subscription count and check that the command has not expired.
-
-## Extension points
-
-The scene rig is generated from primitives because the original template had
-no humanoid Avatar or animation assets. There is no dedicated reverse-walk or
-turning clip; backwards movement uses the available walk cycle while the root
-moves backwards. Waypoint navigation is a basic proportional goal seeker and
-does not provide obstacle avoidance.
+If topics disappear after a Unity script reload, exit and re-enter Play Mode so
+the connector opens a fresh TCP connection. If `/cmd_vel` has a subscriber but
+the robot does not move, confirm a command is still being published and the
+0.7 second command timeout has not expired. For the confirmed scene hierarchy
+and limits, see [ROBOT_OBSERVER_SETUP.md](ROBOT_OBSERVER_SETUP.md).

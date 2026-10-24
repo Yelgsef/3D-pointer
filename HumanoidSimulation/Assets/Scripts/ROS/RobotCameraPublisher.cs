@@ -30,41 +30,69 @@ public sealed class RobotCameraPublisher : MonoBehaviour
 
     private void Awake()
     {
+        if (!ConfigureCapture())
+            enabled = false;
+    }
+
+    private bool ConfigureCapture()
+    {
         captureCamera = GetComponent<Camera>();
+        if (captureCamera == null)
+        {
+            Debug.LogError("RobotCameraPublisher requires its existing RobotEyeCamera.", this);
+            return false;
+        }
+
         if (sourceTexture == null)
             sourceTexture = captureCamera.targetTexture;
 
         if (sourceTexture == null || captureCamera.targetTexture != sourceTexture)
         {
             Debug.LogError("RobotCameraPublisher must use the existing RobotEyeCamera RenderTexture.", this);
-            enabled = false;
-            return;
+            return false;
         }
 
         if (captureCamera.orthographic)
         {
             Debug.LogError("RobotCameraPublisher requires a perspective camera for pinhole intrinsics.", this);
-            enabled = false;
-            return;
+            return false;
         }
 
-        if (!SystemInfo.supportsAsyncGPUReadback)
+        if (!SystemInfo.supportsAsyncGPUReadback && synchronousReadTexture == null)
             synchronousReadTexture = new Texture2D(sourceTexture.width, sourceTexture.height, TextureFormat.RGB24, false);
+
+        return true;
     }
 
-    private void Start()
+    private void EnsureRosPublishers()
     {
         ros = ROSConnection.GetOrCreateInstance();
-        ros.RegisterPublisher<ImageMsg>(imageTopic, 1);
-        ros.RegisterPublisher<CameraInfoMsg>(cameraInfoTopic, 1);
-        imagePool = new MessagePool<ImageMsg>(2);
-        cameraInfoPool = new MessagePool<CameraInfoMsg>(2);
+        if (imagePool == null)
+            imagePool = new MessagePool<ImageMsg>(2);
+        if (cameraInfoPool == null)
+            cameraInfoPool = new MessagePool<CameraInfoMsg>(2);
+
+        var imageTopicState = ros.GetTopic(imageTopic);
+        if (imageTopicState == null || !imageTopicState.IsPublisher)
+            ros.RegisterPublisher<ImageMsg>(imageTopic, 1);
+        var cameraInfoTopicState = ros.GetTopic(cameraInfoTopic);
+        if (cameraInfoTopicState == null || !cameraInfoTopicState.IsPublisher)
+            ros.RegisterPublisher<CameraInfoMsg>(cameraInfoTopic, 1);
+
         ros.GetTopic(imageTopic).SetMessagePool(imagePool);
         ros.GetTopic(cameraInfoTopic).SetMessagePool(cameraInfoPool);
     }
 
     private void OnEnable()
     {
+        if (!ConfigureCapture())
+        {
+            enabled = false;
+            return;
+        }
+
+        EnsureRosPublishers();
+        readbackPending = false;
         RenderPipelineManager.endCameraRendering += OnEndCameraRendering;
     }
 
@@ -86,7 +114,9 @@ public sealed class RobotCameraPublisher : MonoBehaviour
 
     private void CaptureFrame()
     {
-        if (ros == null || readbackPending || Time.unscaledTime < nextCaptureTime)
+        if (ros == null || imagePool == null || cameraInfoPool == null)
+            EnsureRosPublishers();
+        if (readbackPending || Time.unscaledTime < nextCaptureTime)
             return;
 
         nextCaptureTime = Time.unscaledTime + 1f / Mathf.Max(0.1f, publishRate);
@@ -148,6 +178,12 @@ public sealed class RobotCameraPublisher : MonoBehaviour
 
     private void PublishPixels(NativeArray<byte> pixels, DateTime acquisitionTimeUtc)
     {
+        if (ros == null || imagePool == null || cameraInfoPool == null)
+        {
+            WarnReadbackFailure("ROS publishers were unavailable when a camera frame completed.");
+            return;
+        }
+
         int width = sourceTexture.width;
         int height = sourceTexture.height;
         int rowBytes = width * 3;

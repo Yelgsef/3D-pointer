@@ -1,6 +1,9 @@
 # Robot Observer Setup
 
-The active scene is `HumanoidSimulation/Assets/Scenes/HumanoidSimulation.unity`. It now separates the mobile observer from the existing humanoid and keeps the original ground, obstacle, lighting, and Main Camera.
+The active scene is `HumanoidSimulation/Assets/Scenes/HumanoidSimulation.unity`.
+It preserves the original ground, obstacle, lighting, ROS connection, waypoint
+navigation, Main Camera, F1-F7 scenario controls, and robot-mounted camera. The
+scene separates the mobile `RobotObserver` from the skinned `HumanTarget`.
 
 ![Play Mode showing RobotObserver, HumanTarget, and the live Robot POV inset](../HumanoidSimulation/Assets/Screenshots/RobotObserver-PlayMode.png)
 
@@ -8,97 +11,83 @@ The active scene is `HumanoidSimulation/Assets/Scenes/HumanoidSimulation.unity`.
 
 ```text
 RobotObserver
-|-- RobotBody
-|-- UpperChassis
-|-- FrontSensor
-|-- LeftWheel
-|-- RightWheel
-|-- CameraMount
-|   |-- MountStem
-|   `-- RobotEyeCamera
 |-- CharacterController
 |-- RosAnimationController
 |-- RobotPosePublisher
-`-- RobotObserverScenarioControls
+|-- RobotObserverScenarioControls
+|-- RobotBody / UpperChassis / FrontSensor / Wheels
+`-- CameraMount
+    |-- MountStem
+    `-- RobotEyeCamera
+        `-- RobotCameraPublisher
 
 HumanTarget
-|-- Visuals
-|   `-- Pelvis, Torso, Head, arms, legs, and facial parts
 |-- CharacterController
-`-- Animator
+|-- Animator (HumanTargetGestures controller and Humanoid Avatar)
+|-- HumanTargetGestureController
+`-- HumanVisual (imported FBX root has an Animator without a controller)
+    |-- Armature (22 bones)
+    `-- HumanVisualMesh (SkinnedMeshRenderer)
 
-Main Camera (ThirdPersonFollowCamera targets RobotObserver)
+ROSConnection (click goals, HUD, existing TCP connection)
 RobotPOVCanvas (Screen Space - Overlay)
-`-- RobotPOVPanel
-    |-- Title ("ROBOT POV")
-    `-- LivePreview (RawImage)
+`-- RobotPOVPanel/LivePreview (RawImage using RobotEyeRT)
+Main Camera (ThirdPersonFollowCamera targets RobotObserver)
+TargetObjectA / TargetObjectB
 ```
 
-`HumanTarget` reuses the previous `Humanoid` scene object, Animator, materials, and animation controller. It is at `(0, 0, -4)` facing the observer. `RobotObserver` starts at `(0, 0, -9)` facing forward along `+Z`; the camera mount is 1.4 m above its root. The humanoid and observer are independent scene roots.
+`RobotObserver` starts at `(0, 0, -9)`, facing Unity world `+Z`. The
+`HumanTarget` starts at `(0, 0, -4)`. Its visual comes from the original,
+locally generated `Assets/Characters/HumanTarget_Rigged.fbx`. It has a valid
+Humanoid Avatar, 22 bones, and one `SkinnedMeshRenderer`; see
+[HUMAN_TARGET_SETUP.md](HUMAN_TARGET_SETUP.md) for rig and gesture details.
 
-The available target is a stylized model assembled from primitive meshes. It has an Animator and a CharacterController collider, but it does not have a skinned mesh or a humanoid bone rig. The existing `HumanoidLocomotion` controller has Idle, Walk, and Run clips. No Pointing clip is present, so no pointing gesture is claimed.
+## Robot camera and ROS output
 
-## Camera and preview
+`RobotEyeCamera` is parented under `RobotObserver/CameraMount`, 1.4 m above the
+robot root. Its vertical FOV is 34.6 degrees (about 57.95 degrees horizontal at
+16:9); clipping planes are 0.03 and 100 m. It renders the actual scene to the
+existing 640 x 360 `RobotEyeRT`, which is also assigned to the preview
+RawImage. The preview remains raw camera pixels without labels or perception
+overlays.
 
-`RobotEyeCamera` is parented under `RobotObserver/CameraMount`, so it follows observer translation and rotation. Its perspective camera renders the actual scene, including normal depth occlusion, to `Assets/RobotVision/RenderTextures/RobotEyeRT.renderTexture` at 640 x 360.
+`RobotCameraPublisher` reuses this camera and RenderTexture to publish
+`/camera/image_raw` and `/camera/camera_info`. The RGB publisher does not add a
+second camera or change the preview. `robot_camera_optical_frame` is the image
+frame label; a TF transform for it is not yet published. Reproduction and
+pixel conventions are in [ROS_CAMERA_PIPELINE.md](ROS_CAMERA_PIPELINE.md).
 
-Unity's `Camera.fieldOfView` is vertical. The camera uses 34.6 degrees vertical FOV at 16:9, which gives approximately 57.95 degrees horizontal FOV (58 degrees target), a 0.03 m near plane, and a 100 m far plane. The camera has no AudioListener; the preserved Main Camera is the only AudioListener.
+The MediaPipe node consumes the raw image and publishes predictions on
+`/human_perception/detection` and `/human_perception/pose`; the debug overlay is
+separate at `/human_perception/debug/image`. It never draws into the raw topic
+or reads Unity target transforms. See [PERCEPTION_BASELINE.md](PERCEPTION_BASELINE.md).
 
-The Screen Space - Overlay canvas shows the live RenderTexture in a bottom-right 360 x 202 pixel RawImage with a dark border and title. Its RawImage and title do not raycast, so the preview does not intercept pointer input. The preview contains only the rendered camera image; there are no labels, IDs, boxes, or skeleton overlays in that image.
+## ROS control and scenario keys
 
-## Controls and ROS
+The `RobotObserver` owns the sole `/cmd_vel` subscriber and `/robot/pose`
+publisher. ROS-TCP-Connector 0.7.0 connects through the existing ROS 2 Jazzy
+TCP endpoint at `127.0.0.1:10000`. `ROSConnection` also retains `/goal_pose` and
+`/goal_cancel` for waypoint navigation. Normal movement remains on `/cmd_vel`;
+scenario controls are for repeatable perception tests.
 
-The existing `RosAnimationController` is now on `RobotObserver`; it was removed from `HumanTarget` so only the observer subscribes to `/cmd_vel`. `linear.x` drives forward/backward motion, and `angular.z` drives yaw using the existing ROS FLU to Unity conversion. The controller retains its acceleration, speed limits, and 0.7 second command timeout. `RobotPosePublisher` now publishes the observer's pose on `/robot/pose`.
-
-For local ROS 2 testing, start the TCP endpoint in a terminal:
-
-```bash
-cd HumanoidSimulation
-source /opt/ros/jazzy/setup.bash
-source ros2_ws/install/setup.bash
-ros2 run ros_tcp_endpoint default_server_endpoint
-```
-
-With Unity in Play Mode, publish a short movement command from another terminal:
-
-```bash
-source /opt/ros/jazzy/setup.bash
-ros2 topic pub -r 10 /cmd_vel geometry_msgs/msg/Twist '{linear: {x: 0.5}, angular: {z: 0.4}}'
-```
-
-Stop publishing to test the command timeout; the robot decelerates to a stop. The endpoint used for verification listened on port 10000 and connected to Unity successfully.
-
-For perception, the RenderTexture is the current image source. Image publishing, `sensor_msgs/CameraInfo`, timestamps, optical frame metadata, and depth/RGB-D output remain future work. `/robot/pose` is already available separately from the image stream.
-
-## Scenario controls
-
-Click the Game view in Play Mode to give it keyboard focus, then use the `F` keys handled by `RobotObserverScenarioControls`:
+Click the Game view in Play Mode to focus keyboard input:
 
 | Key | Scenario |
 | --- | --- |
-| F1 | Put the target in front of the observer, facing it |
-| F2 | Put the target to the left, outside the initial horizontal FOV |
-| F3 | Put the target behind the observer |
-| F4 | Turn the observer toward the current target |
-| F5 | Move and enlarge the opaque obstacle between them |
-| F6 | Restore the starting positions and obstacle size |
-| F7 | Set the available human Animator parameters to Idle |
+| F1 | Human in front |
+| F2 | Human outside the initial camera FOV |
+| F3 | Human behind observer |
+| F4 | Observer turns toward human |
+| F5 | Obstacle occludes human |
+| F6 | Reset robot, human, and obstacle transforms |
+| F7 | Human idle pose |
+| F8 | Left-arm point toward TargetObjectA |
+| F9 | Right-arm point toward TargetObjectB |
 
-The scenario helper is for visual tests; normal robot movement remains on `/cmd_vel`. The Pointing gesture cannot be tested because no compatible clip exists.
+## Validation evidence
 
-## Verification results
-
-| Check | Result | Evidence |
-| --- | --- | --- |
-| Independent observer and reused target | PASS | Separate roots; no robot movement or pose-publishing scripts remain on `HumanTarget`. |
-| Camera parenting and settings | PASS | Camera is under `CameraMount`; 34.6 degree vertical FOV measures 57.95 degrees horizontal; near/far are 0.03/100 m. |
-| RenderTexture and live overlay | PASS | `RobotEyeRT` is created at 640 x 360 and assigned to both the camera and RawImage; Play Mode screenshot shows the inset updating with the scene. |
-| Human in view and main observer view | PASS | The default target appears in both Robot POV and the preserved Main Camera. |
-| Human outside robot FOV | PASS | With the target at `(-6, 0, -4)`, it disappears from Robot POV and remains visible in the Main Camera. |
-| Observer rotation | PASS | At 25 degrees the off-axis target enters the image edge; at 50 degrees it is centered. |
-| Opaque occlusion | PASS | A 3 m tall obstacle at the midpoint fully hides the target in Robot POV. F6 restores the original obstacle dimensions. |
-| Human animation | PARTIAL | The Animator is enabled and the Idle clip is active; this primitive model has no humanoid skeleton and no Pointing animation. |
-| ROS `/cmd_vel` movement and timeout | PASS | A live endpoint accepted `/cmd_vel`; Unity moved from `(0, 0, -9)` to about `(-0.33, 0, -8.16)`, turned about 42 degrees, then returned its commanded speeds to zero after publishing stopped. |
-| Compilation and saved scene | PASS | Unity script recompile completed with no errors; the scene was saved in Edit Mode after configuration. |
-
-The scenario images and ROS movement test were performed in Play Mode. Runtime test transforms were not saved into the scene; it opens at the default in-view setup. The Play Mode capture is [RobotObserver-PlayMode.png](../HumanoidSimulation/Assets/Screenshots/RobotObserver-PlayMode.png).
+The live Unity/ROS validation confirmed the target in the RGB feed, no
+perception detections in F2/F3/F5, and detections after turning in F4 and reset
+in F6. `/cmd_vel`, `/robot/pose`, and waypoint navigation remain operational.
+The evidence index and limitations are in
+[NEXT_MILESTONE_REPORT.md](NEXT_MILESTONE_REPORT.md).
