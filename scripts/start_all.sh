@@ -6,6 +6,7 @@ WS_DIR="$ROOT_DIR/HumanoidSimulation/ros2_ws"
 STATE_DIR="$ROOT_DIR/HumanoidSimulation/Logs/start_all"
 ENDPOINT_PID_FILE="$STATE_DIR/endpoint.pid"
 PERCEPTION_PID_FILE="$STATE_DIR/perception.pid"
+TF_RELAY_PID_FILE="$STATE_DIR/tf_static_relay.pid"
 UNITY_PID_FILE="$STATE_DIR/unity.pid"
 NO_PERCEPTION=false
 
@@ -25,7 +26,7 @@ stop_owned_process() {
         && [[ -r "/proc/$pid/cmdline" ]] \
         && tr '\0' ' ' <"/proc/$pid/cmdline" | grep -Fq -- "$expected"; then
         echo "Stopping $label (PID $pid)"
-        kill -TERM "$pid" 2>/dev/null || true
+        kill -TERM -- "-$pid" 2>/dev/null || kill -TERM "$pid" 2>/dev/null || true
         for _ in {1..10}; do
             kill -0 "$pid" 2>/dev/null || break
             sleep 1
@@ -43,14 +44,27 @@ start_perception_node() {
         echo "Human perception node is already running; leaving it untouched."
     else
         rm -f "$PERCEPTION_PID_FILE"
-        nohup "$ROOT_DIR/scripts/start_human_perception.sh" >"$STATE_DIR/perception.log" 2>&1 &
+        setsid "$ROOT_DIR/scripts/start_human_perception.sh" </dev/null >"$STATE_DIR/perception.log" 2>&1 &
         echo "$!" >"$PERCEPTION_PID_FILE"
         echo "Started human perception node (PID $(<"$PERCEPTION_PID_FILE"))."
     fi
 }
 
+start_tf_static_relay() {
+    mkdir -p "$STATE_DIR"
+    if pgrep -af '[s]tatic_tf_relay' >/dev/null; then
+        echo "Static TF relay is already running; leaving it untouched."
+    else
+        rm -f "$TF_RELAY_PID_FILE"
+        setsid "$ROOT_DIR/scripts/start_tf_static_relay.sh" </dev/null >"$STATE_DIR/tf_static_relay.log" 2>&1 &
+        echo "$!" >"$TF_RELAY_PID_FILE"
+        echo "Started static TF relay (PID $(<"$TF_RELAY_PID_FILE"))."
+    fi
+}
+
 if [[ "${1:-}" == "--stop" ]]; then
     stop_owned_process "$PERCEPTION_PID_FILE" "human perception" "human_perception.pose_detector"
+    stop_owned_process "$TF_RELAY_PID_FILE" "static TF relay" "static_tf_relay"
     stop_owned_process "$ENDPOINT_PID_FILE" "ROS TCP endpoint" "default_server_endpoint"
     stop_owned_process "$UNITY_PID_FILE" "Unity Editor" "-projectPath $ROOT_DIR/HumanoidSimulation"
     exit 0
@@ -100,7 +114,7 @@ if [[ ! -f "$ENDPOINT_PID_FILE" ]] || ! kill -0 "$(<"$ENDPOINT_PID_FILE")" 2>/de
     if ss -ltnH 'sport = :10000' | grep -q .; then
         echo "Port 10000 is already listening; using the existing ROS TCP endpoint."
     else
-        nohup "$ROOT_DIR/scripts/start_ros_endpoint.sh" >"$STATE_DIR/endpoint.log" 2>&1 &
+        setsid "$ROOT_DIR/scripts/start_ros_endpoint.sh" </dev/null >"$STATE_DIR/endpoint.log" 2>&1 &
         echo "$!" >"$ENDPOINT_PID_FILE"
         echo "Started ROS TCP endpoint (PID $(<"$ENDPOINT_PID_FILE"))."
     fi
@@ -118,6 +132,12 @@ if [[ "$endpoint_ready" != true ]]; then
     echo "ROS TCP endpoint did not open port 10000. See $STATE_DIR/endpoint.log." >&2
     exit 1
 fi
+
+if ! ros2 pkg executables unity_tf_bridge | grep -q '^unity_tf_bridge static_tf_relay$'; then
+    echo "Build unity_tf_bridge with ./scripts/setup_ros_workspace.sh before starting." >&2
+    exit 1
+fi
+start_tf_static_relay
 
 if [[ "$NO_PERCEPTION" != true ]]; then
     start_perception_node
@@ -137,7 +157,7 @@ fi
 if pgrep -af '[U]nity.*-projectpath .*HumanoidSimulation' >/dev/null; then
     echo "Unity Editor is already open for this project."
 elif [[ -n "$unity_editor" && -x "$unity_editor" ]]; then
-    nohup "$unity_editor" -projectPath "$ROOT_DIR/HumanoidSimulation" >"$STATE_DIR/unity.log" 2>&1 &
+    setsid "$unity_editor" -projectPath "$ROOT_DIR/HumanoidSimulation" </dev/null >"$STATE_DIR/unity.log" 2>&1 &
     echo "$!" >"$UNITY_PID_FILE"
     echo "Opened the Unity project (PID $(<"$UNITY_PID_FILE")). Enter Play Mode in the Editor."
 else
@@ -147,4 +167,5 @@ fi
 
 echo "Startup logs and process IDs: $STATE_DIR"
 echo "Perception controls: ./scripts/start_all.sh --stop-perception / --start-perception"
+echo "Static TF relay log: $STATE_DIR/tf_static_relay.log"
 echo "Stop all processes started by this script with: ./scripts/start_all.sh --stop"

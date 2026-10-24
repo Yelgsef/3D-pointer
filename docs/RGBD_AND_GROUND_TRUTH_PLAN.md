@@ -58,10 +58,11 @@ through a stable scene object-ID registry. Compute visibility using the camera
 frustum plus a raycast against the same occluder geometry used for rendering.
 
 Use a declared ROS world frame and publish camera/base/world transforms via
-`tf`. The existing `robot_camera_optical_frame` is only a frame label at
-present; it has no published TF. The truth publisher must publish its own
-messages from Unity simulation state and must not be a dependency of
-`human_perception`. Never embed truth in `/camera/image_raw`, CameraInfo,
+`tf`. The current tree connects `map`, `base_link`, and
+`robot_camera_optical_frame`; see `docs/TF_FRAME_CONVENTIONS.md`. The truth
+publisher must publish its own messages from Unity simulation state and must
+not be a dependency of `human_perception`. Never embed truth in
+`/camera/image_raw`, CameraInfo,
 detector messages, or debug images. Evaluation tools may join truth and
 predictions by timestamp after inference for offline scoring.
 

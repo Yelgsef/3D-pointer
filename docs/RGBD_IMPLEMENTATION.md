@@ -67,7 +67,7 @@ the scene's physical scale. One Unity unit is still assumed to equal one meter.
   The paired image payload and Editor scheduling need further performance
   tuning before treating 5 Hz as a sustained rate.
 - Transparent and custom shaders need an appropriate depth pass to appear.
-- The camera's optical frame is still not connected to `base_link` or `map` by
-  TF; see `docs/TF_FRAME_CONVENTIONS.md` as that phase is implemented.
+- TF connects the optical frame to `base_link` and `map`; see
+  `docs/TF_FRAME_CONVENTIONS.md` for axes, conversions, and projection checks.
 - The perspective ray alignment is inherited from the same camera projection;
   later 3D back-projection still depends on correct TF and CameraInfo handling.

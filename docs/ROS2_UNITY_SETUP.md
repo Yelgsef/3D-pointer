@@ -14,9 +14,13 @@ texture drives the live POV preview and `/camera/image_raw`. Matching
 only `/camera/image_raw` and publishes human detection, 33 pose keypoints, and
 a separate debug image. Predictions are not mixed with Unity ground truth.
 
+`RobotPosePublisher` publishes `map → base_link` on `/tf`. The mounted camera
+transform is published through `/unity/tf_static` and relayed to `/tf_static`
+with transient-local QoS. See [TF_FRAME_CONVENTIONS.md](TF_FRAME_CONVENTIONS.md).
+
 Unity uses +Z forward, +X right, and +Y up. ROS pose conversion uses FLU
-(X forward, Y left, Z up). The image header is labeled
-`robot_camera_optical_frame`; static camera TF is not currently published.
+(X forward, Y left, Z up). The camera optical frame uses X right, Y down, and
+Z forward.
 
 ## Prerequisites and build
 
@@ -31,9 +35,9 @@ Build the ROS workspace and fetch the Unity ROS TCP Endpoint source if needed:
 ./scripts/setup_ros_workspace.sh
 ```
 
-This builds the endpoint, navigation package, custom perception messages, and
-perception package. Workspace outputs and the local endpoint checkout are
-ignored by Git.
+This builds the endpoint, navigation package, custom perception messages,
+perception package, and static TF relay. Workspace outputs and the local
+endpoint checkout are ignored by Git.
 
 ## Start the project
 
@@ -113,6 +117,10 @@ perform obstacle avoidance.
 | `/goal_cancel` | `std_msgs/msg/Bool` | Unity to ROS | Cancel navigation |
 | `/camera/image_raw` | `sensor_msgs/msg/Image` | Unity to ROS | Real RGB camera image (`rgb8`) |
 | `/camera/camera_info` | `sensor_msgs/msg/CameraInfo` | Unity to ROS | FOV-derived pinhole intrinsics |
+| `/camera/depth/image_raw` | `sensor_msgs/msg/Image` | Unity to ROS | Aligned optical-axis depth (`32FC1`, meters) |
+| `/tf` | `tf2_msgs/msg/TFMessage` | Unity to ROS | Dynamic `map → base_link` transform |
+| `/unity/tf_static` | `tf2_msgs/msg/TFMessage` | Unity to relay | Actual camera mount transform source |
+| `/tf_static` | `tf2_msgs/msg/TFMessage` | ROS relay | Transient-local `base_link → robot_camera_optical_frame` |
 | `/human_perception/detection` | `human_perception_msgs/msg/HumanDetection2D` | ROS internal | Detection flag and bounding box |
 | `/human_perception/pose` | `human_perception_msgs/msg/HumanPose2D` | ROS internal | 33 RGB-predicted 2D keypoints |
 | `/human_perception/debug/image` | `sensor_msgs/msg/Image` | ROS internal | Separate visualization overlay |

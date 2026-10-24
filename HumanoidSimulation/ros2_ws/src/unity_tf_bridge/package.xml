@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>unity_tf_bridge</name>
+  <version>0.1.0</version>
+  <description>Relays Unity camera static TF with ROS 2 transient-local durability.</description>
+  <maintainer email="robotics@example.com">3D-pointer maintainers</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_python</buildtool_depend>
+  <exec_depend>rclpy</exec_depend>
+  <exec_depend>tf2_msgs</exec_depend>
+  <test_depend>ament_pytest</test_depend>
+  <export>
+    <build_type>ament_python</build_type>
+  </export>
+</package>

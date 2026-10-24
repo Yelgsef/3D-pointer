@@ -1,0 +1,35 @@
+{
+  "timestamp_source": "UTC/system clock",
+  "dynamic_topic": "/tf",
+  "static_source_topic": "/unity/tf_static",
+  "static_topic": "/tf_static",
+  "static_qos": {
+    "reliability": "RELIABLE",
+    "durability": "TRANSIENT_LOCAL"
+  },
+  "tree": [
+    "map -> base_link",
+    "base_link -> robot_camera_optical_frame"
+  ],
+  "initial_robot_pose_unity": [0.0, 0.0, -9.0],
+  "initial_map_to_base_translation": [-9.0, 0.0, 0.0],
+  "base_to_optical_translation": [0.12, 0.0, 1.4],
+  "base_to_optical_rotation_xyzw": [-0.5, 0.5, -0.5, 0.5],
+  "camera_center_ray_point": {
+    "map_xyz_m": [-6.88, 0.0, 1.4],
+    "optical_xyz_m": [0.0, 0.0, 2.0],
+    "camera_info_k": [577.9134969598089, 0.0, 320.0, 0.0, 577.9134969598089, 180.0, 0.0, 0.0, 1.0],
+    "projected_uv": [320.0, 180.0]
+  },
+  "movement_trial": {
+    "command": "0.4 m/s for 3 seconds, then zero",
+    "map_to_base_before": [-9.0, 0.0, 0.0],
+    "map_to_base_after": [-8.258769035339355, 0.0, 0.009999960660934448],
+    "robot_pose_topic_matched_tf": true
+  },
+  "unit_tests": {
+    "coordinate_and_projection": 4,
+    "navigation": 6,
+    "passed": 10
+  }
+}

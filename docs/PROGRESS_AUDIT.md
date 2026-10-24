@@ -54,6 +54,37 @@ needs further performance tuning. The camera depth pass does not include
 transparent or custom materials without a suitable depth pass. TF is still
 absent; this is addressed by Phase 2.
 
+### Instruction 4 Phase 2 — ROS coordinate frames
+
+Status: **PASS** for the connected `map → base_link →
+robot_camera_optical_frame` tree and tested coordinate conversion.
+
+- `RobotPosePublisher` publishes the dynamic `map → base_link` transform on
+  `/tf` from the observer's actual Unity Transform and the camera mount from
+  the actual `RobotEyeCamera` Transform. Unity-to-ROS conversion uses FLU for
+  the body and ROS optical axes (right/down/forward) for the camera.
+- The ROS TCP Endpoint does not retain static messages for late subscribers.
+  Added `unity_tf_bridge` to relay `/unity/tf_static` to `/tf_static` using
+  `RELIABLE` and `TRANSIENT_LOCAL` QoS. Late-subscriber echo received the
+  transform.
+- Runtime `tf2_echo map robot_camera_optical_frame` connected successfully.
+  At the initial pose the camera origin was `(-8.88, 0, 1.4)` m; a point 2 m
+  along optical Z transformed to map `(-6.88, 0, 1.4)` and projected to the
+  CameraInfo principal point `(320, 180)`.
+- `/tf` matched `/robot/pose`. A 0.4 m/s command for 3 seconds moved the base
+  from `(-9, 0, 0)` to `(-8.258769, 0, 0.01)` in map coordinates. The scene
+  was reset after the motion check.
+- Four coordinate conversion and projection tests pass; the existing six
+  navigation tests also pass. Full ROS workspace build completed for five
+  packages. Unity compilation completed without errors.
+- Evidence: `docs/TF_FRAME_CONVENTIONS.md` and
+  `docs/evidence/tf-validation.json`.
+
+Limitation: transform stamps use system UTC, matching the current camera
+publisher; simulated ROS time is not enabled. Camera rotation and motion were
+checked during the runtime phase, but should remain part of regression checks
+as the 3D pose pipeline is added.
+
 This audit was made against the current Unity Editor, active scene, ROS 2 endpoint, source tree, and installed Python tools. Older documents that described the humanoid-as-robot architecture have been reconciled with the current scene.
 
 ## Current verified state
